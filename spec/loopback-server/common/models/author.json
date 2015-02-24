@@ -1,0 +1,16 @@
+{
+  "name": "author",
+  "base": "User",
+  "idInjection": true,
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "notebooks": {
+      "type": "hasMany",
+      "model": "notebook",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": []
+}

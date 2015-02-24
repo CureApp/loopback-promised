@@ -25,5 +25,13 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "notebook": {
+    "dataSource": "db",
+    "public": true
+  },
+  "author": {
+    "dataSource": "db",
+    "public": true
   }
 }
