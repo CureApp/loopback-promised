@@ -32,7 +32,7 @@ class LoopBackUserClient extends LoopBackClient
             token    : token
             redirect : redirect
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -54,7 +54,7 @@ class LoopBackUserClient extends LoopBackClient
             token    : token
             redirect : redirect
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -74,7 +74,7 @@ class LoopBackUserClient extends LoopBackClient
         params = credentials
 
         # TODO handle include option
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -91,7 +91,7 @@ class LoopBackUserClient extends LoopBackClient
 
         params = null
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -109,7 +109,7 @@ class LoopBackUserClient extends LoopBackClient
         params = email: email
 
         # TODO handle include option
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
 module.exports = LoopBackUserClient

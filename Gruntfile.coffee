@@ -7,7 +7,7 @@ module.exports = (grunt) ->
             spec:
                 src: [
                     'spec/**/*.coffee'
-                    '!spec/*.coffee'
+                    '!spec/init.coffee'
                     '!spec/loopback-server/**/*.coffee'
                 ]
                 options:

@@ -13,12 +13,12 @@ class LoopBackClient
 
     @constructor
     @param {LoopBackPromised} lbPromised
-    @param {String} modelName
+    @param {String} pluralModelName
     @param {String} [accessToken] Access Token
     @param {Boolean} [debug] shows debug log if true
 
     ###
-    constructor: (@lbPromised, @modelName, @accessToken, @debug) ->
+    constructor: (@lbPromised, @pluralModelName, @accessToken, @debug) ->
 
 
     ###*
@@ -42,7 +42,7 @@ class LoopBackClient
     ###
     request: (path, params = {}, http_method) ->
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -60,7 +60,7 @@ class LoopBackClient
         params = {}
         params.where = where if Object.keys where
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -77,7 +77,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -95,7 +95,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -112,7 +112,7 @@ class LoopBackClient
 
         params = null
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -129,7 +129,7 @@ class LoopBackClient
 
         params = null
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
 
@@ -147,7 +147,7 @@ class LoopBackClient
 
         params = filter: filter
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -164,7 +164,7 @@ class LoopBackClient
 
         params = filter: filter
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
 
@@ -182,7 +182,7 @@ class LoopBackClient
 
         params = null
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -199,7 +199,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
     ###*
@@ -217,7 +217,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@modelName, path, params, http_method, @)
+        @lbPromised.request(@pluralModelName, path, params, http_method, @)
 
 
 

@@ -1,8 +1,11 @@
 
 LoopBackClient = require('./loopback-client')
+LoopBackUserClient = require('./loopback-user-client')
+
 Promise = require('es6-promise').Promise
 superagent = require('superagent')
-c = require('./util/color')
+
+DebugLogger = require('./util/debug-logger')
 
 ###*
 LoopBackPromised
@@ -18,13 +21,13 @@ class LoopBackPromised
 
     @static
     @method createInstance
-    @param {Object}  lbPromisedInfo
-    @param {String}  lbPromisedInfo.baseURL base URL of LoopBack
-    @param {Object}  [lbPromisedInfo.logger] logger with info(), warn(), error(), trace().
-    @param {String}  [lbPromisedInfo.version] version of LoopBack API to access
+    @param {LoopBackPromised|Object} lbPromisedInfo
+    @param {String} lbPromisedInfo.baseURL base URL of LoopBack
+    @param {Object} [lbPromisedInfo.logger] logger with info(), warn(), error(), trace().
+    @param {String} [lbPromisedInfo.version] version of LoopBack API to access
     @return {LoopBackPromised}
     ###
-    @createInstance : (lbPromisedInfo) ->
+    @createInstance: (lbPromisedInfo = {}) ->
 
         new LoopBackPromised(
             lbPromisedInfo.baseURL
@@ -43,17 +46,12 @@ class LoopBackPromised
         @version
     ) ->
 
-        @logger ?= @constructor.getLogger()
-        @logger.now ?= -> new Date()
-
-
-
 
     ###*
     sends request to LoopBack
 
     @method request
-    @param {String} modelName
+    @param {String} pluralModelName
     @param {String} path
     @param {Object} params request parameters
     @param {String} http_method {GET|POST|PUT|DELETE|HEAD}
@@ -62,9 +60,9 @@ class LoopBackPromised
     @param {Boolean} [clientInfo.debug] shows debug log if true
     @return {Promise<Object>}
     ###
-    request: (modelName, path, params = {}, http_method, clientInfo = {}) ->
+    request: (pluralModelName, path, params = {}, http_method, clientInfo = {}) ->
 
-        endpoint = "/#{modelName}#{path}"
+        endpoint = "/#{pluralModelName}#{path}"
 
         @constructor.requestStatic(endpoint, params, http_method, clientInfo, @)
 
@@ -95,25 +93,22 @@ class LoopBackPromised
 
         { baseURL, logger, version } = lbPromisedInfo
 
-        logger ?= @getLogger()
+        if debug
+            debugLogger = new DebugLogger(endpoint, params, http_method, clientInfo, lbPromisedInfo)
+
 
         agentMethod = @agentMethodMap[http_method]
+
+        unless baseURL
+            return Promise.reject('baseURL is required.')
 
         unless agentMethod?
             return Promise.reject(new Error("no agent method for http_method:  #{http_method}"))
 
-        if debug
 
-            logger.info "\n"
-            logger.info "┏────────────────────────────────────────────────────────────────────────────────"
-            logger.info "┃ #{if logger.now? then logger.now() else new Date()}"
-            logger.info "┃ acs-promised"
-            logger.info "┃ >> #{c('REQUEST', 'purple')}     [#{http_method}]: #{endpoint}"
-            logger.info "┃ \t: #{sessionId}"
-            logger.info "┃ \tsession id on demand : #{sessionIdOnDemand}" if sessionIdOnDemand
-            logger.info "┃ \tparams:"
-            logger.info "┃ \t\t#{k}: #{v}" for k, v of params
-            logger.info "┗────────────────────────────────────────────────────────────────────────────────"
+        if debug
+            debugLogger.showRequestInfo()
+
 
         return new Promise (resolve, reject) ->
             url = if version?
@@ -142,32 +137,31 @@ class LoopBackPromised
             req.end (err, res) ->
 
                 if err
-                    logger.error err if debug
+                    if debug
+                        debugLogger.showErrorInfo(err)
+
                     reject err
                     return
 
-                responseBody = JSON.parse(res.text)
+
+                try
+                    responseBody = JSON.parse(res.text)
+                catch e
+                    debugLogger.log e
+                    responseBody = error: res.text
 
                 if debug
-                    status = if responseBody.error then c(res.status, 'red') else c(res.status, 'green')
+                    debugLogger.showResponseInfo(responseBody, res)
 
-                    logger.info "\n"
-                    logger.info "┏────────────────────────────────────────────────────────────────────────────────"
-                    logger.info "┃ #{if logger.now? then logger.now() else new Date()}"
-                    logger.info "┃ acs-promised"
-                    logger.info "┃ << #{c('RESPONSE', 'cyan')} of [#{http_method}]: #{endpoint}"
-                    logger.info "┃  \tsessionId: #{sessionId}"
-                    logger.info "┃  \tstatus: #{status}"
-                    for k, v of responseBody
-                        logger.info "┃  \t#{k}:"
-                        logger.info "┃  \t\t#{k2}: #{JSON.stringify(v2)}" for k2, v2 of v
-                    logger.info "┗────────────────────────────────────────────────────────────────────────────────"
 
                 if responseBody.error
 
-                    err = new Error()
-                    err.__proto__ = responseBody.error
-                    err.isLoopBackResponseError = true
+                    if typeof responseBody.error is 'object'
+                        err = new Error()
+                        err.__proto__ = responseBody.error
+                        err.isLoopBackResponseError = true
+                    else
+                        err = new Error(responseBody.error)
 
                     return reject(err)
 
@@ -179,16 +173,34 @@ class LoopBackPromised
     creates client for LoopBack
 
     @method createClient
-    @param {String} modelName
+    @param {String} pluralModelName
     @param {Object} [clientInfo]
     @param {String}  [clientInfo.accessToken] Access Token
     @param {Boolean} [clientInfo.debug] shows debug log if true
-    @return {ACSClient}
+    @return {LoopBackClient}
     ###
-    createClient: (modelName, clientInfo = {}) ->
+    createClient: (pluralModelName, clientInfo = {}) ->
         new LoopBackClient(
             @
-            modelName
+            pluralModelName
+            clientInfo.accessToken
+            clientInfo.debug
+        )
+
+    ###*
+    creates user client for LoopBack
+
+    @method createUserClient
+    @param {String} pluralModelName
+    @param {Object} [clientInfo]
+    @param {String}  [clientInfo.accessToken] Access Token
+    @param {Boolean} [clientInfo.debug] shows debug log if true
+    @return {LoopBackClient}
+    ###
+    createUserClient: (pluralModelName, clientInfo = {}) ->
+        new LoopBackUserClient(
+            @
+            pluralModelName
             clientInfo.accessToken
             clientInfo.debug
         )
@@ -201,58 +213,11 @@ class LoopBackPromised
     @property agentMethodMap
     @type {Object}
     ###
-    @agentMethodMap :
+    @agentMethodMap:
         DELETE : 'del'
         PUT    : 'put'
         GET    : 'get'
         POST   : 'post'
         HEAD   : 'head'
-
-    ###*
-    gets JavaScript environment
-
-    @private
-    @static
-    @method getEnv
-    @return {String} env {ti|node|web}
-    ###
-    @getEnv: (env) ->
-
-        env =
-            if process?
-                'node'
-            else if Ti?
-                'ti'
-            else if window?
-                'web'
-
-
-
-    ###*
-    gets logger object by JavaScript environment
-
-    @private
-    @static
-    @method getLogger
-    @param {String} [env] {ti|node|web}
-    @return {Object} logger
-    ###
-    @getLogger: (env) ->
-
-        env ?= @getEnv()
-
-        switch env
-            when 'ti'
-                info  : (v) -> Ti.API.info(v)
-                warn  : (v) -> Ti.API.info(v)
-                error : (v) -> Ti.API.info(v)
-                trace : (v) -> Ti.API.trace(v)
-            when 'web'
-                info  : (v) -> console.log('[INFO]',  v)
-                warn  : (v) -> console.log('[WARN]',  v)
-                error : (v) -> console.log('[ERROR]', v)
-                trace : (v) -> console.log('[TRACE]', v)
-            else
-                console
 
 module.exports = LoopBackPromised

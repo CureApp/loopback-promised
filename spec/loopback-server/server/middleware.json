@@ -16,7 +16,6 @@
   "files": {
   },
   "final": {
-    "loopback#urlNotFound": {}
   },
   "final:after": {
     "errorhandler": {}
