@@ -84,7 +84,7 @@ class LoopBackUserClient extends LoopBackClient
     @param {String} accessTokenID
     @return {Promise}
     ###
-    logout: (accessTokenID, include) ->
+    logout: (accessTokenID) ->
 
         path        = "/logout?access_token=#{accessTokenID}"
         http_method = 'POST'
