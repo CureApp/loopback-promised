@@ -1,8 +1,9 @@
 
-LoopBackPromised = require '../src/loopback-promised'
-LoopBackClient   = require '../src/loopback-client'
+LoopBackPromised   = require '../src/loopback-promised'
+LoopBackClient     = require '../src/loopback-client'
+LoopBackUserClient = require '../src/loopback-user-client'
 
-serverProcess = require('./init')
+appServer = require('./init')
 
 
 baseURL = 'localhost:4157/test-api'
@@ -18,9 +19,8 @@ describe 'LoopBackPromised', ->
 
             pluralModelName = 'notebooks'
             path            = ''
-            params          =
-                name: 'Biochemistry'
-            http_method     = 'POST'
+            params          = null
+            http_method     = 'GET'
             clientInfo      =
                 accessToken: null
                 debug: true
@@ -39,9 +39,8 @@ describe 'LoopBackPromised', ->
 
             pluralModelName = 'notebooks'
             path            = ''
-            params          =
-                name: 'Biochemistry'
-            http_method     = 'POST'
+            params          = null
+            http_method     = 'GET'
             clientInfo      =
                 accessToken: null
                 debug: true
@@ -59,9 +58,8 @@ describe 'LoopBackPromised', ->
 
             pluralModelName = 'notebooks'
             path            = ''
-            params          =
-                name: 'Biochemistry'
-            http_method     = 'POST'
+            params          = null
+            http_method     = 'GET'
             clientInfo      =
                 accessToken: null
                 debug: true
@@ -69,7 +67,7 @@ describe 'LoopBackPromised', ->
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
                 done new Error('this cannot occur')
             .catch (e) ->
-                expect(e.name).to.match('Cannot POST')
+                expect(e.name).to.match('Cannot GET')
                 done()
 
 
@@ -81,16 +79,14 @@ describe 'LoopBackPromised', ->
 
             pluralModelName = 'notebooks'
             path            = ''
-            params          =
-                name: 'Biochemistry'
-            http_method     = 'POST'
+            params          = null
+            http_method     = 'GET'
             clientInfo      =
                 accessToken: null
                 debug: true
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
-                expect(responseBody).to.have.property 'name', 'Biochemistry'
-                expect(responseBody).to.have.property 'id'
+                expect(responseBody).to.be.instanceof Array
                 done()
             .catch (e) ->
                 done e
@@ -111,5 +107,24 @@ describe 'LoopBackPromised', ->
             client = lbPromised.createClient(pluralModelName, clientInfo)
 
             expect(client).to.be.instanceof LoopBackClient
+
+
+    describe 'createUserClient', ->
+
+        it 'creates user client for one model', ->
+
+            lbPromised = LoopBackPromised.createInstance
+                baseURL: baseURL
+
+            pluralModelName = 'authors'
+
+            clientInfo      =
+                accessToken: null
+                debug: true
+
+            client = lbPromised.createUserClient(pluralModelName, clientInfo)
+
+            expect(client).to.be.instanceof LoopBackClient
+            expect(client).to.be.instanceof LoopBackUserClient
 
 

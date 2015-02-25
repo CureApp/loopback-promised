@@ -1,5 +1,5 @@
 
-tabs = ('\t' for i in [0..20]).join('')
+tabs = ('    ' for i in [0..20])
 
 colors =
   'red'    : '31'
@@ -40,13 +40,15 @@ class DebugLogger
         @logger.info(@mark, vals...)
 
     showHeader: (title) ->
+        tab = tabs[0]
 
-        @logger.info "\n"
-        @logger.info "┏────────────────────────────────────────────────────────────────────────────────"
-        @logger.info "┃ #{@mark} #{@logger.now()}"
-        @logger.info "┃ loopback-promised  #{@baseURL}"
-        @logger.info "┃ #{title}  [#{@http_method}]: #{@endpoint}"
-        @logger.info "┃ \tAccess Token: #{if @accessToken then @accessToken.slice(0, -10) + '...' else null}"
+        @logger.info """\n
+          ┏────────────────────────────────────────────────────────────────────────────────
+          ┃ #{@mark} #{@logger.now()}
+          ┃ loopback-promised  #{@baseURL}
+          ┃ #{title}  [#{@http_method}]: #{@endpoint}
+          ┃ #{tab}accessToken: #{if @accessToken then @accessToken.slice(0, -10) + '...' else null}
+          """
         return
 
 
@@ -56,45 +58,49 @@ class DebugLogger
 
 
 
-    showParams: (params, tabnum = 1, maxTab = 4) ->
+    showParams: (key, value, tabnum = 1, maxTab = 4) ->
 
-        tab = tabs.slice(0, tabnum)
+        tab = tabs.slice(0, tabnum).join('')
 
-        for k, v of params
-            if typeof v is 'object' and tabnum <= maxTab
-                @logger.info "┃  #{tab}#{k}:" 
-                @showParams(v, tabnum + 1, maxTab)
-            else
-                @logger.info "┃  #{tab}#{k}: #{JSON.stringify v}" 
+        if typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
+            @logger.info "┃ #{tab}#{key}:" 
+            for k, v of value
+                @showParams(k, v, tabnum + 1, maxTab)
+        else
+            @logger.info "┃ #{tab}#{key}: #{JSON.stringify value}" 
 
         return
 
 
     showRequestInfo : ->
 
+        tab = tabs[0]
+
         @showHeader ">> #{c('REQUEST', 'purple')}"
-        @logger.info "┃ \tparams:"
-        @showParams(@params, 1)
+        @showParams('params', @params, 1)
         @showFooter()
         return
 
 
     showErrorInfo: (err) ->
 
+        tab = tabs[0]
+
         @showHeader "<< #{c('ERROR', 'red')}"
-        @logger.info "┃  \tError: "
-        @showParams(err, 2)
+        @showParams('Error', err, 1)
         @showFooter()
         return
 
 
 
     showResponseInfo: (responseBody, res) ->
+
+        tab = tabs[0]
         status = if responseBody.error then c(res.status, 'red') else c(res.status, 'green')
+
         @showHeader "<< #{c('RESPONSE', 'cyan')}"
-        @logger.info "┃  \tstatus: #{status}"
-        @logger.info "┃  \tresponseBody: "
-        @showParams(responseBody, 2)
+        @logger.info "┃ #{tab}status: #{status}"
+        @showParams('responseBody', responseBody, 1)
         @showFooter()
         return
 

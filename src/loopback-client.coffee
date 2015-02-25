@@ -1,3 +1,8 @@
+
+
+Promise = require('es6-promise').Promise
+
+
 ###*
 LoopBack Client to access to PersistedModel (or extenders)
 
@@ -35,6 +40,7 @@ class LoopBackClient
     sends request to LoopBack
 
     @method request
+    @private
     @param {String} path
     @param {Object} params request parameters
     @param {String} http_method {GET|POST|PUT|DELETE}
@@ -71,6 +77,10 @@ class LoopBackClient
     @return {Promise<Object>}
     ###
     create: (data = {}) ->
+
+        # when array is given, creates each data
+        if Array.isArray data 
+            return Promise.all (@create(d) for d in data)
 
         path        = ''
         http_method = 'POST'
@@ -208,12 +218,12 @@ class LoopBackClient
     @method updateAll
     @param {Object} where
     @param {Object} data
-    @return {Promise<Number>} number of updated objects
+    @return {Promise}
     ###
     updateAll: (where, data) ->
 
-        path        = "/#{id}?where=#{JSON.stringify where}"
-        http_method = 'PUT'
+        path        = "/update?where=#{JSON.stringify where}"
+        http_method = 'POST'
 
         params = data
 

@@ -145,9 +145,11 @@ class LoopBackPromised
 
 
                 try
-                    responseBody = JSON.parse(res.text)
+                    if res.statusCode is 204 # No Contents
+                        responseBody = {}
+                    else
+                        responseBody = JSON.parse(res.text)
                 catch e
-                    debugLogger.log e
                     responseBody = error: res.text
 
                 if debug
@@ -158,10 +160,11 @@ class LoopBackPromised
 
                     if typeof responseBody.error is 'object'
                         err = new Error()
-                        err.__proto__ = responseBody.error
+                        err[k] = v for k, v of responseBody.error
                         err.isLoopBackResponseError = true
                     else
                         err = new Error(responseBody.error)
+                        # err.isLoopBackResponseError = true
 
                     return reject(err)
 
