@@ -7,6 +7,8 @@ LoopBackUserClient = require '../src/loopback-user-client'
 
 appServer = require('./init')
 
+debug = false
+
 baseURL = 'localhost:4157/test-api'
 
 lbPromised = LoopBackPromised.createInstance
@@ -19,7 +21,7 @@ describe 'LoopBackClient', ->
 
         it 'sets access token', ->
 
-            client = lbPromised.createClient 'notebooks', debug: true
+            client = lbPromised.createClient 'notebooks', debug: debug
 
             client.setAccessToken('abcde')
 
@@ -31,7 +33,7 @@ describe 'LoopBackClient', ->
 
         it 'creates an item', (done) ->
 
-            client = lbPromised.createClient 'notebooks', debug: true
+            client = lbPromised.createClient 'notebooks', debug: debug
 
             client.create(
                 name: 'Computer Science'
@@ -48,7 +50,7 @@ describe 'LoopBackClient', ->
 
         it 'creates items when array is given', (done) ->
 
-            client = lbPromised.createClient 'notebooks', debug: true
+            client = lbPromised.createClient 'notebooks', debug: debug
 
             client.create([
                 { name: 'Physics'   }
@@ -66,7 +68,7 @@ describe 'LoopBackClient', ->
 
         it 'counts items', (done) ->
 
-            client = lbPromised.createClient 'notebooks', debug: true
+            client = lbPromised.createClient 'notebooks', debug: debug
             client.count().then (responseBody) ->
                 expect(responseBody).to.have.property 'count', 4
                 done()
@@ -74,7 +76,7 @@ describe 'LoopBackClient', ->
 
         it 'counts items with condition', (done) ->
 
-            client = lbPromised.createClient 'notebooks', debug: true
+            client = lbPromised.createClient 'notebooks', debug: debug
 
             where =
                 name: 'Computer Science'
@@ -86,7 +88,7 @@ describe 'LoopBackClient', ->
 
         it 'counts no items when no matching items', (done) ->
 
-            client = lbPromised.createClient 'notebooks', debug: true
+            client = lbPromised.createClient 'notebooks', debug: debug
 
             where =
                 name: 'Philosophy'
@@ -101,7 +103,7 @@ describe 'LoopBackClient', ->
 
         newId = null
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         it 'creates when not exists', (done) ->
 
@@ -125,7 +127,7 @@ describe 'LoopBackClient', ->
 
     describe 'exists', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         existingId = null
         notExistingId = 'abcd'
@@ -152,7 +154,7 @@ describe 'LoopBackClient', ->
 
     describe 'findById', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         existingId = null
         notExistingId = 'abcd'
@@ -184,7 +186,7 @@ describe 'LoopBackClient', ->
 
     describe 'find', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         it 'returns all models when filter is not set', (done) ->
 
@@ -331,7 +333,7 @@ describe 'LoopBackClient', ->
 
     describe 'findOne', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         it 'can get one result', (done) ->
 
@@ -343,7 +345,7 @@ describe 'LoopBackClient', ->
 
     describe 'destroyById', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         idToDestroy = null
         wrongId     = 'abcde'
@@ -373,7 +375,7 @@ describe 'LoopBackClient', ->
 
     describe 'updateAttributes', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         existingId = null
         notExistingId = 'abcd'
@@ -411,7 +413,7 @@ describe 'LoopBackClient', ->
 
     describe 'updateAll', ->
 
-        client = lbPromised.createClient 'notebooks', debug: true
+        client = lbPromised.createClient 'notebooks', debug: debug
 
         it 'updates all matched models', (done) ->
 

@@ -5,6 +5,8 @@ LoopBackUserClient = require '../src/loopback-user-client'
 
 appServer = require('./init')
 
+debug = false
+
 
 baseURL = 'localhost:4157/test-api'
 
@@ -23,7 +25,7 @@ describe 'LoopBackPromised', ->
             http_method     = 'GET'
             clientInfo      =
                 accessToken: null
-                debug: true
+                debug: debug
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
                 done new Error('this cannot occur')
@@ -43,7 +45,7 @@ describe 'LoopBackPromised', ->
             http_method     = 'GET'
             clientInfo      =
                 accessToken: null
-                debug: true
+                debug: debug
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
                 done new Error('this cannot occur')
@@ -62,7 +64,7 @@ describe 'LoopBackPromised', ->
             http_method     = 'GET'
             clientInfo      =
                 accessToken: null
-                debug: true
+                debug: debug
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
                 done new Error('this cannot occur')
@@ -83,7 +85,7 @@ describe 'LoopBackPromised', ->
             http_method     = 'GET'
             clientInfo      =
                 accessToken: null
-                debug: true
+                debug: debug
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
                 expect(responseBody).to.be.instanceof Array
@@ -102,7 +104,7 @@ describe 'LoopBackPromised', ->
 
             clientInfo      =
                 accessToken: null
-                debug: true
+                debug: debug
 
             client = lbPromised.createClient(pluralModelName, clientInfo)
 
@@ -120,7 +122,7 @@ describe 'LoopBackPromised', ->
 
             clientInfo      =
                 accessToken: null
-                debug: true
+                debug: debug
 
             client = lbPromised.createUserClient(pluralModelName, clientInfo)
 
