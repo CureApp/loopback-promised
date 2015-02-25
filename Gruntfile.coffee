@@ -25,6 +25,18 @@ module.exports = (grunt) ->
                     require: 'coffee-script/register'
 
 
+        coffee:
+            lib:
+                expand: true
+                cwd: 'src/'
+                src: ['**/*.coffee']
+                dest: 'lib/'
+                ext: '.js'
+                extDot: 'first'
+                options:
+                    bare: true
+
+
         yuidoc:
             options:
                 paths: ['src']
@@ -38,6 +50,8 @@ module.exports = (grunt) ->
 
     grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
     grunt.loadNpmTasks 'grunt-contrib-yuidoc'
+    grunt.loadNpmTasks 'grunt-contrib-coffee'
 
     grunt.registerTask 'default', 'mocha-chai-sinon:spec'
     grunt.registerTask 'single', 'mocha-chai-sinon:single'
+    grunt.registerTask 'build', 'coffee:lib'
