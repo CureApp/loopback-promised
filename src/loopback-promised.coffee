@@ -214,22 +214,22 @@ class LoopBackPromised
     creates related client (one-to-many relation)
 
     @method createRelatedClient
-    @param {String} pluralModelNameOne the "one" side plural model of one-to-many relationship
-    @param {String} pluralModelNameMany the "many" side plural model of one-to-many relationship
-    @param {any} id the id of the "one" model
-    @param {Object} [clientInfo]
-    @param {String}  [clientInfo.accessToken] Access Token
-    @param {Boolean} [clientInfo.debug] shows debug log if true
+    @param {Object} options
+    @param {String} options.one the "one" side plural model of one-to-many relationship
+    @param {String} options.many the "many" side plural model of one-to-many relationship
+    @param {any} options.id the id of the "one" model
+    @param {String}  [options.accessToken] Access Token
+    @param {Boolean} [options.debug] shows debug log if true
     @return {LoopBackClient}
     ###
-    createRelatedClient: (pluralModelNameOne, pluralModelNameMany, id, clientInfo = {}) ->
+    createRelatedClient: (options) ->
         new LoopBackRelatedClient(
             @
-            pluralModelNameOne
-            pluralModelNameMany
-            id
-            clientInfo.accessToken
-            clientInfo.debug
+            options.one
+            options.many
+            options.id
+            options.accessToken
+            options.debug
         )
 
 

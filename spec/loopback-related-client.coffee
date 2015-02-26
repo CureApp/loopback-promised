@@ -17,7 +17,11 @@ lbPromised = LoopBackPromised.createInstance
 mainNotebook = null
 
 createClient = (options = {}) ->
-    return lbPromised.createRelatedClient 'notebooks', 'leaves', mainNotebook.id, debug: options.debug ? debug
+    return lbPromised.createRelatedClient
+        one   : 'notebooks'
+        many  : 'leaves'
+        id    : mainNotebook.id
+        debug : options.debug ? debug
 
 
 
