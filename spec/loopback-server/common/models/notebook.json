@@ -9,7 +9,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "leaves": {
+      "type": "hasMany",
+      "model": "leaf",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": []
 }

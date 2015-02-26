@@ -68,7 +68,7 @@ describe 'LoopBackClient', ->
 
         it 'counts items', (done) ->
 
-            client = lbPromised.createClient 'notebooks', debug: debug
+            client = lbPromised.createClient 'notebooks', debug: true
             client.count().then (responseBody) ->
                 expect(responseBody).to.have.property 'count', 4
                 done()

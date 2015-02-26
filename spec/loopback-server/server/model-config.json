@@ -33,5 +33,9 @@
   "author": {
     "dataSource": "db",
     "public": true
+  },
+  "leaf": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -66,7 +66,7 @@ class LoopBackClient
         params = {}
         params.where = where if Object.keys where
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
     ###*
@@ -87,7 +87,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
     ###*
@@ -105,7 +105,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
     ###*
@@ -113,7 +113,7 @@ class LoopBackClient
 
     @method exists
     @param {String} id
-    @return {Promise<Boolean>}
+    @return {Promise<Object>}
     ###
     exists: (id) ->
 
@@ -122,7 +122,7 @@ class LoopBackClient
 
         params = null
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
     ###*
@@ -139,7 +139,7 @@ class LoopBackClient
 
         params = null
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
 
@@ -157,8 +157,7 @@ class LoopBackClient
 
         params = filter: filter
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
-
+        @request(path, params, http_method)
 
     ###*
     Find one model instance that matches filter specification. Same as find, but limited to one result
@@ -174,7 +173,7 @@ class LoopBackClient
 
         params = filter: filter
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
 
@@ -192,7 +191,7 @@ class LoopBackClient
 
         params = null
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
     ###*
@@ -209,7 +208,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
     ###*
@@ -227,7 +226,7 @@ class LoopBackClient
 
         params = data
 
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
+        @request(path, params, http_method)
 
 
 

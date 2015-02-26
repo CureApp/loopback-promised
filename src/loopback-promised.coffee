@@ -1,6 +1,7 @@
 
-LoopBackClient = require('./loopback-client')
-LoopBackUserClient = require('./loopback-user-client')
+LoopBackClient        = require('./loopback-client')
+LoopBackUserClient    = require('./loopback-user-client')
+LoopBackRelatedClient = require('./loopback-related-client')
 
 Promise = require('es6-promise').Promise
 superagent = require('superagent')
@@ -207,6 +208,31 @@ class LoopBackPromised
             clientInfo.accessToken
             clientInfo.debug
         )
+
+
+    ###*
+    creates related client (one-to-many relation)
+
+    @method createRelatedClient
+    @param {String} pluralModelNameOne the "one" side plural model of one-to-many relationship
+    @param {String} pluralModelNameMany the "many" side plural model of one-to-many relationship
+    @param {any} id the id of the "one" model
+    @param {Object} [clientInfo]
+    @param {String}  [clientInfo.accessToken] Access Token
+    @param {Boolean} [clientInfo.debug] shows debug log if true
+    @return {LoopBackClient}
+    ###
+    createRelatedClient: (pluralModelNameOne, pluralModelNameMany, id, clientInfo = {}) ->
+        new LoopBackRelatedClient(
+            @
+            pluralModelNameOne
+            pluralModelNameMany
+            id
+            clientInfo.accessToken
+            clientInfo.debug
+        )
+
+
 
     ###*
     HTTP methods => superagent methods
