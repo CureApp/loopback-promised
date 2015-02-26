@@ -8,13 +8,13 @@
 $ npm install loopback-promised
 ```
 
-Node.js
+### Node.js
 
 ```js
 var LoopBackPromised = require('loopback-promised')
 ```
 
-Titanium
+### Titanium
 
 ```bash
 $ cp /path/to/this-module/dist/loopback-promised.titanium.js /path/to/your-project/app/lib/
@@ -23,25 +23,25 @@ $ cp /path/to/this-module/dist/loopback-promised.titanium.js /path/to/your-proje
 var LoopBackPromised = require('loopback-promised')
 ```
 
-Web browsers
+### Web browsers
 
 ```bash
 $ cp /path/to/this-module/dist/loopback-promised.web.js /path/to/your-project/
 ```
 
 ```html
-<script type="text/javascript" src="/path/to/your-project/loopback-promised.web.js"></script>
+<script type="text/javascript" charset="utf-8" src="/path/to/your-project/loopback-promised.web.js"></script>
 <script type="text/javascript">console.log(LoopBackPromised);</script>
 ```
 
-use a minified one in Web browsers
+### use a minified one in Web browsers
 
 ```bash
 $ cp /path/to/this-module/dist/loopback-promised.min.js /path/to/your-project/
 ```
 
 ```html
-<script type="text/javascript" src="/path/to/your-project/loopback-promised.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/path/to/your-project/loopback-promised.min.js"></script>
 <script type="text/javascript">console.log(LoopBackPromised);</script>
 ```
 
@@ -78,6 +78,7 @@ client.create(name: 'Biology').then (notebook) ->
 ## more docs
 
 see [API documentation Page](https://cureapp.github.io/loopback-promised)
+
 
 # test
 
