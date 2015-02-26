@@ -133,8 +133,6 @@ class LoopBackPromised
                 req.send(JSON.stringify(params))
                 req.set('Content-Type', 'application/json')
 
-            req.set('Accept-Encoding', 'gzip')
-
             req.end (err, res) ->
 
                 if err

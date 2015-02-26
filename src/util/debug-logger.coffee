@@ -11,11 +11,48 @@ colors =
 
 colorsArr = Object.keys(colors)
 
-c = (str, color) ->
-    return str if not color or not colors[color]
-    colorNum = colors[color]
+env =
+    if Ti?
+        'ti'
+    else if window?
+        'web'
+    else
+        'node'
 
-    return "\u001b[#{colorNum}m#{str}\u001b[39m"
+
+colorize =
+    switch env
+        when 'ti', 'node'
+            (str, color) ->
+                return str if not color or not colors[color]
+                colorNum = colors[color]
+                return "\u001b[#{colorNum}m#{str}\u001b[39m"
+
+        when 'web'
+            (str, color) ->
+                return "[c=\"color: #{color}\"]#{str}[c]"
+
+
+
+defaultLogger =
+    switch env
+        when 'ti'
+            info  : (v) -> Ti.API.info(v)
+            warn  : (v) -> Ti.API.info(v)
+            error : (v) -> Ti.API.info(v)
+            trace : (v) -> Ti.API.trace(v)
+
+        when 'web'
+
+            log = require('../../../bower_components/log/log')
+            info  : (v) -> log(v)
+            warn  : (v) -> log('[WARN] '  + v)
+            error : (v) -> log('[ERROR] ' + v)
+            trace : (v) -> log('[TRACE] ' + v)
+
+        else
+            console
+
 
 
 class DebugLogger
@@ -28,12 +65,12 @@ class DebugLogger
 
         { @baseURL, @logger, @version } = @lbPromisedInfo
 
-        @logger ?= @constructor.getLogger()
-        @logger.now ?= -> new Date()
+        @logger ?= defaultLogger
+        @logger.now = -> new Date()
 
         count = @constructor.counter = (@constructor.counter + 1) % colorsArr.length
         @color = colorsArr[count]
-        @mark = c('●', @color)
+        @mark = colorize('●', @color)
 
 
     log: (vals...) ->
@@ -42,13 +79,12 @@ class DebugLogger
     showHeader: (title) ->
         tab = tabs[0]
 
-        @logger.info """\n
-          ┏────────────────────────────────────────────────────────────────────────────────
-          ┃ #{@mark} #{@logger.now()}
-          ┃ loopback-promised  #{@baseURL}
-          ┃ #{title}  [#{@http_method}]: #{@endpoint}
-          ┃ #{tab}accessToken: #{if @accessToken then @accessToken.slice(0, -10) + '...' else null}
-          """
+        @logger.info "\n"
+        @logger.info "┏────────────────────────────────────────────────────────────────────────────────"
+        @logger.info "┃ #{@mark} #{@logger.now()}"
+        @logger.info "┃ loopback-promised  #{@baseURL}"
+        @logger.info "┃ #{title}  [#{@http_method}]: #{@endpoint}"
+        @logger.info "┃ #{tab}accessToken: #{if @accessToken then @accessToken.slice(0, -10) + '...' else null}"
         return
 
 
@@ -76,7 +112,7 @@ class DebugLogger
 
         tab = tabs[0]
 
-        @showHeader ">> #{c('REQUEST', 'purple')}"
+        @showHeader ">> #{colorize('REQUEST', 'purple')}"
         @showParams('params', @params, 1)
         @showFooter()
         return
@@ -86,7 +122,7 @@ class DebugLogger
 
         tab = tabs[0]
 
-        @showHeader "<< #{c('ERROR', 'red')}"
+        @showHeader "<< #{colorize('ERROR', 'red')}"
         @showParams('Error', err, 1)
         @showFooter()
         return
@@ -96,61 +132,13 @@ class DebugLogger
     showResponseInfo: (responseBody, res) ->
 
         tab = tabs[0]
-        status = if responseBody.error then c(res.status, 'red') else c(res.status, 'green')
+        status = if responseBody.error then colorize(res.status, 'red') else colorize(res.status, 'green')
 
-        @showHeader "<< #{c('RESPONSE', 'cyan')}"
+        @showHeader "<< #{colorize('RESPONSE', 'cyan')}"
         @logger.info "┃ #{tab}status: #{status}"
         @showParams('responseBody', responseBody, 1)
         @showFooter()
         return
-
-
-
-    ###*
-    gets JavaScript environment
-
-    @private
-    @static
-    @method getEnv
-    @return {String} env {ti|node|web}
-    ###
-    @getEnv: (env) ->
-
-        env =
-            if process?
-                'node'
-            else if Ti?
-                'ti'
-            else if window?
-                'web'
-
-
-    ###*
-    gets logger object by JavaScript environment
-
-    @private
-    @static
-    @method getLogger
-    @param {String} [env] {ti|node|web}
-    @return {Object} logger
-    ###
-    @getLogger: (env) ->
-
-        env ?= @getEnv()
-
-        switch env
-            when 'ti'
-                info  : (v) -> Ti.API.info(v)
-                warn  : (v) -> Ti.API.info(v)
-                error : (v) -> Ti.API.info(v)
-                trace : (v) -> Ti.API.trace(v)
-            when 'web'
-                info  : (v) -> console.log('[INFO]',  v)
-                warn  : (v) -> console.log('[WARN]',  v)
-                error : (v) -> console.log('[ERROR]', v)
-                trace : (v) -> console.log('[TRACE]', v)
-            else
-                console
 
 
 module.exports = DebugLogger

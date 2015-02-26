@@ -1,0 +1,26 @@
+{
+  "name": "loopback-promised",
+  "version": "0.0.0",
+  "description": "Promise-styled client for LoopBack",
+  "main": [
+    "dist/loopback-promised.web.js",
+    "dist/loopback-promised.min.js"
+  ],
+  "authors": [
+    "CureApp, Inc."
+  ],
+  "keywords": [
+    "LoopBack"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "spec",
+    "src"
+  ],
+  "dependencies": {
+    "log": "~0.1.5"
+  }
+}

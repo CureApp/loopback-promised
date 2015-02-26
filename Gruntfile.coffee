@@ -36,6 +36,11 @@ module.exports = (grunt) ->
                 options:
                     bare: true
 
+        bower:
+            dist:
+                options:
+                    targetDir: 'bower_components'
+
         browserify:
             dist:
                 files:
@@ -77,7 +82,8 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
+    grunt.loadNpmTasks 'grunt-bower-task'
 
     grunt.registerTask 'default', 'mocha-chai-sinon:spec'
     grunt.registerTask 'single', 'mocha-chai-sinon:single'
-    grunt.registerTask 'build', ['coffee:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']
+    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']
