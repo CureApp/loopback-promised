@@ -178,17 +178,34 @@ class LoopBackPromised
 
     @method createClient
     @param {String} pluralModelName
-    @param {Object} [clientInfo]
-    @param {String}  [clientInfo.accessToken] Access Token
-    @param {Boolean} [clientInfo.debug] shows debug log if true
+    @param {Object}  [options]
+    @param {Object}  [options.belongsTo] key: pluralModelName (the "one" side of one-to-many relation), value: id
+    @param {Boolean} [options.isUserModel] true if user model
+    @param {String}  [options.accessToken] Access Token
+    @param {Boolean} [options.debug] shows debug log if true
     @return {LoopBackClient}
     ###
-    createClient: (pluralModelName, clientInfo = {}) ->
+    createClient: (pluralModelName, options = {}) ->
+
+        if options.belongsTo
+            pluralModelNameOne = Object.keys(options.belongsTo)[0]
+            id = options.belongsTo[pluralModelNameOne]
+
+            return @createRelatedClient
+                one         : pluralModelNameOne
+                many        : pluralModelName
+                id          : id
+                accessToken : options.accessToken
+                debug       : options.debug
+
+        else if options.isUserModel
+            return @createUserClient(pluralModelName, options)
+
         new LoopBackClient(
             @
             pluralModelName
-            clientInfo.accessToken
-            clientInfo.debug
+            options.accessToken
+            options.debug
         )
 
     ###*

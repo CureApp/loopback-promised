@@ -1,7 +1,8 @@
 
-LoopBackPromised   = require '../src/loopback-promised'
-LoopBackClient     = require '../src/loopback-client'
-LoopBackUserClient = require '../src/loopback-user-client'
+LoopBackPromised      = require '../src/loopback-promised'
+LoopBackClient        = require '../src/loopback-client'
+LoopBackUserClient    = require '../src/loopback-user-client'
+LoopBackRelatedClient = require '../src/loopback-related-client'
 
 appServer = require('./init')
 
@@ -109,6 +110,45 @@ describe 'LoopBackPromised', ->
             client = lbPromised.createClient(pluralModelName, clientInfo)
 
             expect(client).to.be.instanceof LoopBackClient
+
+
+        it 'creates related client when "belongsTo" option is set', ->
+
+            lbPromised = LoopBackPromised.createInstance
+                baseURL: baseURL
+
+            client = lbPromised.createClient('leaves', 
+                belongsTo:
+                    notebooks: 1
+                accessToken: 'abc'
+                debug: debug
+                isUserModel: true # ignored
+            )
+
+            expect(client).to.be.instanceof LoopBackRelatedClient
+            expect(client).to.have.property 'id', 1
+            expect(client).to.have.property 'accessToken', 'abc'
+            expect(client).to.have.property 'debug', debug
+            expect(client).to.have.property 'pluralModelName', 'notebooks'
+            expect(client).to.have.property 'pluralModelNameMany', 'leaves'
+
+
+        it 'creates user client when "isUserModel" option is set', ->
+
+            lbPromised = LoopBackPromised.createInstance
+                baseURL: baseURL
+
+            client = lbPromised.createClient('leaves', 
+                isUserModel: true
+                accessToken: 'abc'
+                debug: debug
+            )
+
+            expect(client).to.be.instanceof LoopBackUserClient
+            expect(client).to.have.property 'accessToken', 'abc'
+            expect(client).to.have.property 'debug', debug
+            expect(client).to.have.property 'pluralModelName', 'leaves'
+
 
 
     describe 'createUserClient', ->
