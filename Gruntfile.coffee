@@ -26,16 +26,25 @@ module.exports = (grunt) ->
 
 
         coffee:
-            lib:
+            dist:
                 expand: true
                 cwd: 'src/'
                 src: ['**/*.coffee']
-                dest: 'lib/'
+                dest: 'dist/lib/'
                 ext: '.js'
                 extDot: 'first'
                 options:
                     bare: true
 
+        browserify:
+            dist:
+                files:
+                    'dist/loopback-promised.web.js': 'web.js'
+
+        uglify:
+            dist:
+                files:
+                    'dist/loopback-promised.min.js' : 'dist/loopback-promised.web.js'
 
         yuidoc:
             options:
@@ -47,11 +56,28 @@ module.exports = (grunt) ->
                     outdir: 'doc'
 
 
+    grunt.registerTask 'titaniumify',  ->
+
+        done = @async()
+
+        pack = require('titaniumifier').packer.pack
+        cfg = {}
+        packed = pack __dirname, cfg, () ->
+            Promise = packed.constructor
+            fs = require 'fs'
+            Promise.props(packed).then (v) ->
+                fs.writeFileSync __dirname + '/dist/loopback-promised.titanium.js', v.source
+                done()
+
+
+
 
     grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
     grunt.loadNpmTasks 'grunt-contrib-yuidoc'
+    grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
+    grunt.loadNpmTasks 'grunt-contrib-uglify'
 
     grunt.registerTask 'default', 'mocha-chai-sinon:spec'
     grunt.registerTask 'single', 'mocha-chai-sinon:single'
-    grunt.registerTask 'build', 'coffee:lib'
+    grunt.registerTask 'build', ['coffee:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']

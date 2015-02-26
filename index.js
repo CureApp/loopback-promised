@@ -1,1 +1,1 @@
-module.exports = require('./lib/loopback-promised');
+module.exports = require('./dist/lib/loopback-promised');

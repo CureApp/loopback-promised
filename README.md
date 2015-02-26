@@ -4,31 +4,65 @@
 
 ## Installation
 
-node.js:
-
 ```bash
 $ npm install loopback-promised
 ```
 
-titanium:
+Node.js
 
-```
-$ npm install -g loopback-promised
-$ loopback-promised titaniumify > loopback-promised.js # incoming
+```js
+var LoopBackPromised = require('loopback-promised')
 ```
 
-web:
+Titanium
 
+```bash
+$ cp /path/to/this-module/dist/loopback-promised.titanium.js /path/to/your-project/app/lib/
 ```
-$ npm install -g loopback-promised
-$ loopback-promised browserify > loopback-promised.js # incoming
+```js
+var LoopBackPromised = require('loopback-promised')
 ```
+
+Web browsers
+
+```bash
+$ cp /path/to/this-module/dist/loopback-promised.web.js /path/to/your-project/
+```
+
+```html
+<script type="text/javascript" src="/path/to/your-project/loopback-promised.web.js"></script>
+<script type="text/javascript">console.log(LoopBackPromised);</script>
+```
+
+use a minified one in Web browsers
+
+```bash
+$ cp /path/to/this-module/dist/loopback-promised.min.js /path/to/your-project/
+```
+
+```html
+<script type="text/javascript" src="/path/to/your-project/loopback-promised.min.js"></script>
+<script type="text/javascript">console.log(LoopBackPromised);</script>
+```
+
+### install this project from github
+
+(requires [grunt-cli](https://github.com/gruntjs/grunt-cli))
+
+```bash
+$ git clone https://github.com/CureApp/loopback-promised.git
+$ cd loopback-promised
+$ npm install
+$ npm install -g grunt-cli # skip if you already have one
+$ grunt build
+```
+
 
 
 # Usage
 
 ```coffee
-LoopBackPromised = require('loopback-promised')
+LoopBackPromised = require('loopback-promised') # (in web browsers, this should be omitted)
 
 lbPromised = LoopBackPromised.createInstance
     baseURL: 'localhost:3000'
@@ -40,16 +74,22 @@ client.create(name: 'Biology').then (notebook) ->
     console.log notebook.name
 ```
 
+
 ## more docs
 
 see [API documentation Page](https://cureapp.github.io/loopback-promised)
 
 # test
+
+(requires [grunt-cli](https://github.com/gruntjs/grunt-cli))
+
 ```
 $ grunt
 ```
 
 
+
 ## License
 
   MIT
+
