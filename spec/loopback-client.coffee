@@ -343,6 +343,14 @@ describe 'LoopBackClient', ->
                 done()
 
 
+        it 'gets null when not match', (done) ->
+
+            client.findOne(order: 'name', where: name: like: "xxx").then (responseBody) ->
+
+                expect(responseBody).not.to.exist
+                done()
+
+
     describe 'destroyById', ->
 
         client = lbPromised.createClient 'notebooks', debug: debug

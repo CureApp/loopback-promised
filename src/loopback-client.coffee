@@ -173,8 +173,11 @@ class LoopBackClient
 
         params = filter: filter
 
-        @request(path, params, http_method)
-
+        @request(path, params, http_method).catch (err) ->
+            if err.isLoopBackResponseError and err.code is 'MODEL_NOT_FOUND'
+                return null
+            else
+                throw err
 
 
     ###*

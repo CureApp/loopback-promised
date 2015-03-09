@@ -380,6 +380,16 @@ describe 'LoopBackRelatedClient', ->
                 expect(responseBody.content).to.equal 'Written in JavaScript'
                 done()
 
+        it 'get null when not match', (done) ->
+
+            client = createClient()
+
+            client.findOne(order: 'content', where: content : like: "xxxxx").then (responseBody) ->
+
+                expect(responseBody).not.to.exist
+                done()
+
+
 
     describe 'destroyById', ->
 
