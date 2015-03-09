@@ -98,7 +98,14 @@ class DebugLogger
 
         tab = tabs.slice(0, tabnum).join('')
 
-        if typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
+        if Array.isArray value
+            @logger.info "┃ #{tab}#{key}: [" 
+            for v,i in value
+                @showParams("[#{i}]", v, tabnum + 1, maxTab)
+
+            @logger.info "┃ #{tab}]" 
+
+        else if typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
             @logger.info "┃ #{tab}#{key}:" 
             for own k, v of value
                 @showParams(k, v, tabnum + 1, maxTab)
