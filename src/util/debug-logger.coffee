@@ -105,7 +105,7 @@ class DebugLogger
 
             @logger.info "┃ #{tab}]" 
 
-        else if typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
+        else if value? and typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
             @logger.info "┃ #{tab}#{key}:" 
             for own k, v of value
                 @showParams(k, v, tabnum + 1, maxTab)
