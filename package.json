@@ -26,8 +26,7 @@
     "titaniumifier": "^1.3.2"
   },
   "scripts": {
-    "test": "grunt",
-    "postinstall": "grunt build"
+    "test": "grunt"
   },
   "repository": {
     "type": "git",
