@@ -15,6 +15,7 @@
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-contrib-yuidoc": "^0.7.0",
+    "grunt-browserify": "^3.5.0",
     "grunt-mocha-chai-sinon": "^0.0.8",
     "jshint": "^2.5.6",
     "loopback": "^2.8.0",

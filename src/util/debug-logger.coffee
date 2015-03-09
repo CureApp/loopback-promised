@@ -100,7 +100,7 @@ class DebugLogger
 
         if typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
             @logger.info "┃ #{tab}#{key}:" 
-            for k, v of value
+            for own k, v of value
                 @showParams(k, v, tabnum + 1, maxTab)
         else
             @logger.info "┃ #{tab}#{key}: #{JSON.stringify value}" 
