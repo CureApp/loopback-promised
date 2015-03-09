@@ -99,11 +99,17 @@ class DebugLogger
         tab = tabs.slice(0, tabnum).join('')
 
         if Array.isArray value
-            @logger.info "┃ #{tab}#{key}: [" 
-            for v,i in value
-                @showParams("[#{i}]", v, tabnum + 1, maxTab)
+            if value.length is 0
+                @logger.info "┃ #{tab}#{key}: []" 
 
-            @logger.info "┃ #{tab}]" 
+            else
+                @logger.info "┃ #{tab}#{key}: [" 
+                for v,i in value
+                    @showParams("[#{i}]", v, tabnum + 1, maxTab)
+                @logger.info "┃ #{tab}]" 
+
+        else if value instanceof Date
+            @logger.info "┃ #{tab}#{key}: [Date] #{value.toString()}"
 
         else if value? and typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
             @logger.info "┃ #{tab}#{key}:" 
