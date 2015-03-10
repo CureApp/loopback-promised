@@ -115,24 +115,48 @@ class DebugLogger
     showParams: (key, value, tabnum = 1, maxTab = 4) ->
 
         tab = tabs.slice(0, tabnum).join('')
+        tab1 = tabs[0]
 
+        # array
         if Array.isArray value
             if value.length is 0
-                @logger.info "┃ #{tab}#{key}: []" 
+                @logger.info "┃ #{tab}#{key}: []"
 
             else
-                @logger.info "┃ #{tab}#{key}: [" 
+                @logger.info "┃ #{tab}#{key}: ["
                 for v,i in value
                     @showParams("[#{i}]", v, tabnum + 1, maxTab)
-                @logger.info "┃ #{tab}]" 
+                @logger.info "┃ #{tab}]"
 
+        # date, moment
         else if typeof value?.toISOString is 'function'
             @logger.info "┃ #{tab}#{key}: [#{value.constructor?.name}] #{value.toISOString()}"
 
+
+        # error
+        else if key is 'error' and typeof value is 'object' and typeof value?.stack is 'string'
+            @logger.info "┃ #{tab}#{key}:"
+            for own k, v of value
+                if k is 'stack'
+                    lines = v.split('\n')
+                    @logger.info "┃ #{tab}#{tab1}stack:"
+                    for line in lines
+                        @logger.info "┃ #{tab}#{tab1}#{tab1}#{line}"
+                    continue
+
+                @showParams(k, v, tabnum + 1, maxTab)
+
+
+
+
+        # object
         else if value? and typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
             @logger.info "┃ #{tab}#{key}:" 
             for own k, v of value
                 @showParams(k, v, tabnum + 1, maxTab)
+
+
+        # others
         else
             @logger.info "┃ #{tab}#{key}: #{JSON.stringify value}" 
 
