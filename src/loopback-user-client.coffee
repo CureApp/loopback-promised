@@ -36,28 +36,6 @@ class LoopBackUserClient extends LoopBackClient
 
 
     ###*
-    Confirm the user's identity.
-
-    @method confirm
-    @param {String} userId
-    @param {String} token The validation token
-    @param {String} redirect URL to redirect the user to once confirmed
-    @return {Promise<Object>}
-    ###
-    confirm: (userId, token, redirect) ->
-
-        path        = '/confirm'
-        http_method = 'GET'
-
-        params =
-            uid      : userId
-            token    : token
-            redirect : redirect
-
-        @request(path, params, http_method)
-
-
-    ###*
     Login a user by with the given credentials
 
     @method login
