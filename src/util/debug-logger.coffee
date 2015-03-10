@@ -66,7 +66,25 @@ class DebugLogger
         { @baseURL, @logger, @version } = @lbPromisedInfo
 
         @logger ?= defaultLogger
-        @logger.now = -> new Date()
+
+        @logger.now = =>
+            if not @startDate
+                @startDate = new Date()
+                return @startDate.toString()
+            else
+                d = new Date()
+                msec = d.getTime() - @startDate.getTime()
+                col=
+                    if msec < 50
+                        'green'
+                    else if msec < 250
+                        'yellow'
+                    else
+                        'red'
+
+                return "#{d.toString()} #{colorize msec + 'ms', col}"
+
+
 
         count = @constructor.counter = (@constructor.counter + 1) % colorsArr.length
         @color = colorsArr[count]
@@ -108,8 +126,8 @@ class DebugLogger
                     @showParams("[#{i}]", v, tabnum + 1, maxTab)
                 @logger.info "┃ #{tab}]" 
 
-        else if value instanceof Date
-            @logger.info "┃ #{tab}#{key}: [Date] #{value.toString()}"
+        else if typeof value?.toISOString is 'function'
+            @logger.info "┃ #{tab}#{key}: [#{value.constructor?.name}] #{value.toISOString()}"
 
         else if value? and typeof value is 'object' and Object.keys(value).length > 0 and tabnum <= maxTab
             @logger.info "┃ #{tab}#{key}:" 

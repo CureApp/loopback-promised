@@ -7,7 +7,7 @@ LoopBackUserClient = require '../src/loopback-user-client'
 
 appServer = require('./init')
 
-debug = false
+debug = true
 
 baseURL = 'localhost:4157/test-api'
 
