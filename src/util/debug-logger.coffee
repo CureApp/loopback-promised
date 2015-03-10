@@ -102,7 +102,7 @@ class DebugLogger
         @logger.info "┃ #{@mark} #{@logger.now()}"
         @logger.info "┃ loopback-promised  #{@baseURL}"
         @logger.info "┃ #{title}  [#{@http_method}]: #{@endpoint}"
-        @logger.info "┃ #{tab}accessToken: #{if @accessToken then @accessToken.slice(0, -10) + '...' else null}"
+        @logger.info "┃ #{tab}accessToken: #{if @accessToken then @accessToken.slice(0, 20) + '...' else null}"
         return
 
 
