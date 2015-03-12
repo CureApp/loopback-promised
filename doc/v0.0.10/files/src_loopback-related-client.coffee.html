@@ -115,7 +115,7 @@ class LoopBackRelatedClient extends LoopBackClient
 
     @method setAccessToken
     @param {any} id
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     setId: (@id) -&gt;
 
@@ -128,7 +128,7 @@ class LoopBackRelatedClient extends LoopBackClient
     @param {String} path
     @param {Object} params request parameters
     @param {String} http_method {GET|POST|PUT|DELETE}
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     request: (path, params = {}, http_method) -&gt;
 
@@ -143,7 +143,7 @@ class LoopBackRelatedClient extends LoopBackClient
 
     @method upsert
     @param {Object} data
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     upsert: (data = {}) -&gt;
 
@@ -160,7 +160,7 @@ class LoopBackRelatedClient extends LoopBackClient
 
     @method exists
     @param {String} id
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     exists: (id) -&gt;
 
@@ -181,7 +181,7 @@ class LoopBackRelatedClient extends LoopBackClient
 
     @method findOne
     @param {Object} filter
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     findOne: (filter) -&gt;
 
@@ -196,7 +196,7 @@ class LoopBackRelatedClient extends LoopBackClient
     @method updateAll
     @param {Object} where
     @param {Object} data
-    @return {Promise&lt;Array&gt;}
+    @return {Promise(Array(Object))}
     ###
     updateAll: (where, data) -&gt;
 

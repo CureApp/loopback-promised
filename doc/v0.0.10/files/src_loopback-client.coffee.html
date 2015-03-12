@@ -116,7 +116,7 @@ class LoopBackClient
 
     @method setAccessToken
     @param {String} [accessToken] Access Token
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     setAccessToken: (@accessToken) -&gt;
 
@@ -129,7 +129,7 @@ class LoopBackClient
     @param {String} path
     @param {Object} params request parameters
     @param {String} http_method {GET|POST|PUT|DELETE}
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     request: (path, params = {}, http_method) -&gt;
 
@@ -141,7 +141,7 @@ class LoopBackClient
 
     @method count
     @param {Object} [where]
-    @return {Promise&lt;Number&gt;}
+    @return {Promise(Number)}
     ###
     count: (where = {}) -&gt;
 
@@ -159,7 +159,7 @@ class LoopBackClient
 
     @method create
     @param {Object} data
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     create: (data = {}) -&gt;
 
@@ -181,7 +181,7 @@ class LoopBackClient
 
     @method upsert
     @param {Object} data
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     upsert: (data = {}) -&gt;
 
@@ -198,7 +198,7 @@ class LoopBackClient
 
     @method exists
     @param {String} id
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     exists: (id) -&gt;
 
@@ -215,7 +215,7 @@ class LoopBackClient
 
     @method findById
     @param {String} id
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     findById: (id) -&gt;
 
@@ -233,7 +233,7 @@ class LoopBackClient
 
     @method find
     @param {Object} filter
-    @return {Promise&lt;Array&gt;}
+    @return {Promise(Array(Object))}
     ###
     find: (filter) -&gt;
 
@@ -249,7 +249,7 @@ class LoopBackClient
 
     @method findOne
     @param {Object} filter
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     findOne: (filter) -&gt;
 
@@ -287,7 +287,7 @@ class LoopBackClient
 
     @method updateAttributes
     @param {Object} data
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     updateAttributes: (id, data) -&gt;
 

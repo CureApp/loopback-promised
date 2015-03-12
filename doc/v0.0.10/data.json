@@ -164,7 +164,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -196,7 +196,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -217,7 +217,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Number>"
+                "type": "Promise(Number)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -237,7 +237,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -257,7 +257,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -277,7 +277,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -297,7 +297,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -317,7 +317,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Array>"
+                "type": "Promise(Array(Object))"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -337,7 +337,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -377,7 +377,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackClient",
             "module": "loopback-promised"
@@ -506,7 +506,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackPromised",
             "module": "loopback-promised"
@@ -582,7 +582,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackPromised",
             "module": "loopback-promised"
@@ -801,7 +801,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackRelatedClient",
             "module": "loopback-promised"
@@ -833,7 +833,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackRelatedClient",
             "module": "loopback-promised"
@@ -853,7 +853,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackRelatedClient",
             "module": "loopback-promised"
@@ -873,7 +873,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackRelatedClient",
             "module": "loopback-promised"
@@ -893,7 +893,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackRelatedClient",
             "module": "loopback-promised"
@@ -918,7 +918,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Array>"
+                "type": "Promise(Array(Object))"
             },
             "class": "LoopBackRelatedClient",
             "module": "loopback-promised"
@@ -948,7 +948,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackUserClient",
             "module": "loopback-promised"
@@ -973,7 +973,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Promise<Object>"
+                "type": "Promise(Object)"
             },
             "class": "LoopBackUserClient",
             "module": "loopback-promised"

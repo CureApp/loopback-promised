@@ -105,7 +105,7 @@ class LoopBackUserClient extends LoopBackClient
     @param {String} userId
     @param {String} token The validation token
     @param {String} redirect URL to redirect the user to once confirmed
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     confirm: (userId, token, redirect) -&gt;
 
@@ -126,7 +126,7 @@ class LoopBackUserClient extends LoopBackClient
     @method login
     @param {Object} credentials email/password
     @param {String} include Optionally set it to &quot;user&quot; to include the user info
-    @return {Promise&lt;Object&gt;}
+    @return {Promise(Object)}
     ###
     login: (credentials, include) -&gt;
 
