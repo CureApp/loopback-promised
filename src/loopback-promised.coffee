@@ -59,7 +59,7 @@ class LoopBackPromised
     @param {LoopBackClient|Object} [clientInfo]
     @param {String}  [clientInfo.accessToken] Access Token
     @param {Boolean} [clientInfo.debug] shows debug log if true
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     request: (pluralModelName, path, params = {}, http_method, clientInfo = {}) ->
 
@@ -86,7 +86,7 @@ class LoopBackPromised
     @param {String} [lbPromisedInfo.version] version of LoopBack API to access
     @param {Object} [lbPromisedInfo.logger] logger with info(), warn(), error(), trace().
 
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     @requestStatic: (endpoint, params = {}, http_method, clientInfo = {}, lbPromisedInfo) ->
 

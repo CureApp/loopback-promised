@@ -31,7 +31,7 @@ class LoopBackClient
 
     @method setAccessToken
     @param {String} [accessToken] Access Token
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     setAccessToken: (@accessToken) ->
 
@@ -44,7 +44,7 @@ class LoopBackClient
     @param {String} path
     @param {Object} params request parameters
     @param {String} http_method {GET|POST|PUT|DELETE}
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     request: (path, params = {}, http_method) ->
 
@@ -56,7 +56,7 @@ class LoopBackClient
 
     @method count
     @param {Object} [where]
-    @return {Promise<Number>}
+    @return {Promise(Number)}
     ###
     count: (where = {}) ->
 
@@ -74,7 +74,7 @@ class LoopBackClient
 
     @method create
     @param {Object} data
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     create: (data = {}) ->
 
@@ -96,7 +96,7 @@ class LoopBackClient
 
     @method upsert
     @param {Object} data
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     upsert: (data = {}) ->
 
@@ -113,7 +113,7 @@ class LoopBackClient
 
     @method exists
     @param {String} id
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     exists: (id) ->
 
@@ -130,7 +130,7 @@ class LoopBackClient
 
     @method findById
     @param {String} id
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     findById: (id) ->
 
@@ -148,7 +148,7 @@ class LoopBackClient
 
     @method find
     @param {Object} filter
-    @return {Promise<Array>}
+    @return {Promise(Array(Object))}
     ###
     find: (filter) ->
 
@@ -164,7 +164,7 @@ class LoopBackClient
 
     @method findOne
     @param {Object} filter
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     findOne: (filter) ->
 
@@ -202,7 +202,7 @@ class LoopBackClient
 
     @method updateAttributes
     @param {Object} data
-    @return {Promise<Object>}
+    @return {Promise(Object)}
     ###
     updateAttributes: (id, data) ->
 
