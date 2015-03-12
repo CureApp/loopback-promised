@@ -78,12 +78,6 @@ module.exports = (grunt) ->
                 done()
 
 
-    # make symlink to current version doc
-    grunt.registerTask 'current-doc', ->
-        fs = require 'fs'
-        fs.symlinkSync("./#{currentVersion}", "doc/current")
-
-
     grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
     grunt.loadNpmTasks 'grunt-contrib-yuidoc'
     grunt.loadNpmTasks 'grunt-browserify'
@@ -93,5 +87,4 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'default', 'mocha-chai-sinon:spec'
     grunt.registerTask 'single', 'mocha-chai-sinon:single'
-    grunt.registerTask 'doc', ['yuidoc', 'current-doc']
-    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify', 'doc']
+    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify', 'yuidoc']
