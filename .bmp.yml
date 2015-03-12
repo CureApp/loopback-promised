@@ -3,3 +3,4 @@ version: 0.0.10
 files:
   package.json: '"version": "%.%.%",'
   bower.json: '"version": "%.%.%",'
+  Gruntfile.coffee: "currentVersion = 'v%.%.%'"

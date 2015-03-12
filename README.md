@@ -78,7 +78,7 @@ client.create(name: 'Biology').then (notebook) ->
 
 ## more docs
 
-see [API documentation Page](https://cureapp.github.io/loopback-promised)
+see [API documentation Page](https://cureapp.github.io/loopback-promised/doc/current/index.html)
 
 
 # test
