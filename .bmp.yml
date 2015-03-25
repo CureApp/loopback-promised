@@ -1,7 +1,7 @@
 ---
-version: 0.0.10
+version: 0.0.11
 files:
   package.json: '"version": "%.%.%",'
   bower.json: '"version": "%.%.%",'
-  Gruntfile.coffee: "currentVersion = 'v%.%.%'"
-  README.md: "[latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/v%.%.%/index.html)"
+  Gruntfile.coffee: currentVersion = 'v%.%.%'
+  README.md: '[latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/v%.%.%/index.html)'

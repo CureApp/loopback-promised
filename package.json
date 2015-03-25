@@ -1,6 +1,6 @@
 {
   "name": "loopback-promised",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Promise-styled client for LoopBack",
   "main": "index.js",
   "dependencies": {
