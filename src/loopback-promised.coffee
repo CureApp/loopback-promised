@@ -264,4 +264,6 @@ class LoopBackPromised
         POST   : 'post'
         HEAD   : 'head'
 
+LoopBackPromised.Promise = Promise
+
 module.exports = LoopBackPromised
