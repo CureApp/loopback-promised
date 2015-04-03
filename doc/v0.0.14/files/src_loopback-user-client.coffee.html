@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/loopback-client.coffee</title>
+    <title>src/loopback-user-client.coffee</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -79,249 +79,103 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/loopback-client.coffee</h1>
+<h1 class="file-heading">File: src/loopback-user-client.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 
-
-Promise = require(&#x27;es6-promise&#x27;).Promise
-
+LoopBackClient = require(&#x27;./loopback-client&#x27;)
 
 ###*
-LoopBack Client to access to PersistedModel (or extenders)
+LoopBack User Client to access to UserModel (or extenders)
 
 see http://docs.strongloop.com/display/public/LB/PersistedModel+REST+API
 see also http://apidocs.strongloop.com/loopback/#persistedmodel
 
-@class LoopBackClient
+@class LoopBackUserClient
 @module loopback-promised
 ###
-class LoopBackClient
-
-    ###*
-
-    @constructor
-    @param {LoopBackPromised} lbPromised
-    @param {String} pluralModelName
-    @param {String} [accessToken] Access Token
-    @param {Boolean} [debug] shows debug log if true
-
-    ###
-    constructor: (@lbPromised, @pluralModelName, @accessToken, @debug) -&gt;
+class LoopBackUserClient extends LoopBackClient
 
 
     ###*
-    sets Access Token
+    Confirm the user&#x27;s identity.
 
-    @method setAccessToken
-    @param {String} [accessToken] Access Token
+    @method confirm
+    @param {String} userId
+    @param {String} token The validation token
+    @param {String} redirect URL to redirect the user to once confirmed
     @return {Promise(Object)}
     ###
-    setAccessToken: (@accessToken) -&gt;
+    confirm: (userId, token, redirect) -&gt;
 
-
-    ###*
-    sends request to LoopBack
-
-    @method request
-    @private
-    @param {String} path
-    @param {Object} params request parameters
-    @param {String} http_method {GET|POST|PUT|DELETE}
-    @return {Promise(Object)}
-    ###
-    request: (path, params = {}, http_method) -&gt;
-
-        @lbPromised.request(@pluralModelName, path, params, http_method, @)
-
-
-    ###*
-    Return the number of records that match the optional &quot;where&quot; filter.
-
-    @method count
-    @param {Object} [where]
-    @return {Promise(Number)}
-    ###
-    count: (where = {}) -&gt;
-
-        path        = &#x27;/count&#x27;
+        path        = &#x27;/confirm&#x27;
         http_method = &#x27;GET&#x27;
 
-        params = {}
-        params.where = where if Object.keys where
+        params =
+            uid      : userId
+            token    : token
+            redirect : redirect
 
         @request(path, params, http_method)
 
 
     ###*
-    Create new instance of Model class, saved in database
+    Login a user by with the given credentials
 
-    @method create
-    @param {Object} data
+    @method login
+    @param {Object} credentials email/password
+    @param {String} include Optionally set it to &quot;user&quot; to include the user info
     @return {Promise(Object)}
     ###
-    create: (data = {}) -&gt;
+    login: (credentials, include) -&gt;
 
-        # when array is given, creates each data
-        if Array.isArray data 
-            return Promise.all (@create(d) for d in data)
-
-        path        = &#x27;&#x27;
+        path = &#x27;/login&#x27;
+        path += &quot;?include=#{include}&quot; if include
         http_method = &#x27;POST&#x27;
 
-        params = data
+        params = credentials
 
+        # TODO handle include option
         @request(path, params, http_method)
 
 
     ###*
-    Update or insert a model instance
-    The update will override any specified attributes in the request data object. It won’t remove  existing ones unless the value is set to null.
+    Logout a user with the given accessToken id.
 
-    @method upsert
-    @param {Object} data
-    @return {Promise(Object)}
-    ###
-    upsert: (data = {}) -&gt;
-
-        path        = &#x27;&#x27;
-        http_method = &#x27;PUT&#x27;
-
-        params = data
-
-        @request(path, params, http_method)
-
-
-    ###*
-    Check whether a model instance exists in database.
-
-    @method exists
-    @param {String} id
-    @return {Promise(Object)}
-    ###
-    exists: (id) -&gt;
-
-        path        = &quot;/#{id}/exists&quot;
-        http_method = &#x27;GET&#x27;
-
-        params = null
-
-        @request(path, params, http_method)
-
-
-    ###*
-    Find object by ID.
-
-    @method findById
-    @param {String} id
-    @return {Promise(Object)}
-    ###
-    findById: (id) -&gt;
-
-        path        = &quot;/#{id}&quot;
-        http_method = &#x27;GET&#x27;
-
-        params = null
-
-        @request(path, params, http_method)
-
-
-
-    ###*
-    Find all model instances that match filter specification.
-
-    @method find
-    @param {Object} filter
-    @return {Promise(Array(Object))}
-    ###
-    find: (filter) -&gt;
-
-        if filter? and filter.where is null
-            return Promise.resolve []
-
-        path        = &#x27;&#x27;
-        http_method = &#x27;GET&#x27;
-
-        params = filter: filter
-
-        @request(path, params, http_method)
-
-    ###*
-    Find one model instance that matches filter specification. Same as find, but limited to one result
-
-    @method findOne
-    @param {Object} filter
-    @return {Promise(Object)}
-    ###
-    findOne: (filter) -&gt;
-
-        path        = &#x27;/findOne&#x27;
-        http_method = &#x27;GET&#x27;
-
-        params = filter: filter
-
-        @request(path, params, http_method).catch (err) -&gt;
-            if err.isLoopBackResponseError and err.code is &#x27;MODEL_NOT_FOUND&#x27;
-                return null
-            else
-                throw err
-
-
-    ###*
-    Destroy model instance with the specified ID.
-
-    @method destroyById
-    @param {String} id
+    @method logout
+    @param {String} accessTokenID
     @return {Promise}
     ###
-    destroyById: (id) -&gt;
+    logout: (accessTokenID) -&gt;
 
-        path        = &quot;/#{id}&quot;
-        http_method = &#x27;DELETE&#x27;
-
-        params = null
-
-        @request(path, params, http_method)
-
-
-    ###*
-    Update set of attributes.
-
-    @method updateAttributes
-    @param {Object} data
-    @return {Promise(Object)}
-    ###
-    updateAttributes: (id, data) -&gt;
-
-        path        = &quot;/#{id}&quot;
-        http_method = &#x27;PUT&#x27;
-
-        params = data
-
-        @request(path, params, http_method)
-
-
-    ###*
-    Update multiple instances that match the where clause
-
-    @method updateAll
-    @param {Object} where
-    @param {Object} data
-    @return {Promise}
-    ###
-    updateAll: (where, data) -&gt;
-
-        path        = &quot;/update?where=#{JSON.stringify where}&quot;
+        path        = &quot;/logout?access_token=#{accessTokenID}&quot;
         http_method = &#x27;POST&#x27;
 
-        params = data
+        params = null
 
         @request(path, params, http_method)
 
 
+    ###*
+    Create a short lived acess token for temporary login. Allows users to change passwords if forgotten.
 
-module.exports = LoopBackClient
+    @method resetPassword
+    @param {String} email
+    @return {Promise}
+    ###
+    resetPassword: (email) -&gt;
+
+        path        = &quot;/logout?access_token=#{accessTokenID}&quot;
+        http_method = &#x27;POST&#x27;
+
+        params = email: email
+
+        # TODO handle include option
+        @request(path, params, http_method)
+
+
+module.exports = LoopBackUserClient
 
     </pre>
 </div>

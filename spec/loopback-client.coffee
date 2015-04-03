@@ -266,6 +266,16 @@ describe 'LoopBackClient', ->
 
                 done()
 
+        it 'can set where (null)', (done) ->
+
+            client.find(where: null).then (responseBody) ->
+
+                expect(responseBody).to.be.instanceof Array
+                expect(responseBody).to.have.length 0
+                done()
+
+
+
         it 'can set where (equals)', (done) ->
             client.find(where: name: 'Physics').then (responseBody) ->
 
@@ -284,6 +294,21 @@ describe 'LoopBackClient', ->
 
                 expect(responseBody[0].name).to.equal 'BioGenetics'
                 expect(responseBody[1].name).to.equal 'Physics'
+                done()
+
+
+        it 'can set where (key: null)', (done) ->
+            client.find(where: difficulty: null).then (responseBody) ->
+
+                expect(responseBody).to.be.instanceof Array
+                expect(responseBody).to.have.length 4
+                done()
+
+        it 'can set where (key: undefined)', (done) ->
+            client.find(where: difficulty: undefined).then (responseBody) ->
+
+                expect(responseBody).to.be.instanceof Array
+                expect(responseBody).to.have.length 5
                 done()
 
 

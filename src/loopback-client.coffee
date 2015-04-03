@@ -152,6 +152,9 @@ class LoopBackClient
     ###
     find: (filter) ->
 
+        if filter? and filter.where is null
+            return Promise.resolve []
+
         path        = ''
         http_method = 'GET'
 

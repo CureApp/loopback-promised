@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/loopback-client.coffee</title>
+    <title>src/loopback-related-client.coffee</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -79,46 +79,45 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/loopback-client.coffee</h1>
+<h1 class="file-heading">File: src/loopback-related-client.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 
-
 Promise = require(&#x27;es6-promise&#x27;).Promise
+LoopBackClient = require(&#x27;./loopback-client&#x27;)
 
 
 ###*
-LoopBack Client to access to PersistedModel (or extenders)
+LoopBack Client to access to PersistedModel (or extenders) via one-to-many relation
 
-see http://docs.strongloop.com/display/public/LB/PersistedModel+REST+API
-see also http://apidocs.strongloop.com/loopback/#persistedmodel
-
-@class LoopBackClient
+@class LoopBackRelatedClient
+@extends LoopBackClient
 @module loopback-promised
 ###
-class LoopBackClient
+class LoopBackRelatedClient extends LoopBackClient
 
     ###*
 
     @constructor
     @param {LoopBackPromised} lbPromised
-    @param {String} pluralModelName
+    @param {String} pluralModelName the &quot;one&quot; side plural model of one-to-many relationship
+    @param {String} pluralModelNameMany the &quot;many&quot; side plural model of one-to-many relationship
+    @param {any} id the id of the &quot;one&quot; model
     @param {String} [accessToken] Access Token
     @param {Boolean} [debug] shows debug log if true
-
+    @return {LoopBackClient}
     ###
-    constructor: (@lbPromised, @pluralModelName, @accessToken, @debug) -&gt;
-
+    constructor: (@lbPromised, @pluralModelName, @pluralModelNameMany, @id, @accessToken, @debug) -&gt;
 
     ###*
-    sets Access Token
+    set id of the &quot;one&quot; model
 
     @method setAccessToken
-    @param {String} [accessToken] Access Token
+    @param {any} id
     @return {Promise(Object)}
     ###
-    setAccessToken: (@accessToken) -&gt;
+    setId: (@id) -&gt;
 
 
     ###*
@@ -133,46 +132,9 @@ class LoopBackClient
     ###
     request: (path, params = {}, http_method) -&gt;
 
+        path = &quot;/#{@id}/#{@pluralModelNameMany}#{path}&quot;
+
         @lbPromised.request(@pluralModelName, path, params, http_method, @)
-
-
-    ###*
-    Return the number of records that match the optional &quot;where&quot; filter.
-
-    @method count
-    @param {Object} [where]
-    @return {Promise(Number)}
-    ###
-    count: (where = {}) -&gt;
-
-        path        = &#x27;/count&#x27;
-        http_method = &#x27;GET&#x27;
-
-        params = {}
-        params.where = where if Object.keys where
-
-        @request(path, params, http_method)
-
-
-    ###*
-    Create new instance of Model class, saved in database
-
-    @method create
-    @param {Object} data
-    @return {Promise(Object)}
-    ###
-    create: (data = {}) -&gt;
-
-        # when array is given, creates each data
-        if Array.isArray data 
-            return Promise.all (@create(d) for d in data)
-
-        path        = &#x27;&#x27;
-        http_method = &#x27;POST&#x27;
-
-        params = data
-
-        @request(path, params, http_method)
 
 
     ###*
@@ -185,12 +147,12 @@ class LoopBackClient
     ###
     upsert: (data = {}) -&gt;
 
-        path        = &#x27;&#x27;
-        http_method = &#x27;PUT&#x27;
-
-        params = data
-
-        @request(path, params, http_method)
+        if data.id?
+            params = {}
+            params[k] = v for k,v of data when k isnt &#x27;id&#x27;
+            @updateAttributes(data.id, params)
+        else
+            @create(data)
 
 
     ###*
@@ -202,50 +164,17 @@ class LoopBackClient
     ###
     exists: (id) -&gt;
 
-        path        = &quot;/#{id}/exists&quot;
-        http_method = &#x27;GET&#x27;
+        @findById(id).then (data) -&gt;
 
-        params = null
+            return exists: true
 
-        @request(path, params, http_method)
+        .catch (err) -&gt;
 
+            if err.isLoopBackResponseError
+                return exists: false
 
-    ###*
-    Find object by ID.
+            throw err
 
-    @method findById
-    @param {String} id
-    @return {Promise(Object)}
-    ###
-    findById: (id) -&gt;
-
-        path        = &quot;/#{id}&quot;
-        http_method = &#x27;GET&#x27;
-
-        params = null
-
-        @request(path, params, http_method)
-
-
-
-    ###*
-    Find all model instances that match filter specification.
-
-    @method find
-    @param {Object} filter
-    @return {Promise(Array(Object))}
-    ###
-    find: (filter) -&gt;
-
-        if filter? and filter.where is null
-            return Promise.resolve []
-
-        path        = &#x27;&#x27;
-        http_method = &#x27;GET&#x27;
-
-        params = filter: filter
-
-        @request(path, params, http_method)
 
     ###*
     Find one model instance that matches filter specification. Same as find, but limited to one result
@@ -256,50 +185,9 @@ class LoopBackClient
     ###
     findOne: (filter) -&gt;
 
-        path        = &#x27;/findOne&#x27;
-        http_method = &#x27;GET&#x27;
-
-        params = filter: filter
-
-        @request(path, params, http_method).catch (err) -&gt;
-            if err.isLoopBackResponseError and err.code is &#x27;MODEL_NOT_FOUND&#x27;
-                return null
-            else
-                throw err
+        @find(filter).then (results) -&gt; results[0]
 
 
-    ###*
-    Destroy model instance with the specified ID.
-
-    @method destroyById
-    @param {String} id
-    @return {Promise}
-    ###
-    destroyById: (id) -&gt;
-
-        path        = &quot;/#{id}&quot;
-        http_method = &#x27;DELETE&#x27;
-
-        params = null
-
-        @request(path, params, http_method)
-
-
-    ###*
-    Update set of attributes.
-
-    @method updateAttributes
-    @param {Object} data
-    @return {Promise(Object)}
-    ###
-    updateAttributes: (id, data) -&gt;
-
-        path        = &quot;/#{id}&quot;
-        http_method = &#x27;PUT&#x27;
-
-        params = data
-
-        @request(path, params, http_method)
 
 
     ###*
@@ -308,20 +196,17 @@ class LoopBackClient
     @method updateAll
     @param {Object} where
     @param {Object} data
-    @return {Promise}
+    @return {Promise(Array(Object))}
     ###
     updateAll: (where, data) -&gt;
 
-        path        = &quot;/update?where=#{JSON.stringify where}&quot;
-        http_method = &#x27;POST&#x27;
-
-        params = data
-
-        @request(path, params, http_method)
+        @find(where: where, fields: &#x27;id&#x27;).then (results) =&gt;
+            Promise.all (@updateAttributes(result.id, data) for result in results)
 
 
 
-module.exports = LoopBackClient
+
+module.exports = LoopBackRelatedClient
 
     </pre>
 </div>

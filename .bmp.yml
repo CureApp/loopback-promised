@@ -1,5 +1,5 @@
 ---
-version: 0.0.13
+version: 0.0.14
 files:
   package.json: '"version": "%.%.%",'
   bower.json: '"version": "%.%.%",'
