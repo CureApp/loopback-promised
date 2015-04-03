@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LoopBackClient</title>
+    <title>LoopBackRelatedClient</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -79,12 +79,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>LoopBackClient Class</h1>
+<h1>LoopBackRelatedClient Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/LoopBackClient.html" class="crosslink">LoopBackClient</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_loopback-client.coffee.html#l6"><code>src&#x2F;loopback-client.coffee:6</code></a>
+            Defined in: <a href="../files/src_loopback-related-client.coffee.html#l6"><code>src&#x2F;loopback-related-client.coffee:6</code></a>
         </div>
 
             Module: <a href="../modules/loopback-promised.html">loopback-promised</a>
@@ -93,9 +96,7 @@
 
 
 <div class="box intro">
-    <p>LoopBack Client to access to PersistedModel (or extenders)</p>
-<p>see <a href="http://docs.strongloop.com/display/public/LB/PersistedModel+REST+API">http://docs.strongloop.com/display/public/LB/PersistedModel+REST+API</a>
-see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http://apidocs.strongloop.com/loopback/#persistedmodel</a></p>
+    <p>LoopBack Client to access to PersistedModel (or extenders) via one-to-many relation</p>
 
 </div>
 
@@ -114,52 +115,52 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
                                 <a href="#method_count">count</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_create">create</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_destroyById">destroyById</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_exists">exists</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_find">find</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_findById">findById</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_findOne">findOne</a>
 
                             </li>
-                            <li class="index-item method private">
+                            <li class="index-item method private inherited">
                                 <a href="#method_request">request</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_setAccessToken">setAccessToken</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_updateAll">updateAll</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_updateAttributes">updateAttributes</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_upsert">upsert</a>
 
                             </li>
@@ -173,7 +174,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_count" class="method item">
+<div id="method_count" class="method item inherited">
     <h3 class="name"><code>count</code></h3>
 
         <div class="args">
@@ -195,8 +196,8 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/LoopBackClient.html#method_count">LoopBackClient</a>:
         <a href="../files/src_loopback-client.coffee.html#l54"><code>src&#x2F;loopback-client.coffee:54</code></a>
         </p>
 
@@ -220,7 +221,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
                     <div class="param-description">
-                         
+                        
                     </div>
 
                 </li>
@@ -237,7 +238,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
 </div>
-<div id="method_create" class="method item">
+<div id="method_create" class="method item inherited">
     <h3 class="name"><code>create</code></h3>
 
         <div class="args">
@@ -259,8 +260,8 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/LoopBackClient.html#method_create">LoopBackClient</a>:
         <a href="../files/src_loopback-client.coffee.html#l72"><code>src&#x2F;loopback-client.coffee:72</code></a>
         </p>
 
@@ -283,7 +284,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
                     <div class="param-description">
-                         
+                        
                     </div>
 
                 </li>
@@ -300,7 +301,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
 </div>
-<div id="method_destroyById" class="method item">
+<div id="method_destroyById" class="method item inherited">
     <h3 class="name"><code>destroyById</code></h3>
 
         <div class="args">
@@ -322,9 +323,9 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l186"><code>src&#x2F;loopback-client.coffee:186</code></a>
+                <p>Inherited from
+                <a href="../classes/LoopBackClient.html#method_destroyById">LoopBackClient</a>:
+        <a href="../files/src_loopback-client.coffee.html#l194"><code>src&#x2F;loopback-client.coffee:194</code></a>
         </p>
 
 
@@ -346,7 +347,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
                     <div class="param-description">
-                         
+                        
                     </div>
 
                 </li>
@@ -385,9 +386,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l111"><code>src&#x2F;loopback-client.coffee:111</code></a>
+            <p>Inherited from
+            <a href="../classes/LoopBackClient.html#method_exists">
+                LoopBackClient
+            </a>
+            but overwritten in
+        <a href="../files/src_loopback-related-client.coffee.html#l73"><code>src&#x2F;loopback-related-client.coffee:73</code></a>
         </p>
 
 
@@ -426,7 +430,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
 </div>
-<div id="method_find" class="method item">
+<div id="method_find" class="method item inherited">
     <h3 class="name"><code>find</code></h3>
 
         <div class="args">
@@ -448,8 +452,8 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/LoopBackClient.html#method_find">LoopBackClient</a>:
         <a href="../files/src_loopback-client.coffee.html#l146"><code>src&#x2F;loopback-client.coffee:146</code></a>
         </p>
 
@@ -472,7 +476,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
                     <div class="param-description">
-                         
+                        
                     </div>
 
                 </li>
@@ -489,7 +493,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
 </div>
-<div id="method_findById" class="method item">
+<div id="method_findById" class="method item inherited">
     <h3 class="name"><code>findById</code></h3>
 
         <div class="args">
@@ -511,8 +515,8 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/LoopBackClient.html#method_findById">LoopBackClient</a>:
         <a href="../files/src_loopback-client.coffee.html#l128"><code>src&#x2F;loopback-client.coffee:128</code></a>
         </p>
 
@@ -535,7 +539,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
                     <div class="param-description">
-                         
+                        
                     </div>
 
                 </li>
@@ -574,9 +578,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l165"><code>src&#x2F;loopback-client.coffee:165</code></a>
+            <p>Inherited from
+            <a href="../classes/LoopBackClient.html#method_findOne">
+                LoopBackClient
+            </a>
+            but overwritten in
+        <a href="../files/src_loopback-related-client.coffee.html#l94"><code>src&#x2F;loopback-related-client.coffee:94</code></a>
         </p>
 
 
@@ -644,9 +651,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l39"><code>src&#x2F;loopback-client.coffee:39</code></a>
+            <p>Inherited from
+            <a href="../classes/LoopBackClient.html#method_request">
+                LoopBackClient
+            </a>
+            but overwritten in
+        <a href="../files/src_loopback-related-client.coffee.html#l38"><code>src&#x2F;loopback-related-client.coffee:38</code></a>
         </p>
 
 
@@ -713,7 +723,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code class="optional">[accessToken]</code>
+                        <code>id</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -729,9 +739,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l29"><code>src&#x2F;loopback-client.coffee:29</code></a>
+            <p>Inherited from
+            <a href="../classes/LoopBackClient.html#method_setAccessToken">
+                LoopBackClient
+            </a>
+            but overwritten in
+        <a href="../files/src_loopback-related-client.coffee.html#l28"><code>src&#x2F;loopback-related-client.coffee:28</code></a>
         </p>
 
 
@@ -739,7 +752,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
     </div>
 
     <div class="description">
-        <p>sets Access Token</p>
+        <p>set id of the &quot;one&quot; model</p>
 
     </div>
 
@@ -748,14 +761,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[accessToken]</code>
-                        <span class="type">String</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                        <code class="param-name">id</code>
+                        <span class="type">Any</span>
 
 
                     <div class="param-description">
-                        <p>Access Token</p>
-
+                         
                     </div>
 
                 </li>
@@ -787,7 +798,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
         </div>
 
         <span class="returns-inline">
-            <span class="type">Promise</span>
+            <span class="type">Promise(Array(Object))</span>
         </span>
 
 
@@ -797,9 +808,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l220"><code>src&#x2F;loopback-client.coffee:220</code></a>
+            <p>Inherited from
+            <a href="../classes/LoopBackClient.html#method_updateAll">
+                LoopBackClient
+            </a>
+            but overwritten in
+        <a href="../files/src_loopback-related-client.coffee.html#l108"><code>src&#x2F;loopback-related-client.coffee:108</code></a>
         </p>
 
 
@@ -842,13 +856,13 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Promise</span>:
+                        <span class="type">Promise(Array(Object))</span>:
             </div>
         </div>
 
 
 </div>
-<div id="method_updateAttributes" class="method item">
+<div id="method_updateAttributes" class="method item inherited">
     <h3 class="name"><code>updateAttributes</code></h3>
 
         <div class="args">
@@ -870,9 +884,9 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l203"><code>src&#x2F;loopback-client.coffee:203</code></a>
+                <p>Inherited from
+                <a href="../classes/LoopBackClient.html#method_updateAttributes">LoopBackClient</a>:
+        <a href="../files/src_loopback-client.coffee.html#l211"><code>src&#x2F;loopback-client.coffee:211</code></a>
         </p>
 
 
@@ -894,7 +908,7 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
                     <div class="param-description">
-                         
+                        
                     </div>
 
                 </li>
@@ -933,9 +947,12 @@ see also <a href="http://apidocs.strongloop.com/loopback/#persistedmodel">http:/
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_loopback-client.coffee.html#l93"><code>src&#x2F;loopback-client.coffee:93</code></a>
+            <p>Inherited from
+            <a href="../classes/LoopBackClient.html#method_upsert">
+                LoopBackClient
+            </a>
+            but overwritten in
+        <a href="../files/src_loopback-related-client.coffee.html#l55"><code>src&#x2F;loopback-related-client.coffee:55</code></a>
         </p>
 
 

@@ -324,7 +324,7 @@
         },
         {
             "file": "src/loopback-client.coffee",
-            "line": 165,
+            "line": 173,
             "description": "Find one model instance that matches filter specification. Same as find, but limited to one result",
             "itemtype": "method",
             "name": "findOne",
@@ -344,7 +344,7 @@
         },
         {
             "file": "src/loopback-client.coffee",
-            "line": 186,
+            "line": 194,
             "description": "Destroy model instance with the specified ID.",
             "itemtype": "method",
             "name": "destroyById",
@@ -364,7 +364,7 @@
         },
         {
             "file": "src/loopback-client.coffee",
-            "line": 203,
+            "line": 211,
             "description": "Update set of attributes.",
             "itemtype": "method",
             "name": "updateAttributes",
@@ -384,7 +384,7 @@
         },
         {
             "file": "src/loopback-client.coffee",
-            "line": 220,
+            "line": 228,
             "description": "Update multiple instances that match the where clause",
             "itemtype": "method",
             "name": "updateAll",
