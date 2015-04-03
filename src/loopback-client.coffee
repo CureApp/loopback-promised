@@ -151,8 +151,16 @@ class LoopBackClient
     @return {Promise(Array(Object))}
     ###
     find: (filter) ->
+        if filter?.where
+            where = removeUndefinedKey(filter.where)
+            if not where
+                filter.where = null
 
         if filter? and filter.where is null
+            if @debug
+                console.log """
+                    returns empty array, as "where" is null.
+                """
             return Promise.resolve []
 
         path        = ''
@@ -233,6 +241,29 @@ class LoopBackClient
         params = data
 
         @request(path, params, http_method)
+
+
+# remove keys whose value is undefined
+removeUndefinedKey = (obj) ->
+
+    return obj if typeof obj isnt 'object' or obj is null
+
+    keynum = 0
+    deletedKeynum = 0
+    for key, value of obj
+        value = removeUndefinedKey value
+
+        if value is undefined
+            delete obj[key]
+            deletedKeynum++
+        keynum++
+
+    if keynum is deletedKeynum
+        return undefined
+
+    else
+        return obj
+
 
 
 

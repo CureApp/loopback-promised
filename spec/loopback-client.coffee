@@ -275,7 +275,6 @@ describe 'LoopBackClient', ->
                 done()
 
 
-
         it 'can set where (equals)', (done) ->
             client.find(where: name: 'Physics').then (responseBody) ->
 
@@ -308,7 +307,7 @@ describe 'LoopBackClient', ->
             client.find(where: difficulty: undefined).then (responseBody) ->
 
                 expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 5
+                expect(responseBody).to.have.length 0
                 done()
 
 
