@@ -209,6 +209,18 @@ class LoopBackClient
 
 
     ###*
+    Destroy model instance
+
+    @method destroy
+    @param {Object} data
+    @return {Promise}
+    ###
+    destroy: (data) ->
+
+        @destroyById data.id
+
+
+    ###*
     Update set of attributes.
 
     @method updateAttributes

@@ -405,6 +405,27 @@ describe 'LoopBackClient', ->
 
 
 
+    describe 'destroy', ->
+
+        client = lbPromised.createClient 'notebooks', debug: debug
+
+        modelToDestroy = null
+
+        before (done) ->
+            client.create(name: 'xxxxx').then (notebook) ->
+                modelToDestroy = notebook
+                done()
+
+        it 'destroys a model', (done) ->
+            client.destroy(modelToDestroy).then (responseBody) ->
+                expect(Object.keys(responseBody)).to.have.length 0
+
+                client.exists(modelToDestroy.id).then (responseBody) ->
+                    expect(responseBody.exists).to.be.false
+                    done()
+
+
+
     describe 'updateAttributes', ->
 
         client = lbPromised.createClient 'notebooks', debug: debug
