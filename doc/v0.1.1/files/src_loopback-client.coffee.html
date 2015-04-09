@@ -341,9 +341,12 @@ class LoopBackClient
 
 
 # remove keys whose value is undefined
+# except Date, Moment
 removeUndefinedKey = (obj) -&gt;
 
     return obj if typeof obj isnt &#x27;object&#x27; or obj is null
+
+    return obj.toISOString() if typeof obj?.toISOString is &#x27;function&#x27; # Date, Moment
 
     keynum = 0
     deletedKeynum = 0
