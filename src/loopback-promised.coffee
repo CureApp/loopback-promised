@@ -1,7 +1,7 @@
 
-LoopBackClient        = require('./loopback-client')
-LoopBackUserClient    = require('./loopback-user-client')
-LoopBackRelatedClient = require('./loopback-related-client')
+LoopbackClient        = require('./loopback-client')
+LoopbackUserClient    = require('./loopback-user-client')
+LoopbackRelatedClient = require('./loopback-related-client')
 # PushManager           = require('./push-manager')
 
 Promise = require('es6-promise').Promise
@@ -10,28 +10,28 @@ superagent = require('superagent')
 DebugLogger = require('./util/debug-logger')
 
 ###*
-LoopBackPromised
+LoopbackPromised
 
-@class LoopBackPromised
+@class LoopbackPromised
 @module loopback-promised
 ###
 
-class LoopBackPromised
+class LoopbackPromised
 
     ###*
     creates an instance
 
     @static
     @method createInstance
-    @param {LoopBackPromised|Object} lbPromisedInfo
-    @param {String} lbPromisedInfo.baseURL base URL of LoopBack
+    @param {LoopbackPromised|Object} lbPromisedInfo
+    @param {String} lbPromisedInfo.baseURL base URL of Loopback
     @param {Object} [lbPromisedInfo.logger] logger with info(), warn(), error(), trace().
-    @param {String} [lbPromisedInfo.version] version of LoopBack API to access
-    @return {LoopBackPromised}
+    @param {String} [lbPromisedInfo.version] version of Loopback API to access
+    @return {LoopbackPromised}
     ###
     @createInstance: (lbPromisedInfo = {}) ->
 
-        new LoopBackPromised(
+        new LoopbackPromised(
             lbPromisedInfo.baseURL
             lbPromisedInfo.logger
             lbPromisedInfo.version
@@ -50,14 +50,14 @@ class LoopBackPromised
 
 
     ###*
-    sends request to LoopBack
+    sends request to Loopback
 
     @method request
     @param {String} pluralModelName
     @param {String} path
     @param {Object} params request parameters
     @param {String} http_method {GET|POST|PUT|DELETE|HEAD}
-    @param {LoopBackClient|Object} [clientInfo]
+    @param {LoopbackClient|Object} [clientInfo]
     @param {String}  [clientInfo.accessToken] Access Token
     @param {Boolean} [clientInfo.debug] shows debug log if true
     @return {Promise(Object)}
@@ -79,12 +79,12 @@ class LoopBackPromised
     @param {String} endpoint
     @param {Object} [params]
     @param {String} http_method {GET|POST|PUT|DELETE|HEAD}
-    @param {LoopBackClient|Object} [clientInfo]
+    @param {LoopbackClient|Object} [clientInfo]
     @param {String}  [clientInfo.accessToken] Access Token
     @param {Boolean} [clientInfo.debug] shows debug log if true
-    @param {LoopBackPromised|Object}  lbPromisedInfo
-    @param {String} lbPromisedInfo.baseURL base URL of LoopBack
-    @param {String} [lbPromisedInfo.version] version of LoopBack API to access
+    @param {LoopbackPromised|Object}  lbPromisedInfo
+    @param {String} lbPromisedInfo.baseURL base URL of Loopback
+    @param {String} [lbPromisedInfo.version] version of Loopback API to access
     @param {Object} [lbPromisedInfo.logger] logger with info(), warn(), error(), trace().
 
     @return {Promise(Object)}
@@ -161,10 +161,10 @@ class LoopBackPromised
                     if typeof responseBody.error is 'object'
                         err = new Error()
                         err[k] = v for k, v of responseBody.error
-                        err.isLoopBackResponseError = true
+                        err.isLoopbackResponseError = true
                     else
                         err = new Error(responseBody.error)
-                        # err.isLoopBackResponseError = true
+                        # err.isLoopbackResponseError = true
 
                     return reject(err)
 
@@ -173,7 +173,7 @@ class LoopBackPromised
 
 
     ###*
-    creates client for LoopBack
+    creates client for Loopback
 
     @method createClient
     @param {String} pluralModelName
@@ -182,7 +182,7 @@ class LoopBackPromised
     @param {Boolean} [options.isUserModel] true if user model
     @param {String}  [options.accessToken] Access Token
     @param {Boolean} [options.debug] shows debug log if true
-    @return {LoopBackClient}
+    @return {LoopbackClient}
     ###
     createClient: (pluralModelName, options = {}) ->
 
@@ -200,7 +200,7 @@ class LoopBackPromised
         else if options.isUserModel
             return @createUserClient(pluralModelName, options)
 
-        new LoopBackClient(
+        new LoopbackClient(
             @
             pluralModelName
             options.accessToken
@@ -208,17 +208,17 @@ class LoopBackPromised
         )
 
     ###*
-    creates user client for LoopBack
+    creates user client for Loopback
 
     @method createUserClient
     @param {String} pluralModelName
     @param {Object} [clientInfo]
     @param {String}  [clientInfo.accessToken] Access Token
     @param {Boolean} [clientInfo.debug] shows debug log if true
-    @return {LoopBackClient}
+    @return {LoopbackClient}
     ###
     createUserClient: (pluralModelName, clientInfo = {}) ->
-        new LoopBackUserClient(
+        new LoopbackUserClient(
             @
             pluralModelName
             clientInfo.accessToken
@@ -236,10 +236,10 @@ class LoopBackPromised
     @param {any} options.id the id of the "one" model
     @param {String}  [options.accessToken] Access Token
     @param {Boolean} [options.debug] shows debug log if true
-    @return {LoopBackClient}
+    @return {LoopbackClient}
     ###
     createRelatedClient: (options) ->
-        new LoopBackRelatedClient(
+        new LoopbackRelatedClient(
             @
             options.one
             options.many
@@ -281,6 +281,6 @@ class LoopBackPromised
         POST   : 'post'
         HEAD   : 'head'
 
-LoopBackPromised.Promise = Promise
+LoopbackPromised.Promise = Promise
 
-module.exports = LoopBackPromised
+module.exports = LoopbackPromised

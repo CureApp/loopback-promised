@@ -1,6 +1,6 @@
 # loopback-promised
 
-  loopback-promised is an HTTP client for StrongLoop LoopBack using __ES6 Promise__ Available in __Web__, __Node.js__ and __Titanium__.
+  loopback-promised is an HTTP client for StrongLoop Loopback using __ES6 Promise__ Available in __Web__, __Node.js__ and __Titanium__.
 
 [latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/v0.1.1/index.html)
 
@@ -13,7 +13,7 @@ $ npm install loopback-promised
 ### Node.js
 
 ```js
-var LoopBackPromised = require('loopback-promised')
+var LoopbackPromised = require('loopback-promised')
 ```
 
 ### Titanium
@@ -22,7 +22,7 @@ var LoopBackPromised = require('loopback-promised')
 $ cp /path/to/this-module/dist/loopback-promised.titanium.js /path/to/your-project/app/lib/
 ```
 ```js
-var LoopBackPromised = require('loopback-promised')
+var LoopbackPromised = require('loopback-promised')
 ```
 
 ### Web browsers
@@ -33,7 +33,7 @@ $ cp /path/to/this-module/dist/loopback-promised.web.js /path/to/your-project/
 
 ```html
 <script type="text/javascript" charset="utf-8" src="/path/to/your-project/loopback-promised.web.js"></script>
-<script type="text/javascript">console.log(LoopBackPromised);</script>
+<script type="text/javascript">console.log(LoopbackPromised);</script>
 ```
 
 ### use a minified one in Web browsers
@@ -44,7 +44,7 @@ $ cp /path/to/this-module/dist/loopback-promised.min.js /path/to/your-project/
 
 ```html
 <script type="text/javascript" charset="utf-8" src="/path/to/your-project/loopback-promised.min.js"></script>
-<script type="text/javascript">console.log(LoopBackPromised);</script>
+<script type="text/javascript">console.log(LoopbackPromised);</script>
 ```
 
 ### install this project from github
@@ -65,9 +65,9 @@ $ grunt build
 # Usage
 
 ```coffee
-LoopBackPromised = require('loopback-promised') # (in web browsers, this should be omitted)
+LoopbackPromised = require('loopback-promised') # (in web browsers, this should be omitted)
 
-lbPromised = LoopBackPromised.createInstance
+lbPromised = LoopbackPromised.createInstance
     baseURL: 'http://localhost:3000'
 
 client = lbPromised.createClient('notebooks')

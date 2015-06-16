@@ -1,27 +1,27 @@
 
 Promise = require('es6-promise').Promise
-LoopBackClient = require('./loopback-client')
+LoopbackClient = require('./loopback-client')
 
 
 ###*
-LoopBack Client to access to PersistedModel (or extenders) via one-to-many relation
+Loopback Client to access to PersistedModel (or extenders) via one-to-many relation
 
-@class LoopBackRelatedClient
-@extends LoopBackClient
+@class LoopbackRelatedClient
+@extends LoopbackClient
 @module loopback-promised
 ###
-class LoopBackRelatedClient extends LoopBackClient
+class LoopbackRelatedClient extends LoopbackClient
 
     ###*
 
     @constructor
-    @param {LoopBackPromised} lbPromised
+    @param {LoopbackPromised} lbPromised
     @param {String} pluralModelName the "one" side plural model of one-to-many relationship
     @param {String} pluralModelNameMany the "many" side plural model of one-to-many relationship
     @param {any} id the id of the "one" model
     @param {String} [accessToken] Access Token
     @param {Boolean} [debug] shows debug log if true
-    @return {LoopBackClient}
+    @return {LoopbackClient}
     ###
     constructor: (@lbPromised, @pluralModelName, @pluralModelNameMany, @id, @accessToken, @debug) ->
 
@@ -36,7 +36,7 @@ class LoopBackRelatedClient extends LoopBackClient
 
 
     ###*
-    sends request to LoopBack
+    sends request to Loopback
 
     @method request
     @private
@@ -85,7 +85,7 @@ class LoopBackRelatedClient extends LoopBackClient
 
         .catch (err) ->
 
-            if err.isLoopBackResponseError
+            if err.isLoopbackResponseError
                 return exists: false
 
             throw err
@@ -121,4 +121,4 @@ class LoopBackRelatedClient extends LoopBackClient
 
 
 
-module.exports = LoopBackRelatedClient
+module.exports = LoopbackRelatedClient

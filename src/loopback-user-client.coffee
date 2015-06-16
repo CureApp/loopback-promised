@@ -1,16 +1,16 @@
 
-LoopBackClient = require('./loopback-client')
+LoopbackClient = require('./loopback-client')
 
 ###*
-LoopBack User Client to access to UserModel (or extenders)
+Loopback User Client to access to UserModel (or extenders)
 
 see http://docs.strongloop.com/display/public/LB/PersistedModel+REST+API
 see also http://apidocs.strongloop.com/loopback/#persistedmodel
 
-@class LoopBackUserClient
+@class LoopbackUserClient
 @module loopback-promised
 ###
-class LoopBackUserClient extends LoopBackClient
+class LoopbackUserClient extends LoopbackClient
 
 
     ###*
@@ -90,4 +90,4 @@ class LoopBackUserClient extends LoopBackClient
         @request(path, params, http_method)
 
 
-module.exports = LoopBackUserClient
+module.exports = LoopbackUserClient

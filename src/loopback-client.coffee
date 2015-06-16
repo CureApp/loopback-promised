@@ -4,20 +4,20 @@ Promise = require('es6-promise').Promise
 
 
 ###*
-LoopBack Client to access to PersistedModel (or extenders)
+Loopback Client to access to PersistedModel (or extenders)
 
 see http://docs.strongloop.com/display/public/LB/PersistedModel+REST+API
 see also http://apidocs.strongloop.com/loopback/#persistedmodel
 
-@class LoopBackClient
+@class LoopbackClient
 @module loopback-promised
 ###
-class LoopBackClient
+class LoopbackClient
 
     ###*
 
     @constructor
-    @param {LoopBackPromised} lbPromised
+    @param {LoopbackPromised} lbPromised
     @param {String} pluralModelName
     @param {String} [accessToken] Access Token
     @param {Boolean} [debug] shows debug log if true
@@ -37,7 +37,7 @@ class LoopBackClient
 
 
     ###*
-    sends request to LoopBack
+    sends request to Loopback
 
     @method request
     @private
@@ -185,7 +185,7 @@ class LoopBackClient
         params = filter: filter
 
         @request(path, params, http_method).catch (err) ->
-            if err.isLoopBackResponseError and err.code is 'MODEL_NOT_FOUND'
+            if err.isLoopbackResponseError and err.code is 'MODEL_NOT_FOUND'
                 return null
             else
                 throw err
@@ -282,4 +282,4 @@ removeUndefinedKey = (obj) ->
 
 
 
-module.exports = LoopBackClient
+module.exports = LoopbackClient
