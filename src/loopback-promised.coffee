@@ -281,6 +281,9 @@ class LoopbackPromised
         POST   : 'post'
         HEAD   : 'head'
 
-LoopbackPromised.Promise = Promise
+LoopbackPromised.Promise               = Promise
+LoopbackPromised.LoopbackClient        = LoopbackClient
+LoopbackPromised.LoopbackUserClient    = LoopbackUserClient
+LoopbackPromised.LoopbackRelatedClient = LoopbackRelatedClient
 
 module.exports = LoopbackPromised
