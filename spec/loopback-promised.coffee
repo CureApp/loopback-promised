@@ -4,7 +4,9 @@ LoopBackClient        = require '../src/loopback-client'
 LoopBackUserClient    = require '../src/loopback-user-client'
 LoopBackRelatedClient = require '../src/loopback-related-client'
 
-appServer = require('./init')
+before (done) ->
+    @timeout 5000
+    require('./init').then -> done()
 
 debug = false
 
@@ -117,7 +119,7 @@ describe 'LoopBackPromised', ->
             lbPromised = LoopBackPromised.createInstance
                 baseURL: baseURL
 
-            client = lbPromised.createClient('leaves', 
+            client = lbPromised.createClient('leaves',
                 belongsTo:
                     notebooks: 1
                 accessToken: 'abc'
@@ -138,7 +140,7 @@ describe 'LoopBackPromised', ->
             lbPromised = LoopBackPromised.createInstance
                 baseURL: baseURL
 
-            client = lbPromised.createClient('leaves', 
+            client = lbPromised.createClient('leaves',
                 isUserModel: true
                 accessToken: 'abc'
                 debug: debug

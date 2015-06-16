@@ -79,7 +79,7 @@ class LoopBackClient
     create: (data = {}) ->
 
         # when array is given, creates each data
-        if Array.isArray data 
+        if Array.isArray data
             return Promise.all (@create(d) for d in data)
 
         path        = ''

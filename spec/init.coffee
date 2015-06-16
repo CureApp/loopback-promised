@@ -1,5 +1,9 @@
 
-app = require('./loopback-server/server/server')
-app.start()
+config =
+    models: require(__dirname + '/loopback-configs/model-definitions')
+    server:
+        port: 4157
+        restApiRoot: '/test-api'
 
-module.exports = app
+
+module.exports = require('loopback-with-domain').runWithoutDomain(config).catch console.log

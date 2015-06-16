@@ -2,6 +2,7 @@
 LoopBackClient        = require('./loopback-client')
 LoopBackUserClient    = require('./loopback-user-client')
 LoopBackRelatedClient = require('./loopback-related-client')
+# PushManager           = require('./push-manager')
 
 Promise = require('es6-promise').Promise
 superagent = require('superagent')
@@ -114,7 +115,7 @@ class LoopBackPromised
         return new Promise (resolve, reject) ->
             url = if version?
                 baseURL + '/' + version + endpoint
-            else 
+            else
                 baseURL + endpoint
 
             req = superagent[agentMethod](url)
@@ -247,6 +248,22 @@ class LoopBackPromised
             options.debug
         )
 
+    ###*
+    creates push manager
+
+    @method createPushManager
+    @public
+    @param {Object} [clientInfo]
+    @param {String}  [clientInfo.accessToken] Access Token
+    @param {Boolean} [clientInfo.debug] shows debug log if true
+    @return {PushManager}
+    ###
+    createPushManager: (clientInfo = {}) ->
+        new PushManager(
+            @
+            clientInfo.accessToken
+            clientInfo.debug
+        )
 
 
     ###*
