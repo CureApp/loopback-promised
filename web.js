@@ -1,1 +1,1 @@
-window.LoopBackPromised = require('./dist/lib/loopback-promised');
+window.LoopbackPromised = require('./dist/lib/loopback-promised');

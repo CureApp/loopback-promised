@@ -1,9 +1,9 @@
 
 Promise = require('es6-promise').Promise
 
-LoopBackPromised   = require '../src/loopback-promised'
-LoopBackClient     = require '../src/loopback-client'
-LoopBackUserClient = require '../src/loopback-user-client'
+LoopbackPromised   = require '../src/loopback-promised'
+LoopbackClient     = require '../src/loopback-client'
+LoopbackUserClient = require '../src/loopback-user-client'
 
 appServer = require('./init')
 
@@ -11,10 +11,10 @@ debug = true
 
 baseURL = 'localhost:4157/test-api'
 
-lbPromised = LoopBackPromised.createInstance
+lbPromised = LoopbackPromised.createInstance
     baseURL: baseURL
 
-describe 'LoopBackClient', ->
+describe 'LoopbackClient', ->
 
 
     describe 'setAccessToken', ->
@@ -173,7 +173,7 @@ describe 'LoopBackClient', ->
             .catch (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'code', 'MODEL_NOT_FOUND'
-                expect(err).to.have.property 'isLoopBackResponseError', true
+                expect(err).to.have.property 'isLoopbackResponseError', true
                 done()
 
 
@@ -387,7 +387,7 @@ describe 'LoopBackClient', ->
                 idToDestroy = notebook.id
                 done()
 
-        # TODO: this is the spec of LoopBack (they always return 204). We should take this into account or change the API
+        # TODO: this is the spec of Loopback (they always return 204). We should take this into account or change the API
         it 'returns 204 even if id is wrong', (done) ->
 
             client.destroyById(wrongId).then (responseBody) ->
@@ -449,7 +449,7 @@ describe 'LoopBackClient', ->
             .catch (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'code', 'MODEL_NOT_FOUND'
-                expect(err).to.have.property 'isLoopBackResponseError', true
+                expect(err).to.have.property 'isLoopbackResponseError', true
                 done()
 
 
@@ -459,7 +459,7 @@ describe 'LoopBackClient', ->
 
             client.updateAttributes(existingId, data).then (responseBody) ->
                 expect(responseBody).to.have.property 'id', existingId
-                expect(responseBody).to.have.property 'name', 'JavaScript' 
+                expect(responseBody).to.have.property 'name', 'JavaScript'
                 expect(responseBody).to.have.property 'version', 2
                 done()
 
@@ -477,7 +477,7 @@ describe 'LoopBackClient', ->
                 isAcademic:   true
                 isScientific: true
 
-            # TODO: this is the spec of LoopBack (they return 204). We should take this into account or change the API
+            # TODO: this is the spec of Loopback (they return 204). We should take this into account or change the API
             client.updateAll(where, data).then (responseBody) ->
                 expect(Object.keys(responseBody)).to.have.length 0
 

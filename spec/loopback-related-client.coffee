@@ -1,8 +1,8 @@
 
 Promise = require('es6-promise').Promise
 
-LoopBackPromised      = require '../src/loopback-promised'
-LoopBackRelatedClient = require '../src/loopback-related-client'
+LoopbackPromised      = require '../src/loopback-promised'
+LoopbackRelatedClient = require '../src/loopback-related-client'
 
 appServer = require('./init')
 
@@ -10,7 +10,7 @@ debug = false
 
 baseURL = 'localhost:4157/test-api'
 
-lbPromised = LoopBackPromised.createInstance
+lbPromised = LoopbackPromised.createInstance
     baseURL: baseURL
 
 
@@ -25,11 +25,11 @@ createClient = (options = {}) ->
 
 
 
-describe 'LoopBackRelatedClient', ->
+describe 'LoopbackRelatedClient', ->
 
     before (done) ->
         client = lbPromised.createClient('notebooks', debug: debug)
-        client.create(name: 'LoopBack Docs').then (notebook) ->
+        client.create(name: 'Loopback Docs').then (notebook) ->
             mainNotebook = notebook
             done()
 
@@ -191,7 +191,7 @@ describe 'LoopBackRelatedClient', ->
                 # FIXME the error is different from loopback-client
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'status', 404
-                expect(err).to.have.property 'isLoopBackResponseError', true
+                expect(err).to.have.property 'isLoopbackResponseError', true
                 done()
 
 
@@ -403,7 +403,7 @@ describe 'LoopBackRelatedClient', ->
                 idToDestroy = leaf.id
                 done()
 
-        # FIXME: this behavior is different from LoopBackClient (this one is more intuitive)
+        # FIXME: this behavior is different from LoopbackClient (this one is more intuitive)
         it 'returns 404 if id is wrong', (done) ->
 
             client = createClient()
@@ -412,11 +412,11 @@ describe 'LoopBackRelatedClient', ->
             .catch (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'status', 404
-                expect(err).to.have.property 'isLoopBackResponseError', true
+                expect(err).to.have.property 'isLoopbackResponseError', true
                 done()
 
 
-        # FIXME: this behavior is different from LoopBackClient (this one is more intuitive)
+        # FIXME: this behavior is different from LoopbackClient (this one is more intuitive)
         it 'destroys a model with id', (done) ->
 
             client = createClient()
@@ -452,7 +452,7 @@ describe 'LoopBackRelatedClient', ->
             .catch (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'status', 404
-                expect(err).to.have.property 'isLoopBackResponseError', true
+                expect(err).to.have.property 'isLoopbackResponseError', true
                 done()
 
 
@@ -463,7 +463,7 @@ describe 'LoopBackRelatedClient', ->
             client = createClient()
             client.updateAttributes(existingId, data).then (responseBody) ->
                 expect(responseBody).to.have.property 'id', existingId
-                expect(responseBody).to.have.property 'content', 'Written in JavaScript' 
+                expect(responseBody).to.have.property 'content', 'Written in JavaScript'
                 expect(responseBody).to.have.property 'version', 2
                 done()
 
@@ -480,7 +480,7 @@ describe 'LoopBackRelatedClient', ->
                 isAboutScript: true
 
 
-            # FIXME: this behavior is different from LoopBackClient (this one is more intuitive)
+            # FIXME: this behavior is different from LoopbackClient (this one is more intuitive)
             client = createClient()
             client.updateAll(where, data).then (results) ->
 

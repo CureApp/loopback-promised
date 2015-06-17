@@ -1,8 +1,8 @@
 
-LoopBackPromised      = require '../src/loopback-promised'
-LoopBackClient        = require '../src/loopback-client'
-LoopBackUserClient    = require '../src/loopback-user-client'
-LoopBackRelatedClient = require '../src/loopback-related-client'
+LoopbackPromised      = require '../src/loopback-promised'
+LoopbackClient        = require '../src/loopback-client'
+LoopbackUserClient    = require '../src/loopback-user-client'
+LoopbackRelatedClient = require '../src/loopback-related-client'
 
 before (done) ->
     @timeout 5000
@@ -13,14 +13,14 @@ debug = false
 
 baseURL = 'localhost:4157/test-api'
 
-describe 'LoopBackPromised', ->
+describe 'LoopbackPromised', ->
 
 
     describe 'request', ->
 
         it 'cannot request to the server when baseURL is not set', ->
 
-            lbPromised = LoopBackPromised.createInstance()
+            lbPromised = LoopbackPromised.createInstance()
 
             pluralModelName = 'notebooks'
             path            = ''
@@ -39,7 +39,7 @@ describe 'LoopBackPromised', ->
 
         it 'fails if baseURL is not valid (port)', ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: 'localhost:4158/api' # invalid URL
 
             pluralModelName = 'notebooks'
@@ -58,7 +58,7 @@ describe 'LoopBackPromised', ->
 
         it 'fails if baseURL is not valid (path)', ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: 'localhost:4157/api' # invalid URL
 
             pluralModelName = 'notebooks'
@@ -79,7 +79,7 @@ describe 'LoopBackPromised', ->
 
         it 'requests to the server', (done) ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
 
             pluralModelName = 'notebooks'
@@ -100,7 +100,7 @@ describe 'LoopBackPromised', ->
 
         it 'creates client for one model', ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
 
             pluralModelName = 'notebooks'
@@ -111,12 +111,12 @@ describe 'LoopBackPromised', ->
 
             client = lbPromised.createClient(pluralModelName, clientInfo)
 
-            expect(client).to.be.instanceof LoopBackClient
+            expect(client).to.be.instanceof LoopbackClient
 
 
         it 'creates related client when "belongsTo" option is set', ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
 
             client = lbPromised.createClient('leaves',
@@ -127,7 +127,7 @@ describe 'LoopBackPromised', ->
                 isUserModel: true # ignored
             )
 
-            expect(client).to.be.instanceof LoopBackRelatedClient
+            expect(client).to.be.instanceof LoopbackRelatedClient
             expect(client).to.have.property 'id', 1
             expect(client).to.have.property 'accessToken', 'abc'
             expect(client).to.have.property 'debug', debug
@@ -137,7 +137,7 @@ describe 'LoopBackPromised', ->
 
         it 'creates user client when "isUserModel" option is set', ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
 
             client = lbPromised.createClient('leaves',
@@ -146,7 +146,7 @@ describe 'LoopBackPromised', ->
                 debug: debug
             )
 
-            expect(client).to.be.instanceof LoopBackUserClient
+            expect(client).to.be.instanceof LoopbackUserClient
             expect(client).to.have.property 'accessToken', 'abc'
             expect(client).to.have.property 'debug', debug
             expect(client).to.have.property 'pluralModelName', 'leaves'
@@ -157,7 +157,7 @@ describe 'LoopBackPromised', ->
 
         it 'creates user client for one model', ->
 
-            lbPromised = LoopBackPromised.createInstance
+            lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
 
             pluralModelName = 'authors'
@@ -168,7 +168,7 @@ describe 'LoopBackPromised', ->
 
             client = lbPromised.createUserClient(pluralModelName, clientInfo)
 
-            expect(client).to.be.instanceof LoopBackClient
-            expect(client).to.be.instanceof LoopBackUserClient
+            expect(client).to.be.instanceof LoopbackClient
+            expect(client).to.be.instanceof LoopbackUserClient
 
 

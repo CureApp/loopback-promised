@@ -1,9 +1,9 @@
 
 Promise = require('es6-promise').Promise
 
-LoopBackPromised   = require '../src/loopback-promised'
-LoopBackClient     = require '../src/loopback-client'
-LoopBackUserClient = require '../src/loopback-user-client'
+LoopbackPromised   = require '../src/loopback-promised'
+LoopbackClient     = require '../src/loopback-client'
+LoopbackUserClient = require '../src/loopback-user-client'
 
 appServer = require('./init')
 
@@ -11,7 +11,7 @@ debug = true
 
 baseURL = 'localhost:4157/test-api'
 
-lbPromised = LoopBackPromised.createInstance
+lbPromised = LoopbackPromised.createInstance
     baseURL: baseURL
 
 
@@ -20,7 +20,7 @@ accessTokenOfShin = null
 
 idOfSatake = null
 
-describe 'LoopBackUserClient', ->
+describe 'LoopbackUserClient', ->
 
     describe 'create', ->
 
