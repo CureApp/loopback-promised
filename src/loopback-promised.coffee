@@ -2,7 +2,7 @@
 LoopbackClient        = require('./loopback-client')
 LoopbackUserClient    = require('./loopback-user-client')
 LoopbackRelatedClient = require('./loopback-related-client')
-# PushManager           = require('./push-manager')
+PushManager           = require('./push-manager')
 
 Promise = require('es6-promise').Promise
 superagent = require('superagent')

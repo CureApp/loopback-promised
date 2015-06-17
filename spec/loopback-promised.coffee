@@ -3,6 +3,7 @@ LoopbackPromised      = require '../src/loopback-promised'
 LoopbackClient        = require '../src/loopback-client'
 LoopbackUserClient    = require '../src/loopback-user-client'
 LoopbackRelatedClient = require '../src/loopback-related-client'
+PushManager           = require '../src/push-manager'
 
 before (done) ->
     @timeout 5000
@@ -170,5 +171,21 @@ describe 'LoopbackPromised', ->
 
             expect(client).to.be.instanceof LoopbackClient
             expect(client).to.be.instanceof LoopbackUserClient
+
+
+    describe 'createPushManager', ->
+
+        it 'creates push notification manager', ->
+
+            lbPromised = LoopbackPromised.createInstance
+                baseURL: baseURL
+
+            clientInfo =
+                accessToken: null
+                debug: debug
+
+            client = lbPromised.createPushManager(clientInfo)
+
+            expect(client).to.be.instanceof PushManager
 
 
