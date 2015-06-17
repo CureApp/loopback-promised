@@ -2,7 +2,7 @@
 
   loopback-promised is an HTTP client for StrongLoop Loopback using __ES6 Promise__ Available in __Web__, __Node.js__ and __Titanium__.
 
-[latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/v0.1.1/index.html)
+[latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/v0.2.0/index.html)
 
 ## Installation
 
@@ -79,6 +79,7 @@ client.create(name: 'Biology').then (notebook) ->
 
 
 ## API documentations
+- [v0.2.0](http://cureapp.github.io/loopback-promised/doc/v0.2.0/index.html)
 - [v0.1.1](http://cureapp.github.io/loopback-promised/doc/v0.1.1/index.html)
 - [v0.0.15](http://cureapp.github.io/loopback-promised/doc/v0.0.15/index.html)
 
