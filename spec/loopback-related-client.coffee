@@ -4,7 +4,9 @@ Promise = require('es6-promise').Promise
 LoopbackPromised      = require '../src/loopback-promised'
 LoopbackRelatedClient = require '../src/loopback-related-client'
 
-appServer = require('./init')
+before (done) ->
+    @timeout 5000
+    require('./init').then -> done()
 
 debug = false
 

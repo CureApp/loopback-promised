@@ -9,9 +9,9 @@ module.exports = (grunt) ->
         'mocha-chai-sinon':
             spec:
                 src: [
-                    'spec/**/*.coffee'
+                    'spec/*.coffee'
                     '!spec/init.coffee'
-                    '!spec/loopback-server/**/*.coffee'
+                    '!spec/model-definitions.coffee'
                 ]
                 options:
                     ui: 'bdd'

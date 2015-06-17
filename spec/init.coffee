@@ -1,5 +1,5 @@
 
-models = require(__dirname + '/loopback-configs/model-definitions')
+models = require(__dirname + '/model-definitions')
 config =
     server:
         port: 4157

@@ -5,7 +5,9 @@ LoopbackPromised   = require '../src/loopback-promised'
 LoopbackClient     = require '../src/loopback-client'
 LoopbackUserClient = require '../src/loopback-user-client'
 
-appServer = require('./init')
+before (done) ->
+    @timeout 5000
+    require('./init').then -> done()
 
 debug = true
 
