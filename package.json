@@ -8,7 +8,7 @@
     "superagent": "^0.21.0"
   },
   "devDependencies": {
-    "loopback-with-domain": "1.4.4",
+    "loopback-with-admin": "1.5.0",
     "grunt": "^0.4.5",
     "grunt-bower-task": "^0.4.0",
     "grunt-contrib-coffee": "^0.13.0",
