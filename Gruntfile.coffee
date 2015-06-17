@@ -87,4 +87,4 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'default', 'mocha-chai-sinon:spec'
     grunt.registerTask 'single', 'mocha-chai-sinon:single'
-    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify', 'yuidoc']
+    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']
