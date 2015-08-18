@@ -1,6 +1,6 @@
 
 
-currentVersion = 'v0.2.3'
+currentVersion = 'v0.2.4'
 
 module.exports = (grunt) ->
 
