@@ -172,7 +172,6 @@ describe 'LoopbackPromised', ->
             expect(client).to.be.instanceof LoopbackClient
             expect(client).to.be.instanceof LoopbackUserClient
 
-
     describe 'createPushManager', ->
 
         it 'creates push notification manager', ->
@@ -188,4 +187,28 @@ describe 'LoopbackPromised', ->
 
             expect(client).to.be.instanceof PushManager
 
+
+    describe '@isDebugMode', ->
+
+        before ->
+            @LBP_DEBUG = process.env.LBP_DEBUG
+
+        after ->
+            process.env.LBP_DEBUG = @LBP_DEBUG
+
+        it 'returns true when given param is true', ->
+
+            expect(LoopbackPromised.isDebugMode(true)).to.be.true
+
+        it 'returns true when given param is false but process.env.LBP_DEBUG exists', ->
+
+            process.env.LBP_DEBUG = '1'
+
+            expect(LoopbackPromised.isDebugMode(false)).to.be.true
+
+        it 'returns false when given param is false and process.env.LBP_DEBUG does not exist', ->
+
+            delete process.env.LBP_DEBUG
+
+            expect(LoopbackPromised.isDebugMode(false)).to.be.false
 

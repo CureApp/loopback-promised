@@ -95,6 +95,8 @@ class LoopbackPromised
 
         { baseURL, logger, version } = lbPromisedInfo
 
+        debug = @isDebugMode debug
+
         if debug
             debugLogger = new DebugLogger(endpoint, params, http_method, clientInfo, lbPromisedInfo)
 
@@ -264,6 +266,19 @@ class LoopbackPromised
             clientInfo.accessToken
             clientInfo.debug
         )
+
+    ###*
+    check environment variable concerning debug
+
+    @private
+    @static
+    @method isDebugMode
+    @param {Boolean} debug
+    @return {Boolean} shows debug log or not
+    ###
+    @isDebugMode: (debug) ->
+
+        return debug or !!process?.env?.LBP_DEBUG
 
 
     ###*
