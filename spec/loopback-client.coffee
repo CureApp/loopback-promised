@@ -157,19 +157,19 @@ describe 'LoopbackClient', ->
 
     describe 'findById', ->
 
-        client = lbPromised.createClient 'notebooks', debug: debug
-
         existingId = null
         notExistingId = 'abcd'
 
-        before (done) ->
-            client.findOne(where: name: 'JavaScript').then (notebook) ->
+        beforeEach (done) ->
+            @client = lbPromised.createClient 'notebooks', debug: debug
+
+            @client.findOne(where: name: 'JavaScript').then (notebook) ->
                 existingId = notebook.id
                 done()
 
         it 'returns error when not exists', (done) ->
 
-            client.findById(notExistingId).then (responseBody) ->
+            @client.findById(notExistingId).then (responseBody) ->
 
                 done new Error('this must not be called')
 
@@ -182,8 +182,16 @@ describe 'LoopbackClient', ->
 
         it 'returns object when exists', (done) ->
 
-            client.findById(existingId).then (responseBody) ->
+            @client.findById(existingId).then (responseBody) ->
                 expect(responseBody).to.have.property 'name', 'JavaScript'
+                done()
+
+        it 'timeouts when timeout property is given and exceeds', (done) ->
+
+            @client.timeout = 1
+
+            @client.findById(existingId).catch (e) ->
+                expect(e).to.match /timeout/
                 done()
 
 

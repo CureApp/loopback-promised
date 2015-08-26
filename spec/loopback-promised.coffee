@@ -97,6 +97,25 @@ describe 'LoopbackPromised', ->
             .catch (e) ->
                 done e
 
+        it 'timeouts when timeout msec is given and exceeds', (done) ->
+
+            lbPromised = LoopbackPromised.createInstance
+                baseURL: baseURL
+
+            pluralModelName = 'notebooks'
+            path            = ''
+            params          = null
+            http_method     = 'GET'
+            clientInfo      =
+                accessToken: null
+                debug: debug
+                timeout: 1
+
+            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).catch (e) ->
+                expect(e.message).to.match /timeout/
+                done()
+
+
     describe 'createClient', ->
 
         it 'creates client for one model', ->
@@ -108,11 +127,13 @@ describe 'LoopbackPromised', ->
 
             clientInfo      =
                 accessToken: null
+                timeout: 8000
                 debug: debug
 
             client = lbPromised.createClient(pluralModelName, clientInfo)
 
             expect(client).to.be.instanceof LoopbackClient
+            expect(client).to.have.property 'timeout', 8000
 
 
         it 'creates related client when "belongsTo" option is set', ->
@@ -124,6 +145,7 @@ describe 'LoopbackPromised', ->
                 belongsTo:
                     notebooks: 1
                 accessToken: 'abc'
+                timeout: 8000
                 debug: debug
                 isUserModel: true # ignored
             )
@@ -134,6 +156,7 @@ describe 'LoopbackPromised', ->
             expect(client).to.have.property 'debug', debug
             expect(client).to.have.property 'pluralModelName', 'notebooks'
             expect(client).to.have.property 'pluralModelNameMany', 'leaves'
+            expect(client).to.have.property 'timeout', 8000
 
 
         it 'creates user client when "isUserModel" option is set', ->
@@ -144,6 +167,7 @@ describe 'LoopbackPromised', ->
             client = lbPromised.createClient('leaves',
                 isUserModel: true
                 accessToken: 'abc'
+                timeout: 8000
                 debug: debug
             )
 
@@ -151,6 +175,7 @@ describe 'LoopbackPromised', ->
             expect(client).to.have.property 'accessToken', 'abc'
             expect(client).to.have.property 'debug', debug
             expect(client).to.have.property 'pluralModelName', 'leaves'
+            expect(client).to.have.property 'timeout', 8000
 
 
 

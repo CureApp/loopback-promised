@@ -91,7 +91,7 @@ class LoopbackPromised
     ###
     @requestStatic: (endpoint, params = {}, http_method, clientInfo = {}, lbPromisedInfo) ->
 
-        { accessToken, debug } = clientInfo
+        { accessToken, debug, timeout } = clientInfo
 
         { baseURL, logger, version } = lbPromisedInfo
 
@@ -135,6 +135,8 @@ class LoopbackPromised
             else if Object.keys(params).length
                 req.send(JSON.stringify(params))
                 req.set('Content-Type', 'application/json')
+
+            req.timeout(timeout) if timeout?
 
             req.end (err, res) ->
 
@@ -196,6 +198,7 @@ class LoopbackPromised
                 one         : pluralModelNameOne
                 many        : pluralModelName
                 id          : id
+                timeout     : options.timeout
                 accessToken : options.accessToken
                 debug       : options.debug
 
@@ -206,6 +209,7 @@ class LoopbackPromised
             @
             pluralModelName
             options.accessToken
+            options.timeout
             options.debug
         )
 
@@ -224,6 +228,7 @@ class LoopbackPromised
             @
             pluralModelName
             clientInfo.accessToken
+            clientInfo.timeout
             clientInfo.debug
         )
 
@@ -247,6 +252,7 @@ class LoopbackPromised
             options.many
             options.id
             options.accessToken
+            options.timeout
             options.debug
         )
 

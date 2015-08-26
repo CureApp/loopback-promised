@@ -20,10 +20,11 @@ class LoopbackRelatedClient extends LoopbackClient
     @param {String} pluralModelNameMany the "many" side plural model of one-to-many relationship
     @param {any} id the id of the "one" model
     @param {String} [accessToken] Access Token
+    @param {Number} [timeout] msec to timeout
     @param {Boolean} [debug] shows debug log if true
     @return {LoopbackClient}
     ###
-    constructor: (@lbPromised, @pluralModelName, @pluralModelNameMany, @id, @accessToken, @debug) ->
+    constructor: (@lbPromised, @pluralModelName, @pluralModelNameMany, @id, @accessToken, @timeout, @debug) ->
 
     ###*
     set id of the "one" model

@@ -20,10 +20,11 @@ class LoopbackClient
     @param {LoopbackPromised} lbPromised
     @param {String} pluralModelName
     @param {String} [accessToken] Access Token
+    @param {Number} [timeout] msec to timeout
     @param {Boolean} [debug] shows debug log if true
 
     ###
-    constructor: (@lbPromised, @pluralModelName, @accessToken, @debug) ->
+    constructor: (@lbPromised, @pluralModelName, @accessToken, @timeout, @debug) ->
 
 
     ###*
