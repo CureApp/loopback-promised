@@ -67,7 +67,7 @@ class LoopbackClient
         params = {}
         params.where = where if Object.keys where
 
-        @request(path, params, http_method)
+        @request(path, params, http_method).then (result) -> result.count
 
 
     ###*

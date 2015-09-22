@@ -72,8 +72,8 @@ describe 'LoopbackClient', ->
         it 'counts items', (done) ->
 
             client = lbPromised.createClient 'notebooks', debug: debug
-            client.count().then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 4
+            client.count().then (num) ->
+                expect(num).to.equal 4
                 done()
 
 
@@ -84,8 +84,8 @@ describe 'LoopbackClient', ->
             where =
                 name: 'Computer Science'
 
-            client.count(where).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 1
+            client.count(where).then (num) ->
+                expect(num).to.equal 1
                 done()
 
 
@@ -96,8 +96,8 @@ describe 'LoopbackClient', ->
             where =
                 name: 'Philosophy'
 
-            client.count(where).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 0
+            client.count(where).then (num) ->
+                expect(num).to.equal 0
                 done()
 
 

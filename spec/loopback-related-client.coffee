@@ -86,8 +86,8 @@ describe 'LoopbackRelatedClient', ->
         it 'counts items', (done) ->
 
             client = createClient()
-            client.count().then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 4
+            client.count().then (num) ->
+                expect(num).to.equal 4
                 done()
 
 
@@ -97,8 +97,8 @@ describe 'LoopbackRelatedClient', ->
             where =
                 content: like: 'Supports'
 
-            client.count(where).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 1
+            client.count(where).then (num) ->
+                expect(num).to.equal 1
                 done()
 
 
@@ -109,8 +109,8 @@ describe 'LoopbackRelatedClient', ->
             where =
                 content: 'CoffeeScript'
 
-            client.count(where).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 0
+            client.count(where).then (num) ->
+                expect(num).to.equal 0
                 done()
 
 
