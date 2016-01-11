@@ -363,16 +363,17 @@ describe 'LoopbackClient', ->
             client.create(name: 'xxxxx').then (notebook) ->
                 idToDestroy = notebook.id
 
-        # TODO: this is the spec of Loopback (they always return 204). We should take this into account or change the API
-        it 'returns 204 even if id is wrong', ->
+
+        it 'returns 200 and count information is returned', ->
 
             client.destroyById(wrongId).then (responseBody) ->
-                expect(Object.keys(responseBody)).to.have.length 0
+                expect(responseBody).to.have.property 'count', 0
 
 
         it 'destroys a model with id', ->
             client.destroyById(idToDestroy).then (responseBody) ->
-                expect(Object.keys(responseBody)).to.have.length 0
+
+                expect(responseBody).to.have.property 'count', 1
 
                 client.exists(idToDestroy).then (responseBody) ->
                     expect(responseBody.exists).to.be.false
@@ -391,7 +392,7 @@ describe 'LoopbackClient', ->
 
         it 'destroys a model', ->
             client.destroy(modelToDestroy).then (responseBody) ->
-                expect(Object.keys(responseBody)).to.have.length 0
+                expect(responseBody).to.have.property 'count', 1
 
                 client.exists(modelToDestroy.id).then (responseBody) ->
                     expect(responseBody.exists).to.be.false
@@ -449,7 +450,7 @@ describe 'LoopbackClient', ->
 
             # TODO: this is the spec of Loopback (they return 204). We should take this into account or change the API
             client.updateAll(where, data).then (responseBody) ->
-                expect(Object.keys(responseBody)).to.have.length 0
+                expect(responseBody).to.have.property 'count', 2
 
                 client.find(order: 'name', where: {isAcademic: true, isScientific: true}).then (results) ->
 
