@@ -1,5 +1,3 @@
-require('es6-promise').polyfill()
-
 ###*
 managing push notification.
 Currently supports only for loopback servers build by [loopback-with-domain](https://github.com/cureapp/loopback-with-domain)

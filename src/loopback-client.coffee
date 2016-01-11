@@ -1,8 +1,3 @@
-
-
-require('es6-promise').polyfill()
-
-
 ###*
 Loopback Client to access to PersistedModel (or extenders)
 
