@@ -1,12 +1,10 @@
 
-require('es6-promise').polyfill()
-
 LoopbackPromised      = require '../src/loopback-promised'
 LoopbackRelatedClient = require '../src/loopback-related-client'
 
-before (done) ->
+before ->
     @timeout 5000
-    require('./init').then -> done()
+    require('./init')
 
 debug = false
 
@@ -29,11 +27,10 @@ createClient = (options = {}) ->
 
 describe 'LoopbackRelatedClient', ->
 
-    before (done) ->
+    before ->
         client = lbPromised.createClient('notebooks', debug: debug)
         client.create(name: 'Loopback Docs').then (notebook) ->
             mainNotebook = notebook
-            done()
 
 
 
@@ -48,7 +45,7 @@ describe 'LoopbackRelatedClient', ->
 
     describe 'create', ->
 
-        it 'creates an item', (done) ->
+        it 'creates an item', ->
 
             client = createClient()
 
@@ -61,10 +58,8 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.property 'content'
                 expect(responseBody).to.have.property 'createdAt'
 
-                console.log responseBody
-                done()
 
-        it 'creates items when array is given', (done) ->
+        it 'creates items when array is given', ->
 
             client = createClient()
 
@@ -76,22 +71,18 @@ describe 'LoopbackRelatedClient', ->
                 expect(results).to.be.instanceof Array
                 expect(results).to.have.length 3
                 expect(result).to.have.property 'content' for result in results
-                done()
-            .catch (e) ->
-                done e
 
 
     describe 'count', ->
 
-        it 'counts items', (done) ->
+        it 'counts items', ->
 
             client = createClient()
             client.count().then (num) ->
                 expect(num).to.equal 4
-                done()
 
 
-        it 'counts items with condition', (done) ->
+        it 'counts items with condition', ->
 
             client = createClient()
             where =
@@ -99,10 +90,9 @@ describe 'LoopbackRelatedClient', ->
 
             client.count(where).then (num) ->
                 expect(num).to.equal 1
-                done()
 
 
-        it 'counts no items when no matching items', (done) ->
+        it 'counts no items when no matching items', ->
 
             client = createClient()
 
@@ -111,7 +101,6 @@ describe 'LoopbackRelatedClient', ->
 
             client.count(where).then (num) ->
                 expect(num).to.equal 0
-                done()
 
 
     describe 'upsert', ->
@@ -119,7 +108,7 @@ describe 'LoopbackRelatedClient', ->
         newId = null
 
 
-        it 'creates when not exists', (done) ->
+        it 'creates when not exists', ->
 
             client = createClient()
             client.upsert(content: 'boot script can be async', about: 'boot').then (responseBody) ->
@@ -128,9 +117,9 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.property 'content'
                 expect(responseBody).to.have.property 'about', 'boot'
                 newId = responseBody.id
-                done()
 
-        it 'updates when id exists', (done) ->
+
+        it 'updates when id exists', ->
 
             client = createClient()
             client.upsert(id: newId, importance: 'important').then (responseBody) ->
@@ -138,7 +127,6 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.property 'content'
                 expect(responseBody).to.have.property 'about', 'boot'
                 expect(responseBody).to.have.property 'importance', 'important'
-                done()
 
 
 
@@ -148,26 +136,23 @@ describe 'LoopbackRelatedClient', ->
         existingId = null
         notExistingId = 'abcd'
 
-        before (done) ->
+        before ->
             client = createClient()
             client.find().then (responseBody) ->
                 existingId = responseBody[0].id
-                done()
 
-        it 'returns false when not exists', (done) ->
+        it 'returns false when not exists', ->
 
             client = createClient()
             client.exists(notExistingId).then (responseBody) ->
                 expect(responseBody).to.have.property 'exists', false
-                done()
 
 
-        it 'returns true when exists', (done) ->
+        it 'returns true when exists', ->
 
             client = createClient()
             client.exists(existingId).then (responseBody) ->
                 expect(responseBody).to.have.property 'exists', true
-                done()
 
 
     describe 'findById', ->
@@ -176,48 +161,45 @@ describe 'LoopbackRelatedClient', ->
         existingId = null
         notExistingId = 'abcd'
 
-        before (done) ->
+        before ->
             client = createClient()
             client.find().then (responseBody) ->
                 existingId = responseBody[0].id
-                done()
 
-        it 'returns error when not exists', (done) ->
+        it 'returns error when not exists', ->
 
             client = createClient()
-            client.findById(notExistingId).then (responseBody) ->
+            client.findById(notExistingId).then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 # FIXME the error is different from loopback-client
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'status', 404
                 expect(err).to.have.property 'isLoopbackResponseError', true
-                done()
+            )
 
 
-        it 'returns object when exists', (done) ->
+        it 'returns object when exists', ->
 
             client = createClient()
             client.findById(existingId).then (responseBody) ->
                 expect(responseBody).to.have.property 'notebookId', mainNotebook.id
-                done()
 
 
     describe 'find', ->
 
 
-        it 'returns all models when filter is not set', (done) ->
+        it 'returns all models when filter is not set', ->
 
             client = createClient()
             client.find().then (responseBody) ->
                 expect(responseBody).to.be.instanceof Array
                 expect(responseBody).to.have.length.above 4
-                done()
 
 
-        it 'returns specific field(s) when fields filter is set', (done) ->
+        it 'returns specific field(s) when fields filter is set', ->
 
             client = createClient()
             client.find(fields: 'content').then (responseBody) ->
@@ -226,17 +208,15 @@ describe 'LoopbackRelatedClient', ->
                 for item in responseBody
                     expect(Object.keys(item).length).to.equal 1
                     expect(item).to.have.property 'content'
-                done()
 
-        it 'can set limit', (done) ->
+        it 'can set limit', ->
 
             client = createClient()
             client.find(limit: 3).then (responseBody) ->
                 expect(responseBody).to.be.instanceof Array
                 expect(responseBody).to.have.length 3
-                done()
 
-        it 'can set skip', (done) ->
+        it 'can set skip', ->
 
             client = createClient()
             Promise.all([
@@ -244,10 +224,9 @@ describe 'LoopbackRelatedClient', ->
                 client.find(limit: 1, skip: 1)
             ]).then (results) ->
                 expect(results[0][1].content).to.equal results[1][0].content
-                done()
 
 
-        it 'can set order. default order is ASC', (done) ->
+        it 'can set order. default order is ASC', ->
 
             client = createClient()
             client.find(order: 'content').then (responseBody) ->
@@ -260,11 +239,10 @@ describe 'LoopbackRelatedClient', ->
                     if prevContent?
                         expect(item.content> prevContent).to.be.true
                     prevContent = item.content
-                done()
 
 
 
-        it 'can set order DESC', (done) ->
+        it 'can set order DESC', ->
 
             client = createClient()
             client.find(order: 'content DESC').then (responseBody) ->
@@ -277,10 +255,9 @@ describe 'LoopbackRelatedClient', ->
                     if prevContent?
                         expect(item.content < prevContent).to.be.true
                     prevContent = item.content
-                done()
 
 
-        it 'can set order ASC', (done) ->
+        it 'can set order ASC', ->
 
             client = createClient()
             client.find(order: 'content ASC').then (responseBody) ->
@@ -293,11 +270,10 @@ describe 'LoopbackRelatedClient', ->
                     if prevContent?
                         expect(item.content> prevContent).to.be.true
                     prevContent = item.content
-                done()
 
 
 
-        it 'can set where (equals)', (done) ->
+        it 'can set where (equals)', ->
 
             client = createClient()
             client.find(where: content: 'Well documented').then (responseBody) ->
@@ -306,11 +282,10 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.length 1
 
                 expect(responseBody[0].content).to.equal 'Well documented'
-                done()
 
 
 
-        it 'can set where (or)', (done) ->
+        it 'can set where (or)', ->
 
             client = createClient()
             client.find(order: 'content', where: or: [{content: 'Well documented'}, {content: 'Written in JavaScript'}]).then (responseBody) ->
@@ -320,10 +295,9 @@ describe 'LoopbackRelatedClient', ->
 
                 expect(responseBody[0].content).to.equal 'Well documented'
                 expect(responseBody[1].content).to.equal 'Written in JavaScript'
-                done()
 
 
-        it 'can set where (implicit "and")', (done) ->
+        it 'can set where (implicit "and")', ->
             client = createClient()
             client.find(where: content: 'boot script can be async', about: 'boot').then (responseBody) ->
 
@@ -331,10 +305,9 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.length 1
 
                 expect(responseBody[0].about).to.equal 'boot'
-                done()
 
 
-        it 'can set where (explicit "and")', (done) ->
+        it 'can set where (explicit "and")', ->
             client = createClient()
             client.find(where: and: [{content: 'boot script can be async'}, {about: 'boot'}]).then (responseBody) ->
 
@@ -342,11 +315,10 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.length 1
 
                 expect(responseBody[0].about).to.equal 'boot'
-                done()
 
 
 
-        it 'can set where (greater than, less than)', (done) ->
+        it 'can set where (greater than, less than)', ->
             client = createClient()
             client.find(order: 'content', where: and: [{content: gt: 'We'}, {content: lt: 'a'}]).then (responseBody) ->
 
@@ -355,10 +327,9 @@ describe 'LoopbackRelatedClient', ->
 
                 expect(responseBody[0].content).to.equal 'Well documented'
                 expect(responseBody[1].content).to.equal 'Written in JavaScript'
-                done()
 
 
-        it 'can set where (like) (not all data source support this request)', (done) ->
+        it 'can set where (like) (not all data source support this request)', ->
             client = createClient()
             client.find(order: 'content', where: content : like: "[Ss]cript").then (responseBody) ->
 
@@ -367,29 +338,26 @@ describe 'LoopbackRelatedClient', ->
 
                 expect(responseBody[0].content).to.equal 'Written in JavaScript'
                 expect(responseBody[1].content).to.equal 'boot script can be async'
-                done()
 
 
     describe 'findOne', ->
 
 
-        it 'can get one result', (done) ->
+        it 'can get one result', ->
 
             client = createClient()
 
             client.findOne(order: 'content', where: content : like: "[Ss]cript").then (responseBody) ->
 
                 expect(responseBody.content).to.equal 'Written in JavaScript'
-                done()
 
-        it 'get null when not match', (done) ->
+        it 'get null when not match', ->
 
             client = createClient()
 
             client.findOne(order: 'content', where: content : like: "xxxxx").then (responseBody) ->
 
                 expect(responseBody).not.to.exist
-                done()
 
 
 
@@ -399,27 +367,27 @@ describe 'LoopbackRelatedClient', ->
         idToDestroy = null
         wrongId     = 'abcde'
 
-        before (done) ->
+        before ->
             client = createClient()
             client.create(content: 'xxxxx').then (leaf) ->
                 idToDestroy = leaf.id
-                done()
 
         # FIXME: this behavior is different from LoopbackClient (this one is more intuitive)
-        it 'returns 404 if id is wrong', (done) ->
+        it 'returns 404 if id is wrong', ->
 
             client = createClient()
-            client.destroyById(wrongId).then (responseBody) ->
-                done new Error('this must not be called')
-            .catch (err) ->
+            client.destroyById(wrongId).then((responseBody) ->
+                throw new Error('this must not be called')
+
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'status', 404
                 expect(err).to.have.property 'isLoopbackResponseError', true
-                done()
+            )
 
 
         # FIXME: this behavior is different from LoopbackClient (this one is more intuitive)
-        it 'destroys a model with id', (done) ->
+        it 'destroys a model with id', ->
 
             client = createClient()
             client.destroyById(idToDestroy).then (responseBody) ->
@@ -427,7 +395,6 @@ describe 'LoopbackRelatedClient', ->
 
                 client.exists(idToDestroy).then (responseBody) ->
                     expect(responseBody.exists).to.be.false
-                    done()
 
 
 
@@ -436,29 +403,28 @@ describe 'LoopbackRelatedClient', ->
         existingId = null
         notExistingId = 'abcd'
 
-        before (done) ->
+        before ->
             client = createClient()
             client.findOne(where: content: like: 'JavaScript').then (notebook) ->
                 existingId = notebook.id
-                done()
 
 
-        it 'returns error when id is invalid', (done) ->
+        it 'returns error when id is invalid', ->
 
             data = version: 2
 
             client = createClient()
-            client.updateAttributes(notExistingId, data).then (responseBody) ->
-                done new Error('this must not be called')
+            client.updateAttributes(notExistingId, data).then((responseBody) ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'status', 404
                 expect(err).to.have.property 'isLoopbackResponseError', true
-                done()
+            )
 
 
-        it 'returns updated model when id is valid', (done) ->
+        it 'returns updated model when id is valid', ->
 
             data = version: 2
 
@@ -467,12 +433,11 @@ describe 'LoopbackRelatedClient', ->
                 expect(responseBody).to.have.property 'id', existingId
                 expect(responseBody).to.have.property 'content', 'Written in JavaScript'
                 expect(responseBody).to.have.property 'version', 2
-                done()
 
 
     describe 'updateAll', ->
 
-        it 'updates all matched models', (done) ->
+        it 'updates all matched models', ->
 
             where =
                 content: like: '[Ss]cript'
@@ -493,12 +458,10 @@ describe 'LoopbackRelatedClient', ->
                 for result in results
                     expect(result).to.have.property 'isAboutProgramming', true
                     expect(result).to.have.property 'isAboutScript', true
-                done()
 
 
-    after (done) ->
+    after ->
         client = lbPromised.createClient('notebooks', debug: debug)
         client.destroyById(mainNotebook.id).then ->
-            done()
 
 

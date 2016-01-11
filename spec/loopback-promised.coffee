@@ -5,9 +5,9 @@ LoopbackUserClient    = require '../src/loopback-user-client'
 LoopbackRelatedClient = require '../src/loopback-related-client'
 PushManager           = require '../src/push-manager'
 
-before (done) ->
+before ->
     @timeout 5000
-    require('./init').then -> done()
+    require('./init')
 
 debug = false
 
@@ -31,11 +31,13 @@ describe 'LoopbackPromised', ->
                 accessToken: null
                 debug: debug
 
-            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
-                done new Error('this cannot occur')
-            .catch (e) ->
-                expect(e.message).to.match('baseURL')
-                done()
+            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then((responseBody) ->
+
+                throw new Error('this cannot occur')
+
+            , (e) ->
+                expect(e).to.match /baseURL/
+            )
 
 
         it 'fails if baseURL is not valid (port)', ->
@@ -51,11 +53,11 @@ describe 'LoopbackPromised', ->
                 accessToken: null
                 debug: debug
 
-            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
-                done new Error('this cannot occur')
-            .catch (e) ->
+            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then((responseBody) ->
+                throw new Error('this cannot occur')
+            , (e) ->
                 expect(e).to.have.property('code', 'ECONNREFUSED')
-                done()
+            )
 
         it 'fails if baseURL is not valid (path)', ->
 
@@ -70,15 +72,14 @@ describe 'LoopbackPromised', ->
                 accessToken: null
                 debug: debug
 
-            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
-                done new Error('this cannot occur')
-            .catch (e) ->
-                expect(e.name).to.match('Cannot GET')
-                done()
+            lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then((responseBody) ->
+                throw new Error('this cannot occur')
+            , (e) ->
+                expect(e.message).to.match /Cannot GET/
+            )
 
 
-
-        it 'requests to the server', (done) ->
+        it 'requests to the server', ->
 
             lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
@@ -93,11 +94,8 @@ describe 'LoopbackPromised', ->
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
                 expect(responseBody).to.be.instanceof Array
-                done()
-            .catch (e) ->
-                done e
 
-        it 'timeouts when timeout msec is given and exceeds', (done) ->
+        it 'timeouts when timeout msec is given and exceeds', ->
 
             lbPromised = LoopbackPromised.createInstance
                 baseURL: baseURL
@@ -113,7 +111,6 @@ describe 'LoopbackPromised', ->
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).catch (e) ->
                 expect(e.message).to.match /timeout/
-                done()
 
 
     describe 'createClient', ->

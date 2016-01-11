@@ -6,26 +6,25 @@ module.exports = (grunt) ->
 
     grunt.config.init
 
-        'mocha-chai-sinon':
+        mochaTest:
+            options:
+                reporter: 'spec'
+                require: [
+                    'coffee-script/register'
+                    'spec/export-globals.js'
+                ]
+
             spec:
                 src: [
                     'spec/*.coffee'
                     '!spec/init.coffee'
                     '!spec/model-definitions.coffee'
                 ]
-                options:
-                    ui: 'bdd'
-                    reporter: 'spec'
-                    require: 'coffee-script/register'
 
             single:
                 src: [
                     grunt.option('file') ? 'spec/loopback-promised.coffee'
                 ]
-                options:
-                    ui: 'bdd'
-                    reporter: 'spec'
-                    require: 'coffee-script/register'
 
 
         coffee:
@@ -78,13 +77,13 @@ module.exports = (grunt) ->
                 done()
 
 
-    grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
+    grunt.loadNpmTasks 'grunt-mocha-test'
     grunt.loadNpmTasks 'grunt-contrib-yuidoc'
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-bower-task'
 
-    grunt.registerTask 'default', 'mocha-chai-sinon:spec'
-    grunt.registerTask 'single', 'mocha-chai-sinon:single'
+    grunt.registerTask 'default', 'mochaTest:spec'
+    grunt.registerTask 'single', 'mochaTest:single'
     grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']

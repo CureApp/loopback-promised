@@ -1,13 +1,11 @@
 
-require('es6-promise').polyfill()
-
 LoopbackPromised   = require '../src/loopback-promised'
 LoopbackClient     = require '../src/loopback-client'
 LoopbackUserClient = require '../src/loopback-user-client'
 
-before (done) ->
+before ->
     @timeout 5000
-    require('./init').then -> done()
+    require('./init')
 
 debug = true
 
@@ -26,22 +24,22 @@ describe 'LoopbackUserClient', ->
 
     describe 'create', ->
 
-        it 'cannot create without credential information (email/password)', (done) ->
+        it 'cannot create without credential information (email/password)', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.create(firstName: 'Shin', lastName: 'Suzuki').then (responseBody) ->
+            client.create(firstName: 'Shin', lastName: 'Suzuki').then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'ValidationError'
                 expect(err).to.have.property 'statusCode', 422
-                done()
+            )
 
 
-        it 'creates a user', (done) ->
+        it 'creates a user', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
@@ -56,29 +54,28 @@ describe 'LoopbackUserClient', ->
 
                 idOfShin = responseBody.id
 
-                done()
 
 
 
     describe 'login', ->
 
-        it 'fails with invalid credential (email/password)', (done) ->
+        it 'fails with invalid credential (email/password)', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.login(email: 'shinout310@gmail.com', password: 'daikon121').then (responseBody) ->
-                done new Error('this must not be called')
+            client.login(email: 'shinout310@gmail.com', password: 'daikon121').then((responseBody) ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
 
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'LOGIN_FAILED'
-                done()
+            )
 
 
-        it 'returns an access token', (done) ->
+        it 'returns an access token', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
@@ -88,10 +85,9 @@ describe 'LoopbackUserClient', ->
                 expect(responseBody).to.have.property 'ttl'
                 expect(responseBody).to.have.property 'userId'
                 accessTokenOfShin = responseBody.id
-                done()
 
 
-        it 'returns an access token with user information when "include" is set', (done) ->
+        it 'returns an access token with user information when "include" is set', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
@@ -103,12 +99,11 @@ describe 'LoopbackUserClient', ->
                 expect(responseBody.user).to.have.property 'id', responseBody.userId
                 expect(responseBody.user).to.have.property 'email', 'shinout310@gmail.com'
                 expect(responseBody.user).to.have.property 'firstName', 'Shin'
-                done()
 
 
     describe 'create', ->
 
-        it 'creates another user with accessToken', (done) ->
+        it 'creates another user with accessToken', ->
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
             authedClient.create(firstName: 'Kohta', lastName: 'Satake', email: 'satake@example.com', password: 'satake111').then (responseBody) ->
@@ -121,7 +116,6 @@ describe 'LoopbackUserClient', ->
 
                 idOfSatake = responseBody.id
 
-                done()
 
 
     describe 'logout', ->
@@ -130,30 +124,29 @@ describe 'LoopbackUserClient', ->
 
         validAccessToken = null
 
-        before (done) ->
+        before ->
             client.login(email: 'shinout310@gmail.com', password: 'daikon123').then (responseBody) ->
                 validAccessToken = responseBody.id
-                done()
 
 
-        it 'returns error when an invalid access token is given', (done) ->
+        it 'returns error when an invalid access token is given', ->
 
             invalidAccessToken = 'abcd'
 
-            client.logout(invalidAccessToken).then (responseBody) ->
+            client.logout(invalidAccessToken).then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
 
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'status', 500
+            )
 
-                done()
 
 
-        it 'returns {} when valid access token is given', (done) ->
+        it 'returns {} when valid access token is given', ->
 
             client.logout(validAccessToken).then (responseBody) ->
 
@@ -161,13 +154,12 @@ describe 'LoopbackUserClient', ->
 
                 #TODO confirm the token is deleted
 
-                done()
 
 
 
     describe 'upsert', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
@@ -177,18 +169,18 @@ describe 'LoopbackUserClient', ->
                 email    : 'satake@example.com'
                 password : 'satake123'
 
-            client.upsert(params).then ->
-                done new Error('this must not be called')
+            client.upsert(params).then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'requires authorization even if the user exists', (done) ->
+        it 'requires authorization even if the user exists', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
@@ -196,18 +188,18 @@ describe 'LoopbackUserClient', ->
                 id       : idOfShin
                 firstName: 'Kohta'
 
-            client.upsert(params).then ->
-                done new Error('this must not be called')
+            client.upsert(params).then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'fails even when given id is the token\'s user id', (done) ->
+        it 'fails even when given id is the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
@@ -215,133 +207,133 @@ describe 'LoopbackUserClient', ->
                 id       : idOfShin
                 nationality: 'Japan'
 
-            authedClient.upsert(params).then (responseBody) ->
-                done new Error('this must not be called')
+            authedClient.upsert(params).then((responseBody) ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
 
     describe 'count', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.count().then ->
-                done new Error('this must not be called')
+            client.count().then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'fails even when user token is set', (done) ->
+        it 'fails even when user token is set', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.count().then ->
-                done new Error('this must not be called')
+            authedClient.count().then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
     describe 'find', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.find().then ->
-                done new Error('this must not be called')
+            client.find().then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'fails even when user token is set', (done) ->
+        it 'fails even when user token is set', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.find().then ->
-                done new Error('this must not be called')
+            authedClient.find().then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
     describe 'findOne', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.findOne().then ->
-                done new Error('this must not be called')
+            client.findOne().then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'fails even when user token is set', (done) ->
+        it 'fails even when user token is set', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.findOne().then ->
-                done new Error('this must not be called')
+            authedClient.findOne().then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
 
     describe 'findById', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.findById(idOfShin).then ->
-                done new Error('this must not be called')
+            client.findById(idOfShin).then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'returns user when given id is the token\'s user id', (done) ->
+        it 'returns user when given id is the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
@@ -350,74 +342,73 @@ describe 'LoopbackUserClient', ->
                 expect(responseBody).to.have.property 'id', idOfShin
                 expect(responseBody).to.have.property 'firstName', 'Shin'
 
-                done()
 
-        it 'fails when given id is not the token\'s user id', (done) ->
+        it 'fails when given id is not the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.findById(idOfSatake).then (responseBody) ->
+            authedClient.findById(idOfSatake).then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
     describe 'exists', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.exists(1).then ->
-                done new Error('this must not be called')
+            client.exists(1).then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'fails even when given id is the token\'s user id', (done) ->
+        it 'fails even when given id is the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.exists(idOfShin).then (responseBody) ->
+            authedClient.exists(idOfShin).then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
     describe 'updateAttributes', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.updateAttributes(1, firstName: 'Shinji').then ->
-                done new Error('this must not be called')
+            client.updateAttributes(1, firstName: 'Shinji').then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'updates user when given id is the token\'s user id', (done) ->
+        it 'updates user when given id is the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
@@ -429,98 +420,94 @@ describe 'LoopbackUserClient', ->
                 expect(responseBody).to.have.property 'firstName', 'Shin'
                 expect(responseBody).to.have.property 'hobby', 'music'
 
-                done()
 
-
-        it 'fails when given id is not the token\'s user id', (done) ->
+        it 'fails when given id is not the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.updateAttributes(idOfSatake, hobby: 'music').then (responseBody) ->
+            authedClient.updateAttributes(idOfSatake, hobby: 'music').then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
     describe 'updateAll', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.updateAll({firstName: 'Shin'}, {lastName: 'Sasaki'}).then ->
-                done new Error('this must not be called')
+            client.updateAll({firstName: 'Shin'}, {lastName: 'Sasaki'}).then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
-        it 'fails even when condition includes the token\'s user', (done) ->
+        it 'fails even when condition includes the token\'s user', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
             data = profession: 'doctor'
 
-            authedClient.updateAll(id: idOfShin, data).then (responseBody) ->
-                done new Error('this must not be called')
+            authedClient.updateAll(id: idOfShin, data).then((responseBody) ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
     describe 'destroyById', ->
 
-        it 'requires authorization', (done) ->
+        it 'requires authorization', ->
 
             client = lbPromised.createUserClient 'authors', debug: debug
 
-            client.destroyById(1).then ->
-                done new Error('this must not be called')
+            client.destroyById(1).then( ->
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
 
 
-        it 'fails when given id is not the token\'s user id', (done) ->
+        it 'fails when given id is not the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: debug, accessToken: accessTokenOfShin
 
-            authedClient.destroyById(idOfSatake).then (responseBody) ->
+            authedClient.destroyById(idOfSatake).then((responseBody) ->
 
-                done new Error('this must not be called')
+                throw new Error('this must not be called')
 
-            .catch (err) ->
+            , (err) ->
                 expect(err).to.be.instanceof Error
                 expect(err).to.have.property 'name', 'Error'
                 expect(err).to.have.property 'statusCode', 401
                 expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
-                done()
+            )
 
-        it 'deletes user when given id is the token\'s user id', (done) ->
+        it 'deletes user when given id is the token\'s user id', ->
 
             authedClient = lbPromised.createUserClient 'authors', debug: false, accessToken: accessTokenOfShin
 
             authedClient.destroyById(idOfShin).then (responseBody) ->
 
                 expect(Object.keys(responseBody)).to.have.length 0
-
-                done()
