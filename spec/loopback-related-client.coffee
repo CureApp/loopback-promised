@@ -1,5 +1,5 @@
 
-Promise = require('es6-promise').Promise
+require('es6-promise').polyfill()
 
 LoopbackPromised      = require '../src/loopback-promised'
 LoopbackRelatedClient = require '../src/loopback-related-client'
