@@ -5,4 +5,3 @@ files:
   bower.json: '"version": "%.%.%",'
   Gruntfile.coffee: currentVersion = 'v%.%.%'
   README.md: '[latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/v%.%.%/index.html)'
-  dev-tools/distribute: VERSION="%.%.%"
