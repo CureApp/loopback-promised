@@ -510,4 +510,4 @@ describe 'LoopbackUserClient', ->
 
             authedClient.destroyById(idOfShin).then (responseBody) ->
 
-                expect(Object.keys(responseBody)).to.have.length 0
+                expect(responseBody).to.have.property 'count', 1
