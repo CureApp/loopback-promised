@@ -31,7 +31,7 @@
     "bmp-j": "cc-bmp -j",
     "circle": "cc-generate-yml",
     "post-dependencies": "echo post-dependencies",
-    "pre-release": "echo pre-release",
+    "pre-release": "grunt build",
     "post-release": "echo post-release",
     "gh-pages": "echo gh-pages"
   },
