@@ -1,7 +1,4 @@
 
-
-currentVersion = 'v1.0.1'
-
 module.exports = (grunt) ->
 
     grunt.config.init
@@ -60,7 +57,7 @@ module.exports = (grunt) ->
                 extension: '.coffee'
             master:
                 options:
-                    outdir: "doc/#{currentVersion}"
+                    outdir: "doc"
 
 
     grunt.registerTask 'titaniumify',  ->
