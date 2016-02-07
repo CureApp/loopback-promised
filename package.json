@@ -11,8 +11,6 @@
     "chai": "^3.4.1",
     "coffee-script": "^1.10.0",
     "grunt": "^0.4.5",
-    "grunt-bower-task": "^0.4.0",
-    "grunt-browserify": "^3.5.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-uglify": "^0.8.0",
@@ -23,10 +21,11 @@
     "mocha": "^2.3.4",
     "node-circleci-autorelease": "^1.5.11",
     "ti-superagent": "^0.7.0",
-    "titaniumifier": "^1.5.0"
+    "titaniumifier": "https://github.com/CureApp/titaniumifier#cureapp-1.6.2"
   },
   "titanium": {
-    "superagent": "ti-superagent"
+    "superagent": "ti-superagent",
+    "./index.js": "./dist/loopback-promised.titanium.js"
   },
   "scripts": {
     "test": "grunt",
@@ -36,9 +35,10 @@
     "bmp-j": "cc-bmp -j",
     "circle": "cc-generate-yml",
     "post-dependencies": "echo post-dependencies",
-    "pre-release": "grunt build",
+    "titaniumify": "titaniumify --main dist/lib/loopback-promised.js > dist/loopback-promised.titanium.js",
+    "pre-release": "grunt build && npm run titaniumify",
     "post-release": "echo post-release",
-    "gh-pages": "echo gh-pages"
+    "gh-pages": "grunt yuidoc"
   },
   "repository": {
     "type": "git",

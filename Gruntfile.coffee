@@ -35,21 +35,6 @@ module.exports = (grunt) ->
                 options:
                     bare: true
 
-        bower:
-            dist:
-                options:
-                    targetDir: 'bower_components'
-
-        browserify:
-            dist:
-                files:
-                    'dist/loopback-promised.web.js': 'web.js'
-
-        uglify:
-            dist:
-                files:
-                    'dist/loopback-promised.min.js' : 'dist/loopback-promised.web.js'
-
         yuidoc:
             options:
                 paths: ['src']
@@ -60,27 +45,10 @@ module.exports = (grunt) ->
                     outdir: "doc"
 
 
-    grunt.registerTask 'titaniumify',  ->
-
-        done = @async()
-
-        pack = require('titaniumifier').packer.pack
-        cfg = {}
-        packed = pack __dirname, cfg, () ->
-            Promise = packed.constructor
-            fs = require 'fs'
-            Promise.props(packed).then (v) ->
-                fs.writeFileSync __dirname + '/dist/loopback-promised.titanium.js', v.source
-                done()
-
-
     grunt.loadNpmTasks 'grunt-mocha-test'
     grunt.loadNpmTasks 'grunt-contrib-yuidoc'
-    grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
-    grunt.loadNpmTasks 'grunt-contrib-uglify'
-    grunt.loadNpmTasks 'grunt-bower-task'
 
     grunt.registerTask 'default', 'mochaTest:spec'
     grunt.registerTask 'single', 'mochaTest:single'
-    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']
+    grunt.registerTask 'build', 'coffee:dist'
