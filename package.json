@@ -23,10 +23,11 @@
     "mocha": "^2.3.4",
     "node-circleci-autorelease": "^1.5.11",
     "ti-superagent": "^0.7.0",
-    "titaniumifier": "^1.5.0"
+    "titaniumifier": "https://github.com/CureApp/titaniumifier#cureapp-1.6.1"
   },
   "titanium": {
-    "superagent": "ti-superagent"
+    "superagent": "ti-superagent",
+    "index.js": "dist/loopback-promised.titanium.js"
   },
   "scripts": {
     "test": "grunt",
@@ -36,6 +37,7 @@
     "bmp-j": "cc-bmp -j",
     "circle": "cc-generate-yml",
     "post-dependencies": "echo post-dependencies",
+    "titaniumify": "titaniumify > dist/loopback-promised.titanium.js",
     "pre-release": "grunt build",
     "post-release": "echo post-release",
     "gh-pages": "echo gh-pages"

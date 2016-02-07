@@ -60,20 +60,6 @@ module.exports = (grunt) ->
                     outdir: "doc"
 
 
-    grunt.registerTask 'titaniumify',  ->
-
-        done = @async()
-
-        pack = require('titaniumifier').packer.pack
-        cfg = {}
-        packed = pack __dirname, cfg, () ->
-            Promise = packed.constructor
-            fs = require 'fs'
-            Promise.props(packed).then (v) ->
-                fs.writeFileSync __dirname + '/dist/loopback-promised.titanium.js', v.source
-                done()
-
-
     grunt.loadNpmTasks 'grunt-mocha-test'
     grunt.loadNpmTasks 'grunt-contrib-yuidoc'
     grunt.loadNpmTasks 'grunt-browserify'
@@ -83,4 +69,4 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'default', 'mochaTest:spec'
     grunt.registerTask 'single', 'mochaTest:single'
-    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist', 'titaniumify']
+    grunt.registerTask 'build', ['coffee:dist', 'bower:dist', 'browserify:dist', 'uglify:dist']
