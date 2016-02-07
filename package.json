@@ -38,7 +38,7 @@
     "titaniumify": "titaniumify --main dist/lib/loopback-promised.js > dist/loopback-promised.titanium.js",
     "pre-release": "grunt build && npm run titaniumify",
     "post-release": "echo post-release",
-    "gh-pages": "echo gh-pages"
+    "gh-pages": "grunt yuidoc"
   },
   "repository": {
     "type": "git",
