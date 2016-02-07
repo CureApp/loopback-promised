@@ -44,11 +44,10 @@ defaultLogger =
 
         when 'web'
 
-            log = require('../../../bower_components/log/log')
-            info  : (v) -> log(v)
-            warn  : (v) -> log('[WARN] '  + v)
-            error : (v) -> log('[ERROR] ' + v)
-            trace : (v) -> log('[TRACE] ' + v)
+            info  : (v) -> console.log(v)
+            warn  : (v) -> console.log('[WARN] ',  v)
+            error : (v) -> console.log('[ERROR] ', v)
+            trace : (v) -> console.log('[TRACE] ', v)
 
         else
             console

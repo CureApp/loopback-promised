@@ -2,4 +2,3 @@
 version: 1.1.0
 files:
   package.json: '"version": "%.%.%",'
-  bower.json: '"version": "%.%.%",'
