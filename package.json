@@ -36,7 +36,7 @@
     "circle": "cc-generate-yml",
     "post-dependencies": "echo post-dependencies",
     "titaniumify": "titaniumify --main dist/lib/loopback-promised.js > dist/loopback-promised.titanium.js",
-    "pre-release": "grunt build",
+    "pre-release": "grunt build && npm run titaniumify",
     "post-release": "echo post-release",
     "gh-pages": "echo gh-pages"
   },
