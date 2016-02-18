@@ -6,7 +6,7 @@
 This project is universal (in past, called "isomorphic").
 Bundle into your project and it runs.
 
-[latest API documentation Page](http://cureapp.github.io/loopback-promised/doc/index.html)
+[latest API documentation Page](http://cureapp.github.io/loopback-promised/index.html)
 
 ## Installation
 
