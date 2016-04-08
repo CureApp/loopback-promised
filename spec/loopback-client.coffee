@@ -26,7 +26,7 @@ describe 'LoopbackClient', ->
 
             client.setAccessToken('abcde')
 
-            expect(client.accessToken).to.equal 'abcde'
+            assert client.accessToken is 'abcde'
 
 
 
@@ -43,10 +43,10 @@ describe 'LoopbackClient', ->
                     references: ['The Elements of Statistical Learning']
             ).then (responseBody) ->
 
-                expect(responseBody).to.have.property 'name', 'Computer Science'
-                expect(responseBody).to.have.property 'options'
-                expect(responseBody.options).to.have.property 'version', 2
-                expect(responseBody.options.references).to.have.length 1
+                assert responseBody.name is 'Computer Science'
+                assert responseBody.options?
+                assert responseBody.options.version is 2
+                assert responseBody.options.references.length is 1
 
         it 'creates items when array is given', ->
 
@@ -57,9 +57,9 @@ describe 'LoopbackClient', ->
                 { name: 'Japanese'  }
                 { name: 'JavaScript'}
             ]).then (results) ->
-                expect(results).to.be.instanceof Array
-                expect(results).to.have.length 3
-                expect(result).to.have.property 'name' for result in results
+                assert results instanceof Array
+                assert results.length is 3
+                assert result.name? for result in results
 
     describe 'count', ->
 
@@ -67,7 +67,7 @@ describe 'LoopbackClient', ->
 
             client = lbPromised.createClient 'notebooks', debug: debug
             client.count().then (num) ->
-                expect(num).to.equal 4
+                assert num is 4
 
 
         it 'counts items with condition', ->
@@ -78,7 +78,7 @@ describe 'LoopbackClient', ->
                 name: 'Computer Science'
 
             client.count(where).then (num) ->
-                expect(num).to.equal 1
+                assert num is 1
 
 
         it 'counts no items when no matching items', ->
@@ -89,7 +89,7 @@ describe 'LoopbackClient', ->
                 name: 'Philosophy'
 
             client.count(where).then (num) ->
-                expect(num).to.equal 0
+                assert num is 0
 
 
 
@@ -102,18 +102,18 @@ describe 'LoopbackClient', ->
         it 'creates when not exists', ->
 
             client.upsert(name: 'Genetics', genre: 'Biology').then (responseBody) ->
-                expect(responseBody).to.have.property 'id'
-                expect(responseBody).to.have.property 'name', 'Genetics'
-                expect(responseBody).to.have.property 'genre', 'Biology'
+                assert responseBody.id?
+                assert responseBody.name is 'Genetics'
+                assert responseBody.genre is 'Biology'
                 newId = responseBody.id
 
         it 'updates when id exists', ->
 
             client.upsert(id: newId, name: 'BioGenetics', difficulty: 'difficult').then (responseBody) ->
-                expect(responseBody).to.have.property 'id', newId
-                expect(responseBody).to.have.property 'name', 'BioGenetics'
-                expect(responseBody).to.have.property 'genre', 'Biology'
-                expect(responseBody).to.have.property 'difficulty', 'difficult'
+                assert responseBody.id is newId
+                assert responseBody.name is 'BioGenetics'
+                assert responseBody.genre is 'Biology'
+                assert responseBody.difficulty is 'difficult'
 
 
 
@@ -131,13 +131,13 @@ describe 'LoopbackClient', ->
         it 'returns false when not exists', ->
 
             client.exists(notExistingId).then (responseBody) ->
-                expect(responseBody).to.have.property 'exists', false
+                assert responseBody.exists is false
 
 
         it 'returns true when exists', ->
 
             client.exists(existingId).then (responseBody) ->
-                expect(responseBody).to.have.property 'exists', true
+                assert responseBody.exists is true
 
 
 
@@ -159,16 +159,16 @@ describe 'LoopbackClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'code', 'MODEL_NOT_FOUND'
-                expect(err).to.have.property 'isLoopbackResponseError', true
+                assert err instanceof Error
+                assert err.code is 'MODEL_NOT_FOUND'
+                assert err.isLoopbackResponseError is true
             )
 
 
         it 'returns object when exists', ->
 
             @client.findById(existingId).then (responseBody) ->
-                expect(responseBody).to.have.property 'name', 'JavaScript'
+                assert responseBody.name is 'JavaScript'
 
 
         it 'timeouts when timeout property is given and exceeds', ->
@@ -176,7 +176,7 @@ describe 'LoopbackClient', ->
             @client.timeout = 1
 
             @client.findById(existingId).catch (e) ->
-                expect(e).to.match /timeout/
+                assert e.message.match /timeout/
 
 
     describe 'find', ->
@@ -186,25 +186,25 @@ describe 'LoopbackClient', ->
         it 'returns all models when filter is not set', ->
 
             client.find().then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length.above 4
+                assert responseBody instanceof Array
+                assert responseBody.length > 4
 
 
         it 'returns specific field(s) when fields filter is set', ->
 
             client.find(fields: 'name').then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length.above 4
+                assert responseBody instanceof Array
+                assert responseBody.length > 4
                 for item in responseBody
-                    expect(Object.keys(item).length).to.equal 1
-                    expect(item).to.have.property 'name'
+                    assert Object.keys(item).length is 1
+                    assert item.name?
 
 
         it 'can set limit', ->
 
             client.find(limit: 3).then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 3
+                assert responseBody instanceof Array
+                assert responseBody.length is 3
 
         it 'can set skip', ->
 
@@ -212,45 +212,45 @@ describe 'LoopbackClient', ->
                 client.find(limit: 2)
                 client.find(limit: 1, skip: 1)
             ]).then (results) ->
-                expect(results[0][1].name).to.equal results[1][0].name
+                assert results[0][1].name is results[1][0].name
 
 
         it 'can set order. default order is ASC', ->
 
             client.find(order: 'name').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
                 prevName = null
 
                 for item in responseBody
                     if prevName?
-                        expect(item.name > prevName).to.be.true
+                        assert (item.name > prevName) is true
                     prevName = item.name
 
         it 'can set order DESC',  ->
 
             client.find(order: 'name DESC').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
                 prevName = null
 
                 for item in responseBody
                     if prevName?
-                        expect(item.name < prevName).to.be.true
+                        assert (item.name < prevName) is true
                     prevName = item.name
 
         it 'can set order ASC', ->
             client.find(order: 'name ASC').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
                 prevName = null
 
                 for item in responseBody
                     if prevName?
-                        expect(item.name > prevName).to.be.true
+                        assert (item.name > prevName) is true
                     prevName = item.name
 
 
@@ -258,80 +258,80 @@ describe 'LoopbackClient', ->
 
             client.find(where: null).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 0
+                assert responseBody instanceof Array
+                assert responseBody.length is 0
 
 
         it 'can set where (equals)', ->
             client.find(where: name: 'Physics').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 1
+                assert responseBody instanceof Array
+                assert responseBody.length is 1
 
-                expect(responseBody[0].name).to.equal 'Physics'
+                assert responseBody[0].name is 'Physics'
 
 
         it 'can set where (or)', ->
             client.find(order: 'name', where: or: [{name: 'Physics'}, {name: 'BioGenetics'}]).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 2
+                assert responseBody instanceof Array
+                assert responseBody.length is 2
 
-                expect(responseBody[0].name).to.equal 'BioGenetics'
-                expect(responseBody[1].name).to.equal 'Physics'
+                assert responseBody[0].name is 'BioGenetics'
+                assert responseBody[1].name is 'Physics'
 
 
         it 'can set where (key: null)', ->
             client.find(where: difficulty: null).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 4
+                assert responseBody instanceof Array
+                assert responseBody.length is 4
 
         it 'can set where (key: undefined)', ->
             client.find(where: difficulty: undefined).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 0
+                assert responseBody instanceof Array
+                assert responseBody.length is 0
 
 
 
         it 'can set where (implicit "and")', ->
             client.find(order: 'name', where: name: 'BioGenetics', difficulty: 'difficult').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 1
+                assert responseBody instanceof Array
+                assert responseBody.length is 1
 
-                expect(responseBody[0].name).to.equal 'BioGenetics'
+                assert responseBody[0].name is 'BioGenetics'
 
 
         it 'can set where (explicit "and")', ->
             client.find(order: 'name', where: and: [{name: 'BioGenetics'}, {difficulty: 'difficult'}]).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 1
+                assert responseBody instanceof Array
+                assert responseBody.length is 1
 
-                expect(responseBody[0].name).to.equal 'BioGenetics'
+                assert responseBody[0].name is 'BioGenetics'
 
 
 
         it 'can set where (greater than, less than)', ->
             client.find(order: 'name', where: and: [{name: gt: 'Ja'}, {name: lt: 'K'}]).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 2
+                assert responseBody instanceof Array
+                assert responseBody.length is 2
 
-                expect(responseBody[0].name).to.equal 'Japanese'
-                expect(responseBody[1].name).to.equal 'JavaScript'
+                assert responseBody[0].name is 'Japanese'
+                assert responseBody[1].name is 'JavaScript'
 
 
         it 'can set where (like)', ->
             client.find(order: 'name', where: name: like: "ic").then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 2
+                assert responseBody instanceof Array
+                assert responseBody.length is 2
 
-                expect(responseBody[0].name).to.equal 'BioGenetics'
-                expect(responseBody[1].name).to.equal 'Physics'
+                assert responseBody[0].name is 'BioGenetics'
+                assert responseBody[1].name is 'Physics'
 
 
     describe 'findOne', ->
@@ -342,14 +342,14 @@ describe 'LoopbackClient', ->
 
             client.findOne(order: 'name', where: name: like: "ic").then (responseBody) ->
 
-                expect(responseBody.name).to.equal 'BioGenetics'
+                assert responseBody.name is 'BioGenetics'
 
 
         it 'gets null when not match', ->
 
             client.findOne(order: 'name', where: name: like: "xxx").then (responseBody) ->
 
-                expect(responseBody).not.to.exist
+                assert not responseBody?
 
 
     describe 'destroyById', ->
@@ -367,16 +367,16 @@ describe 'LoopbackClient', ->
         it 'returns 200 and count information is returned', ->
 
             client.destroyById(wrongId).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 0
+                assert responseBody.count is 0
 
 
         it 'destroys a model with id', ->
             client.destroyById(idToDestroy).then (responseBody) ->
 
-                expect(responseBody).to.have.property 'count', 1
+                assert responseBody.count is 1
 
                 client.exists(idToDestroy).then (responseBody) ->
-                    expect(responseBody.exists).to.be.false
+                    assert responseBody.exists is false
 
 
 
@@ -392,10 +392,10 @@ describe 'LoopbackClient', ->
 
         it 'destroys a model', ->
             client.destroy(modelToDestroy).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 1
+                assert responseBody.count is 1
 
                 client.exists(modelToDestroy.id).then (responseBody) ->
-                    expect(responseBody.exists).to.be.false
+                    assert responseBody.exists is false
 
 
 
@@ -419,9 +419,9 @@ describe 'LoopbackClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'code', 'MODEL_NOT_FOUND'
-                expect(err).to.have.property 'isLoopbackResponseError', true
+                assert err instanceof Error
+                assert err.code is 'MODEL_NOT_FOUND'
+                assert err.isLoopbackResponseError is true
             )
 
 
@@ -430,9 +430,9 @@ describe 'LoopbackClient', ->
             data = version: 2
 
             client.updateAttributes(existingId, data).then (responseBody) ->
-                expect(responseBody).to.have.property 'id', existingId
-                expect(responseBody).to.have.property 'name', 'JavaScript'
-                expect(responseBody).to.have.property 'version', 2
+                assert responseBody.id is existingId
+                assert responseBody.name is 'JavaScript'
+                assert responseBody.version is 2
 
 
     describe 'updateAll', ->
@@ -450,12 +450,12 @@ describe 'LoopbackClient', ->
 
             # TODO: this is the spec of Loopback (they return 204). We should take this into account or change the API
             client.updateAll(where, data).then (responseBody) ->
-                expect(responseBody).to.have.property 'count', 2
+                assert responseBody.count is 2
 
                 client.find(order: 'name', where: {isAcademic: true, isScientific: true}).then (results) ->
 
-                    expect(results).to.be.instanceof Array
-                    expect(results).to.have.length 2
-                    expect(results[0]).to.have.property 'name', 'BioGenetics'
-                    expect(results[1]).to.have.property 'name', 'Physics'
+                    assert results instanceof Array
+                    assert results.length is 2
+                    assert results[0].name is 'BioGenetics'
+                    assert results[1].name is 'Physics'
 

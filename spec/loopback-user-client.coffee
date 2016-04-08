@@ -33,9 +33,9 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'ValidationError'
-                expect(err).to.have.property 'statusCode', 422
+                assert err instanceof Error
+                assert err.name is 'ValidationError'
+                assert err.statusCode is 422
             )
 
 
@@ -46,11 +46,11 @@ describe 'LoopbackUserClient', ->
             client.create(firstName: 'Shin', lastName: 'Suzuki', email: 'shinout310@gmail.com', password: 'daikon123').then (responseBody) ->
 
 
-                expect(responseBody).to.have.property 'firstName', 'Shin'
-                expect(responseBody).to.have.property 'lastName', 'Suzuki'
-                expect(responseBody).to.have.property 'email', 'shinout310@gmail.com'
-                expect(responseBody).to.have.property 'id'
-                expect(responseBody).not.to.have.property 'password'
+                assert responseBody.firstName is 'Shin'
+                assert responseBody.lastName is 'Suzuki'
+                assert responseBody.email is 'shinout310@gmail.com'
+                assert responseBody.id?
+                assert not responseBody.password?
 
                 idOfShin = responseBody.id
 
@@ -68,10 +68,10 @@ describe 'LoopbackUserClient', ->
 
             , (err) ->
 
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'LOGIN_FAILED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'LOGIN_FAILED'
             )
 
 
@@ -81,9 +81,9 @@ describe 'LoopbackUserClient', ->
 
             client.login(email: 'shinout310@gmail.com', password: 'daikon123').then (responseBody) ->
 
-                expect(responseBody).to.have.property 'id'
-                expect(responseBody).to.have.property 'ttl'
-                expect(responseBody).to.have.property 'userId'
+                assert responseBody.id?
+                assert responseBody.ttl?
+                assert responseBody.userId?
                 accessTokenOfShin = responseBody.id
 
 
@@ -93,12 +93,12 @@ describe 'LoopbackUserClient', ->
 
             client.login(email: 'shinout310@gmail.com', password: 'daikon123', "user").then (responseBody) ->
 
-                expect(responseBody).to.have.property 'id'
-                expect(responseBody).to.have.property 'userId'
-                expect(responseBody).to.have.property 'user'
-                expect(responseBody.user).to.have.property 'id', responseBody.userId
-                expect(responseBody.user).to.have.property 'email', 'shinout310@gmail.com'
-                expect(responseBody.user).to.have.property 'firstName', 'Shin'
+                assert responseBody.id?
+                assert responseBody.userId?
+                assert responseBody.user?
+                assert responseBody.user.id is responseBody.userId
+                assert responseBody.user.email is 'shinout310@gmail.com'
+                assert responseBody.user.firstName is 'Shin'
 
 
     describe 'create', ->
@@ -108,11 +108,11 @@ describe 'LoopbackUserClient', ->
 
             authedClient.create(firstName: 'Kohta', lastName: 'Satake', email: 'satake@example.com', password: 'satake111').then (responseBody) ->
 
-                expect(responseBody).to.have.property 'firstName', 'Kohta'
-                expect(responseBody).to.have.property 'lastName', 'Satake'
-                expect(responseBody).to.have.property 'email', 'satake@example.com'
-                expect(responseBody).to.have.property 'id'
-                expect(responseBody).not.to.have.property 'password'
+                assert responseBody.firstName is 'Kohta'
+                assert responseBody.lastName is 'Satake'
+                assert responseBody.email is 'satake@example.com'
+                assert responseBody.id?
+                assert not responseBody.password?
 
                 idOfSatake = responseBody.id
 
@@ -139,9 +139,9 @@ describe 'LoopbackUserClient', ->
 
             , (err) ->
 
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'status', 500
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.status is 500
             )
 
 
@@ -150,7 +150,7 @@ describe 'LoopbackUserClient', ->
 
             client.logout(validAccessToken).then (responseBody) ->
 
-                expect(Object.keys(responseBody)).to.have.length 0
+                assert Object.keys(responseBody).length is 0
 
                 #TODO confirm the token is deleted
 
@@ -173,10 +173,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -192,10 +192,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -211,10 +211,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -229,10 +229,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -244,10 +244,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -261,10 +261,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -276,10 +276,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -293,10 +293,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -308,10 +308,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -326,10 +326,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -339,8 +339,8 @@ describe 'LoopbackUserClient', ->
 
             authedClient.findById(idOfShin).then (responseBody) ->
 
-                expect(responseBody).to.have.property 'id', idOfShin
-                expect(responseBody).to.have.property 'firstName', 'Shin'
+                assert responseBody.id is idOfShin
+                assert responseBody.firstName is 'Shin'
 
 
         it 'fails when given id is not the token\'s user id', ->
@@ -352,10 +352,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -369,10 +369,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -385,10 +385,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
     describe 'updateAttributes', ->
@@ -401,10 +401,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -416,9 +416,9 @@ describe 'LoopbackUserClient', ->
 
             authedClient.updateAttributes(idOfShin, data).then (responseBody) ->
 
-                expect(responseBody).to.have.property 'id', idOfShin
-                expect(responseBody).to.have.property 'firstName', 'Shin'
-                expect(responseBody).to.have.property 'hobby', 'music'
+                assert responseBody.id is idOfShin
+                assert responseBody.firstName is 'Shin'
+                assert responseBody.hobby is 'music'
 
 
         it 'fails when given id is not the token\'s user id', ->
@@ -430,10 +430,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -447,10 +447,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -464,10 +464,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -481,10 +481,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
 
@@ -498,10 +498,10 @@ describe 'LoopbackUserClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'name', 'Error'
-                expect(err).to.have.property 'statusCode', 401
-                expect(err).to.have.property 'code', 'AUTHORIZATION_REQUIRED'
+                assert err instanceof Error
+                assert err.name is 'Error'
+                assert err.statusCode is 401
+                assert err.code is 'AUTHORIZATION_REQUIRED'
             )
 
         it 'deletes user when given id is the token\'s user id', ->
@@ -510,4 +510,4 @@ describe 'LoopbackUserClient', ->
 
             authedClient.destroyById(idOfShin).then (responseBody) ->
 
-                expect(responseBody).to.have.property 'count', 1
+                assert responseBody.count is 1

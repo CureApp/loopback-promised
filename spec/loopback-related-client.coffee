@@ -40,7 +40,7 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.setAccessToken('abcde')
-            expect(client.accessToken).to.equal 'abcde'
+            assert client.accessToken is 'abcde'
 
 
     describe 'create', ->
@@ -54,9 +54,9 @@ describe 'LoopbackRelatedClient', ->
                 createdAt: new Date()
             ).then (responseBody) ->
 
-                expect(responseBody).to.have.property 'notebookId', mainNotebook.id
-                expect(responseBody).to.have.property 'content'
-                expect(responseBody).to.have.property 'createdAt'
+                assert responseBody.notebookId is mainNotebook.id
+                assert responseBody.content?
+                assert responseBody.createdAt?
 
 
         it 'creates items when array is given', ->
@@ -68,9 +68,9 @@ describe 'LoopbackRelatedClient', ->
                 { content: 'Well documented'  }
                 { content: 'Written in JavaScript'}
             ]).then (results) ->
-                expect(results).to.be.instanceof Array
-                expect(results).to.have.length 3
-                expect(result).to.have.property 'content' for result in results
+                assert results instanceof Array
+                assert results.length is 3
+                assert result.content? for result in results
 
 
     describe 'count', ->
@@ -79,7 +79,7 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.count().then (num) ->
-                expect(num).to.equal 4
+                assert num is 4
 
 
         it 'counts items with condition', ->
@@ -89,7 +89,7 @@ describe 'LoopbackRelatedClient', ->
                 content: like: 'Supports'
 
             client.count(where).then (num) ->
-                expect(num).to.equal 1
+                assert num is 1
 
 
         it 'counts no items when no matching items', ->
@@ -100,7 +100,7 @@ describe 'LoopbackRelatedClient', ->
                 content: 'CoffeeScript'
 
             client.count(where).then (num) ->
-                expect(num).to.equal 0
+                assert num is 0
 
 
     describe 'upsert', ->
@@ -113,9 +113,9 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.upsert(content: 'boot script can be async', about: 'boot').then (responseBody) ->
 
-                expect(responseBody).to.have.property 'id'
-                expect(responseBody).to.have.property 'content'
-                expect(responseBody).to.have.property 'about', 'boot'
+                assert responseBody.id?
+                assert responseBody.content?
+                assert responseBody.about is 'boot'
                 newId = responseBody.id
 
 
@@ -123,10 +123,10 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.upsert(id: newId, importance: 'important').then (responseBody) ->
-                expect(responseBody).to.have.property 'id', newId
-                expect(responseBody).to.have.property 'content'
-                expect(responseBody).to.have.property 'about', 'boot'
-                expect(responseBody).to.have.property 'importance', 'important'
+                assert responseBody.id is newId
+                assert responseBody.content?
+                assert responseBody.about is 'boot'
+                assert responseBody.importance is 'important'
 
 
 
@@ -145,14 +145,14 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.exists(notExistingId).then (responseBody) ->
-                expect(responseBody).to.have.property 'exists', false
+                assert responseBody.exists is false
 
 
         it 'returns true when exists', ->
 
             client = createClient()
             client.exists(existingId).then (responseBody) ->
-                expect(responseBody).to.have.property 'exists', true
+                assert responseBody.exists is true
 
 
     describe 'findById', ->
@@ -175,9 +175,9 @@ describe 'LoopbackRelatedClient', ->
 
             , (err) ->
                 # FIXME the error is different from loopback-client
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'status', 404
-                expect(err).to.have.property 'isLoopbackResponseError', true
+                assert err instanceof Error
+                assert err.status is 404
+                assert err.isLoopbackResponseError is true
             )
 
 
@@ -185,7 +185,7 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.findById(existingId).then (responseBody) ->
-                expect(responseBody).to.have.property 'notebookId', mainNotebook.id
+                assert responseBody.notebookId is mainNotebook.id
 
 
     describe 'find', ->
@@ -195,26 +195,26 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.find().then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length.above 4
+                assert responseBody instanceof Array
+                assert responseBody.length > 4
 
 
         it 'returns specific field(s) when fields filter is set', ->
 
             client = createClient()
             client.find(fields: 'content').then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length.above 4
+                assert responseBody instanceof Array
+                assert responseBody.length > 4
                 for item in responseBody
-                    expect(Object.keys(item).length).to.equal 1
-                    expect(item).to.have.property 'content'
+                    assert Object.keys(item).length is 1
+                    assert item.content?
 
         it 'can set limit', ->
 
             client = createClient()
             client.find(limit: 3).then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 3
+                assert responseBody instanceof Array
+                assert responseBody.length is 3
 
         it 'can set skip', ->
 
@@ -223,7 +223,7 @@ describe 'LoopbackRelatedClient', ->
                 client.find(limit: 2)
                 client.find(limit: 1, skip: 1)
             ]).then (results) ->
-                expect(results[0][1].content).to.equal results[1][0].content
+                assert results[0][1].content is results[1][0].content
 
 
         it 'can set order. default order is ASC', ->
@@ -231,13 +231,13 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.find(order: 'content').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
                 prevContent = null
 
                 for item in responseBody
                     if prevContent?
-                        expect(item.content> prevContent).to.be.true
+                        assert(item.content> prevContent) is true
                     prevContent = item.content
 
 
@@ -247,13 +247,13 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.find(order: 'content DESC').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
                 prevContent = null
 
                 for item in responseBody
                     if prevContent?
-                        expect(item.content < prevContent).to.be.true
+                        assert(item.content < prevContent) is true
                     prevContent = item.content
 
 
@@ -262,13 +262,13 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.find(order: 'content ASC').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
                 prevContent = null
 
                 for item in responseBody
                     if prevContent?
-                        expect(item.content> prevContent).to.be.true
+                        assert(item.content> prevContent) is true
                     prevContent = item.content
 
 
@@ -278,10 +278,10 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.find(where: content: 'Well documented').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 1
+                assert responseBody instanceof Array
+                assert responseBody.length is 1
 
-                expect(responseBody[0].content).to.equal 'Well documented'
+                assert responseBody[0].content is 'Well documented'
 
 
 
@@ -290,31 +290,31 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.find(order: 'content', where: or: [{content: 'Well documented'}, {content: 'Written in JavaScript'}]).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 2
+                assert responseBody instanceof Array
+                assert responseBody.length is 2
 
-                expect(responseBody[0].content).to.equal 'Well documented'
-                expect(responseBody[1].content).to.equal 'Written in JavaScript'
+                assert responseBody[0].content is 'Well documented'
+                assert responseBody[1].content is 'Written in JavaScript'
 
 
         it 'can set where (implicit "and")', ->
             client = createClient()
             client.find(where: content: 'boot script can be async', about: 'boot').then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 1
+                assert responseBody instanceof Array
+                assert responseBody.length is 1
 
-                expect(responseBody[0].about).to.equal 'boot'
+                assert responseBody[0].about is 'boot'
 
 
         it 'can set where (explicit "and")', ->
             client = createClient()
             client.find(where: and: [{content: 'boot script can be async'}, {about: 'boot'}]).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 1
+                assert responseBody instanceof Array
+                assert responseBody.length is 1
 
-                expect(responseBody[0].about).to.equal 'boot'
+                assert responseBody[0].about is 'boot'
 
 
 
@@ -322,22 +322,22 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.find(order: 'content', where: and: [{content: gt: 'We'}, {content: lt: 'a'}]).then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 2
+                assert responseBody instanceof Array
+                assert responseBody.length is 2
 
-                expect(responseBody[0].content).to.equal 'Well documented'
-                expect(responseBody[1].content).to.equal 'Written in JavaScript'
+                assert responseBody[0].content is 'Well documented'
+                assert responseBody[1].content is 'Written in JavaScript'
 
 
         it 'can set where (like) (not all data source support this request)', ->
             client = createClient()
             client.find(order: 'content', where: content : like: "[Ss]cript").then (responseBody) ->
 
-                expect(responseBody).to.be.instanceof Array
-                expect(responseBody).to.have.length 2
+                assert responseBody instanceof Array
+                assert responseBody.length is 2
 
-                expect(responseBody[0].content).to.equal 'Written in JavaScript'
-                expect(responseBody[1].content).to.equal 'boot script can be async'
+                assert responseBody[0].content is 'Written in JavaScript'
+                assert responseBody[1].content is 'boot script can be async'
 
 
     describe 'findOne', ->
@@ -349,7 +349,7 @@ describe 'LoopbackRelatedClient', ->
 
             client.findOne(order: 'content', where: content : like: "[Ss]cript").then (responseBody) ->
 
-                expect(responseBody.content).to.equal 'Written in JavaScript'
+                assert responseBody.content is 'Written in JavaScript'
 
         it 'get null when not match', ->
 
@@ -357,7 +357,7 @@ describe 'LoopbackRelatedClient', ->
 
             client.findOne(order: 'content', where: content : like: "xxxxx").then (responseBody) ->
 
-                expect(responseBody).not.to.exist
+                assert not responseBody?
 
 
 
@@ -380,9 +380,9 @@ describe 'LoopbackRelatedClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'status', 404
-                expect(err).to.have.property 'isLoopbackResponseError', true
+                assert err instanceof Error
+                assert err.status is 404
+                assert err.isLoopbackResponseError is true
             )
 
 
@@ -391,10 +391,10 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.destroyById(idToDestroy).then (responseBody) ->
-                expect(Object.keys(responseBody)).to.have.length 0
+                assert Object.keys(responseBody).length is 0
 
                 client.exists(idToDestroy).then (responseBody) ->
-                    expect(responseBody.exists).to.be.false
+                    assert responseBody.exists is false
 
 
 
@@ -418,9 +418,9 @@ describe 'LoopbackRelatedClient', ->
                 throw new Error('this must not be called')
 
             , (err) ->
-                expect(err).to.be.instanceof Error
-                expect(err).to.have.property 'status', 404
-                expect(err).to.have.property 'isLoopbackResponseError', true
+                assert err instanceof Error
+                assert err.status is 404
+                assert err.isLoopbackResponseError is true
             )
 
 
@@ -430,9 +430,9 @@ describe 'LoopbackRelatedClient', ->
 
             client = createClient()
             client.updateAttributes(existingId, data).then (responseBody) ->
-                expect(responseBody).to.have.property 'id', existingId
-                expect(responseBody).to.have.property 'content', 'Written in JavaScript'
-                expect(responseBody).to.have.property 'version', 2
+                assert responseBody.id is existingId
+                assert responseBody.content is 'Written in JavaScript'
+                assert responseBody.version is 2
 
 
     describe 'updateAll', ->
@@ -451,13 +451,13 @@ describe 'LoopbackRelatedClient', ->
             client = createClient()
             client.updateAll(where, data).then (results) ->
 
-                expect(results).to.be.instanceof Array
-                expect(results).to.have.length 2
-                expect(results[0]).to.have.property 'content', 'Written in JavaScript'
-                expect(results[1]).to.have.property 'content', 'boot script can be async'
+                assert results instanceof Array
+                assert results.length is 2
+                assert results[0].content is 'Written in JavaScript'
+                assert results[1].content is 'boot script can be async'
                 for result in results
-                    expect(result).to.have.property 'isAboutProgramming', true
-                    expect(result).to.have.property 'isAboutScript', true
+                    assert result.isAboutProgramming is true
+                    assert result.isAboutScript is true
 
 
     after ->
