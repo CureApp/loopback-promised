@@ -36,7 +36,7 @@ describe 'LoopbackPromised', ->
                 throw new Error('this cannot occur')
 
             , (e) ->
-                expect(e).to.match /baseURL/
+                assert e.match /baseURL/ # TODO: should return error
             )
 
 
@@ -56,7 +56,7 @@ describe 'LoopbackPromised', ->
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then((responseBody) ->
                 throw new Error('this cannot occur')
             , (e) ->
-                expect(e).to.have.property('code', 'ECONNREFUSED')
+                assert e.code is 'ECONNREFUSED'
             )
 
         it 'fails if baseURL is not valid (path)', ->
@@ -75,7 +75,7 @@ describe 'LoopbackPromised', ->
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then((responseBody) ->
                 throw new Error('this cannot occur')
             , (e) ->
-                expect(e.message).to.match /Cannot GET/
+                assert e.message.match /Cannot GET/
             )
 
 
@@ -93,7 +93,7 @@ describe 'LoopbackPromised', ->
                 debug: debug
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).then (responseBody) ->
-                expect(responseBody).to.be.instanceof Array
+                assert responseBody instanceof Array
 
         it 'timeouts when timeout msec is given and exceeds', ->
 
@@ -110,7 +110,7 @@ describe 'LoopbackPromised', ->
                 timeout: 1
 
             lbPromised.request(pluralModelName, path, params, http_method, clientInfo).catch (e) ->
-                expect(e.message).to.match /timeout/
+                assert e.message.match /timeout/
 
 
     describe 'createClient', ->
@@ -129,8 +129,8 @@ describe 'LoopbackPromised', ->
 
             client = lbPromised.createClient(pluralModelName, clientInfo)
 
-            expect(client).to.be.instanceof LoopbackClient
-            expect(client).to.have.property 'timeout', 8000
+            assert client instanceof LoopbackClient
+            assert client.timeout is 8000
 
 
         it 'creates related client when "belongsTo" option is set', ->
@@ -147,13 +147,13 @@ describe 'LoopbackPromised', ->
                 isUserModel: true # ignored
             )
 
-            expect(client).to.be.instanceof LoopbackRelatedClient
-            expect(client).to.have.property 'id', 1
-            expect(client).to.have.property 'accessToken', 'abc'
-            expect(client).to.have.property 'debug', debug
-            expect(client).to.have.property 'pluralModelName', 'notebooks'
-            expect(client).to.have.property 'pluralModelNameMany', 'leaves'
-            expect(client).to.have.property 'timeout', 8000
+            assert client instanceof LoopbackRelatedClient
+            assert client.id is 1
+            assert client.accessToken is 'abc'
+            assert client.debug is debug
+            assert client.pluralModelName is 'notebooks'
+            assert client.pluralModelNameMany is 'leaves'
+            assert client.timeout is 8000
 
 
         it 'creates user client when "isUserModel" option is set', ->
@@ -168,11 +168,11 @@ describe 'LoopbackPromised', ->
                 debug: debug
             )
 
-            expect(client).to.be.instanceof LoopbackUserClient
-            expect(client).to.have.property 'accessToken', 'abc'
-            expect(client).to.have.property 'debug', debug
-            expect(client).to.have.property 'pluralModelName', 'leaves'
-            expect(client).to.have.property 'timeout', 8000
+            assert client instanceof LoopbackUserClient
+            assert client.accessToken is 'abc'
+            assert client.debug is debug
+            assert client.pluralModelName is 'leaves'
+            assert client.timeout is 8000
 
 
 
@@ -191,8 +191,8 @@ describe 'LoopbackPromised', ->
 
             client = lbPromised.createUserClient(pluralModelName, clientInfo)
 
-            expect(client).to.be.instanceof LoopbackClient
-            expect(client).to.be.instanceof LoopbackUserClient
+            assert client instanceof LoopbackClient
+            assert client instanceof LoopbackUserClient
 
     describe 'createPushManager', ->
 
@@ -207,7 +207,7 @@ describe 'LoopbackPromised', ->
 
             client = lbPromised.createPushManager(clientInfo)
 
-            expect(client).to.be.instanceof PushManager
+            assert client instanceof PushManager
 
 
     describe '@isDebugMode', ->
@@ -220,17 +220,17 @@ describe 'LoopbackPromised', ->
 
         it 'returns true when given param is true', ->
 
-            expect(LoopbackPromised.isDebugMode(true)).to.be.true
+            assert LoopbackPromised.isDebugMode(true) is true
 
         it 'returns true when given param is false but process.env.LBP_DEBUG exists', ->
 
             process.env.LBP_DEBUG = '1'
 
-            expect(LoopbackPromised.isDebugMode(false)).to.be.true
+            assert LoopbackPromised.isDebugMode(false) is true
 
         it 'returns false when given param is false and process.env.LBP_DEBUG does not exist', ->
 
             delete process.env.LBP_DEBUG
 
-            expect(LoopbackPromised.isDebugMode(false)).to.be.false
+            assert LoopbackPromised.isDebugMode(false) is false
 

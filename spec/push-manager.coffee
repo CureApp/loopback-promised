@@ -28,10 +28,10 @@ describe 'PushManager', ->
             pushManager = createPushManager()
 
             pushManager.subscribe(userId, deviceToken, deviceType).then (result) ->
-                expect(result.appId).to.equal 'loopback-with-admin'
-                expect(result.userId).to.equal userId.toString()
-                expect(result.deviceToken).to.equal deviceToken
-                expect(result.deviceType).to.equal deviceType
+                assert result.appId is 'loopback-with-admin'
+                assert result.userId is userId.toString()
+                assert result.deviceToken is deviceToken
+                assert result.deviceType is deviceType
                 done()
 
             .catch (err) ->
@@ -44,7 +44,7 @@ describe 'PushManager', ->
             pushManager = createPushManager()
             pushManager.subscribe(userId, deviceToken, deviceType).then (result) ->
                 pushManager.installationClient.find(where: deviceToken: deviceToken).then (results) ->
-                    expect(results).to.have.length 1
+                    assert results.length is 1
                     done()
 
             .catch (err) ->
@@ -58,7 +58,7 @@ describe 'PushManager', ->
             pushManager = createPushManager()
             pushManager.subscribe(userId, deviceToken, deviceType).then (result) ->
                 pushManager.installationClient.find(where: userId: userId).then (results) ->
-                    expect(results).to.have.length 1
+                    assert results.length is 1
                     done()
 
             .catch (err) ->
@@ -116,7 +116,7 @@ describe 'PushManager', ->
             pushManager = createPushManager()
             pushManager.unsubscribe(userId).then ->
                 pushManager.installationClient.findOne(where: userId: userId).then (result) ->
-                    expect(result).not.to.exist
+                    assert not result?
                     done()
 
             .catch (err) ->
