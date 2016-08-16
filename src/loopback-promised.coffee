@@ -143,9 +143,6 @@ class LoopbackPromised
 
         responseStatus = null
 
-
-        console.log(url, fetchParams)
-
         fetched = fetch(url, fetchParams).then (response) ->
             responseStatus = response.status
             if responseStatus is 204 # No Contents
