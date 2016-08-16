@@ -4,9 +4,17 @@ LoopbackUserClient    = require('./loopback-user-client')
 LoopbackRelatedClient = require('./loopback-related-client')
 PushManager           = require('./push-manager')
 
-superagent = require('superagent')
-
 DebugLogger = require('./util/debug-logger')
+
+fetch = require('fetch-ponyfill')()
+qs = require 'qs'
+
+timeoutLimit = (msec, promise) ->
+    new Promise (resolve, reject) ->
+        setTimeout ->
+            reject(new Error("timeout of #{msec}ms exceeded"))
+        , msec
+        promise.then(resolve, reject)
 
 ###*
 LoopbackPromised
@@ -100,80 +108,79 @@ class LoopbackPromised
             debugLogger = new DebugLogger(endpoint, params, http_method, clientInfo, lbPromisedInfo)
 
 
-        agentMethod = @agentMethodMap[http_method]
-
         unless baseURL
             return Promise.reject('baseURL is required.')
 
-        unless agentMethod?
-            return Promise.reject(new Error("no agent method for http_method:  #{http_method}"))
+        if baseURL.slice(0, 4) isnt 'http'
+            baseURL = 'http://' + baseURL
 
 
         if debug
             debugLogger.showRequestInfo()
 
+        url = if version?
+            baseURL + '/' + version + endpoint
+        else
+            baseURL + endpoint
 
-        return new Promise (resolve, reject) ->
-            url = if version?
-                baseURL + '/' + version + endpoint
+        fetchParams =
+            method: http_method
+            headers: {}
+        fetchParams.headers.Authorization = accessToken if accessToken
+
+        if http_method is 'GET'
+            flattenParams = {}
+            for k, v of params
+                continue if typeof v is 'function'
+                flattenParams[k] = if typeof v is 'object' then JSON.stringify(v) else v
+
+            queryString = qs.stringify(flattenParams)
+            url += '?' + queryString if queryString
+
+        else if Object.keys(params).length
+            fetchParams.body = JSON.stringify(params)
+            fetchParams.headers['Content-Type'] = 'application/json'
+
+        responseStatus = null
+
+
+        console.log(url, fetchParams)
+
+        fetched = fetch(url, fetchParams).then (response) ->
+            responseStatus = response.status
+            if responseStatus is 204 # No Contents
+                return '{}'
             else
-                baseURL + endpoint
+                return response.text()
 
-            req = superagent[agentMethod](url)
+        , (err) ->
+            if debug
+                debugLogger.showErrorInfo(err)
+            throw err
 
-            req.set('Authorization', accessToken) if accessToken
+        .then (text) ->
+            try
+                responseBody = JSON.parse(text)
+            catch e
+                responseBody = error: text
 
-            if agentMethod is 'get'
-                flattenParams = {}
-                for k, v of params
-                    continue if typeof v is 'function'
-                    flattenParams[k] = if typeof v is 'object' then JSON.stringify(v) else v
+            if debug
+                debugLogger.showResponseInfo(responseBody, responseStatus)
 
-                req.query(flattenParams)
+            if responseBody.error
 
-            else if Object.keys(params).length
-                req.send(JSON.stringify(params))
-                req.set('Content-Type', 'application/json')
-
-            req.timeout(timeout) if timeout?
-
-            req.end (err, res) ->
-
-                if err
-                    if debug
-                        debugLogger.showErrorInfo(err)
-
-                    reject err
-                    return
-
-
-                try
-                    if res.statusCode is 204 # No Contents
-                        responseBody = {}
-                    else
-                        responseBody = JSON.parse(res.text)
-                catch e
-                    responseBody = error: res.text
-
-                if debug
-                    debugLogger.showResponseInfo(responseBody, res)
-
-
-                if responseBody.error
-
-                    if typeof responseBody.error is 'object'
-                        err = new Error()
-                        err[k] = v for k, v of responseBody.error
-                        err.isLoopbackResponseError = true
-                    else
-                        err = new Error(responseBody.error)
-                        # err.isLoopbackResponseError = true
-
-                    return reject(err)
-
+                if typeof responseBody.error is 'object'
+                    err = new Error()
+                    err[k] = v for k, v of responseBody.error
+                    err.isLoopbackResponseError = true
                 else
-                    return resolve(responseBody)
+                    err = new Error(responseBody.error)
+                    # err.isLoopbackResponseError = true
+                throw err
+            else
+                return responseBody
 
+        return if timeout? then timeoutLimit(timeout, fetched) else fetched
 
     ###*
     creates client for Loopback
@@ -285,21 +292,6 @@ class LoopbackPromised
 
         return debug or !!process?.env?.LBP_DEBUG
 
-
-    ###*
-    HTTP methods => superagent methods
-
-    @private
-    @static
-    @property agentMethodMap
-    @type {Object}
-    ###
-    @agentMethodMap:
-        DELETE : 'del'
-        PUT    : 'put'
-        GET    : 'get'
-        POST   : 'post'
-        HEAD   : 'head'
 
 LoopbackPromised.Promise               = Promise
 LoopbackPromised.LoopbackClient        = LoopbackClient

@@ -4,7 +4,8 @@
   "description": "Promise-styled client for LoopBack",
   "main": "index.js",
   "dependencies": {
-    "superagent": "^0.21.0"
+    "fetch-ponyfill": "^1.0.0",
+    "qs": "^6.2.1"
   },
   "devDependencies": {
     "coffee-script": "^1.10.0",
@@ -40,7 +41,8 @@
     "pre-release": "grunt build && npm run titaniumify",
     "post-release": "echo post-release",
     "gh-pages": "grunt yuidoc",
-    "bmp-r": "cc-bmp -r"
+    "bmp-r": "cc-bmp -r",
+    "release": "cc-local-release"
   },
   "repository": {
     "type": "git",
@@ -62,10 +64,12 @@
       "version-prefix": "v",
       "create-branch": false,
       "create-gh-pages": true,
-      "gh-pages-dir": "doc"
+      "gh-pages-dir": "doc",
+      "npm-shrinkwrap": false,
+      "npm-update-depth": false
     },
-      "directories": {
-          "test": "spec"
-      }
+    "directories": {
+      "test": "spec"
+    }
   }
 }

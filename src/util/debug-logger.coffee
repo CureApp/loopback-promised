@@ -183,10 +183,10 @@ class DebugLogger
 
 
 
-    showResponseInfo: (responseBody, res) ->
+    showResponseInfo: (responseBody, status) ->
 
         tab = tabs[0]
-        status = if responseBody.error then colorize(res.status, 'red') else colorize(res.status, 'green')
+        status = if responseBody.error then colorize(status, 'red') else colorize(status, 'green')
 
         @showHeader "<< #{colorize('RESPONSE', 'cyan')}"
         @logger.info "┃ #{tab}status: #{status}"
