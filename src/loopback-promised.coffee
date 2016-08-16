@@ -6,7 +6,11 @@ PushManager           = require('./push-manager')
 
 DebugLogger = require('./util/debug-logger')
 
-fetch = require('fetch-ponyfill')()
+fetch = require('fetch-ponyfill')(
+    Promise: Promise
+    XMLHttpRequest: if typeof XMLHttpRequest is 'function' then XMLHttpRequest else undefined
+)
+
 qs = require 'qs'
 
 timeoutLimit = (msec, promise) ->
