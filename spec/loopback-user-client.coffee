@@ -141,7 +141,7 @@ describe 'LoopbackUserClient', ->
 
                 assert err instanceof Error
                 assert err.name is 'Error'
-                assert err.status is 500
+                assert err.status is 401
             )
 
 
