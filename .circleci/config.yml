@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: 'circleci/node:6'
+    working_directory: ~/repo
+    steps:
+      - run: >-
+          echo 'export
+          PATH=$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/node-circleci-autorelease/bin'
+          >> $BASH_ENV
+      - checkout
+      - run: git config --global user.name 'shinout(node-circleci-autorelease)'
+      - run: git config --global user.email 'shinout310@gmail.com'
+      - run: npm install
+      - run: npm run post-dependencies
+      - run: npm test
+    environment:
+      VERSION_PREFIX: v
+      CREATE_GH_PAGES: 1
+      GH_PAGES_DIR: doc
+  deploy:
+    docker:
+      - image: 'circleci/node:6'
+    working_directory: ~/repo
+    steps:
+      - run: >-
+          echo 'export
+          PATH=$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/node-circleci-autorelease/bin'
+          >> $BASH_ENV
+      - checkout
+      - run: git config --global user.name 'shinout(node-circleci-autorelease)'
+      - run: git config --global user.email 'shinout310@gmail.com'
+      - run: npm install
+      - run: npm run post-dependencies
+      - run: >-
+          cc-prepare-for-release && npm run pre-release && cc-release ||
+          cc-not-released
+      - run: cc-gh-pages
+    environment:
+      VERSION_PREFIX: v
+      CREATE_GH_PAGES: 1
+      GH_PAGES_DIR: doc
+workflows:
+  version: 2
+  test_deploy:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - /release.*/
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - test
